@@ -1,35 +1,143 @@
+using System;
 using System.Threading.Tasks;
+using AutoMapper;
 using ControleCustos.Application.Contratos;
 using ControleCustos.Application.Dtos;
+using ControleCustos.Domain;
+using ControleCustos.Persistence.Contratos;
 using ControleCustos.Persistence.Models;
 
 namespace ControleCustos.Application.Contextos
 {
     public class ContaService : IContaService
     {
-        public Task<ContaDto> AddConta(ContaDto model)
+        private readonly IGeralPersist _geralPersist;
+        private readonly IContaPersist _contaPersist;
+        private readonly IMapper _mapper;
+
+        public ContaService(IGeralPersist geralPersist,
+            IContaPersist contaPersist,
+            IMapper mapper)
         {
-            throw new System.NotImplementedException();
+            _mapper = mapper;
+            _contaPersist = contaPersist;
+            _geralPersist = geralPersist;
+        }
+        public async Task<ContaDto> AddConta(int userId, ContaDto model)
+        {
+            try
+            {
+                var conta = _mapper.Map<Conta>(model);
+                conta.UserId = userId;
+
+                _geralPersist.Add<Conta>(conta);
+                if (await _geralPersist.SaveChangesAsync())
+                {
+                    var ContaRetorno = await _contaPersist.GetContaByIdAsync(conta.ContaId);
+                    return _mapper.Map<ContaDto>(ContaRetorno);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<bool> DeleteConta(int contaId)
+        public async Task<bool> DeleteConta(int contaId)
         {
-            throw new System.NotImplementedException();
+           try
+            {
+                var Conta = await _contaPersist.GetContaByIdAsync(contaId);
+                if (Conta == null)
+                {
+                    throw new Exception("Conta para delete não foi encontrada.");
+                }
+
+                _geralPersist.Delete<Conta>(Conta);
+
+                return await _geralPersist.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<PageList<ContaDto>> GetAllContasAsync(PageParams pageParams)
+        public async Task<PageList<ContaDto>> GetAllContasAsync(PageParams pageParams)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var Contas = await _contaPersist.GetAllContasAsync(pageParams);
+                if (Contas == null)
+                {
+                    return null;
+                }
+                var resultado = _mapper.Map<PageList<ContaDto>>(Contas);
+
+                resultado.CurrentPage = Contas.CurrentPage;
+                resultado.TotalPages = Contas.TotalPages;
+                resultado.PageSize = Contas.PageSize;
+                resultado.TotalCount = Contas.TotalCount;
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<ContaDto> GetContaById(int contaId)
+        public async Task<ContaDto> GetContaByIdAsync(int contaId)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var Conta = await _contaPersist.GetContaByIdAsync(contaId);
+                if (Conta == null)
+                {
+                    return null;
+                }
+
+                var resultado = _mapper.Map<ContaDto>(Conta);
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public Task<ContaDto> UpdateConta(int contaId, ContaDto model)
+        public async Task<ContaDto> UpdateConta(int contaId, ContaDto model)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var conta = await _contaPersist.GetContaByIdAsync(contaId);
+                if (conta == null)
+                {
+                    return null;
+                }
+
+                _mapper.Map(model, conta);
+                model.ContaId = conta.ContaId;
+
+                _geralPersist.Update<Conta>(conta);
+
+                if (await _geralPersist.SaveChangesAsync())
+                {
+                    var ContaRetorno = await _contaPersist.GetContaByIdAsync(
+                        conta.ContaId
+                    );
+                    return _mapper.Map<ContaDto>(ContaRetorno);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

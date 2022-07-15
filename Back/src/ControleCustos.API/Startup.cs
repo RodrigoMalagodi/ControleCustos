@@ -1,17 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
-using ControleCustos.Persistence.Contexto;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ControleCustos.Application.Contextos;
+using ControleCustos.Application.Contratos;
+using ControleCustos.Persistence.Contexto;
+using ControleCustos.Persistence.Repositorio;
+using ControleCustos.Persistence.Contratos;
+using System;
+using System.Text.Json.Serialization;
+using ControleCustos.Domain.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Collections.Generic;
 
 namespace ControleCustos.API
 {
@@ -31,6 +37,35 @@ namespace ControleCustos.API
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
 
+            services.AddIdentityCore<User>(
+                options => 
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequiredLength = 4;
+                }
+            )
+            .AddRoles<Role>()
+            .AddRoleManager<RoleManager<Role>>()
+            .AddSignInManager<SignInManager<User>>()
+            .AddRoleValidator<RoleValidator<Role>>()
+            .AddEntityFrameworkStores<ControleCustosContext>()
+            .AddDefaultTokenProviders();
+
+             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters= new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+            
             services.AddControllers()
             .AddJsonOptions(
                     options =>
@@ -43,20 +78,22 @@ namespace ControleCustos.API
                             .ReferenceLoopHandling
                             .Ignore
                 );
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters= new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
             
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            #region Services
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IContaService, ContaService>();
+            services.AddScoped<IFornecedorService, FornecedorService>();
+            #endregion
+
+            #region Persists
+            services.AddScoped<IGeralPersist, GeralPersist>();
+            services.AddScoped<IUserPersist, UserPersist>();
+            services.AddScoped<IContaPersist, ContaPersist>();
+            services.AddScoped<IFornecedorPersist, FornecedorPersist>();
+            #endregion
 
             services.AddCors();
             services.AddSwaggerGen(
@@ -103,14 +140,21 @@ namespace ControleCustos.API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ControleCustos.API v1"));
+                app.UseSwaggerUI(
+                    c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProEventos.API v1")
+                );
             }
-
-            app.UseHttpsRedirection();
+            else
+            {
+                app.UseHttpsRedirection();
+            }
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
             app.UseEndpoints(endpoints =>
             {

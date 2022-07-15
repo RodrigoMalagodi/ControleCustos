@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ControleCustos.Domain.Identity;
-// using ControleCustos.Persistence.Contexto;
 using ControleCustos.Persistence.Contratos;
 using ControleCustos.Persistence.Contexto;
 

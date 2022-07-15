@@ -156,7 +156,7 @@ namespace ControleCustos.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Fornecedors",
+                name: "Fornecedor",
                 columns: table => new
                 {
                     FornecedorId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -167,9 +167,9 @@ namespace ControleCustos.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Fornecedors", x => x.FornecedorId);
+                    table.PrimaryKey("PK_Fornecedor", x => x.FornecedorId);
                     table.ForeignKey(
-                        name: "FK_Fornecedors_AspNetUsers_UserId",
+                        name: "FK_Fornecedor_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -184,7 +184,9 @@ namespace ControleCustos.Persistence.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Valor = table.Column<decimal>(type: "TEXT", nullable: false),
                     DataPagamento = table.Column<string>(type: "TEXT", nullable: true),
-                    juros = table.Column<decimal>(type: "TEXT", nullable: false),
+                    AnoMes = table.Column<string>(type: "INTEGER", nullable: true),
+                    Descricao = table.Column<string>(type: "TEXT", nullable: true),
+                    Juros = table.Column<decimal>(type: "TEXT", nullable: false),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     FornecedorId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
@@ -198,9 +200,9 @@ namespace ControleCustos.Persistence.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Conta_Fornecedors_FornecedorId",
+                        name: "FK_Conta_Fornecedor_FornecedorId",
                         column: x => x.FornecedorId,
-                        principalTable: "Fornecedors",
+                        principalTable: "Fornecedor",
                         principalColumn: "FornecedorId",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -253,8 +255,8 @@ namespace ControleCustos.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fornecedors_UserId",
-                table: "Fornecedors",
+                name: "IX_Fornecedor_UserId",
+                table: "Fornecedor",
                 column: "UserId");
         }
 
@@ -282,7 +284,7 @@ namespace ControleCustos.Persistence.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Fornecedors");
+                name: "Fornecedor");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

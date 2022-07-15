@@ -34,7 +34,7 @@ namespace ControleCustos.Persistence.Migrations
                     b.Property<decimal>("Valor")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("juros")
+                    b.Property<decimal>("Juros")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ContaId");
@@ -65,7 +65,7 @@ namespace ControleCustos.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Fornecedors");
+                    b.ToTable("Fornecedor");
                 });
 
             modelBuilder.Entity("ControleCustos.Domain.Identity.Role", b =>

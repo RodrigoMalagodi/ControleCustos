@@ -21,7 +21,7 @@ namespace ControleCustos.Persistence.Contexto
         public ControleCustosContext(DbContextOptions<ControleCustosContext> options) : base(options) { }
 
         public DbSet<Conta> Conta { get; set; }
-        public DbSet<Fornecedor> Fornecedors { get; set; }
+        public DbSet<Fornecedor> Fornecedor { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

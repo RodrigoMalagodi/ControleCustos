@@ -27,6 +27,9 @@ namespace ControleCustos.Persistence.Migrations
                     b.Property<string>("DataPagamento")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("AnoMes")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int?>("FornecedorId")
                         .HasColumnType("INTEGER");
 
@@ -36,7 +39,7 @@ namespace ControleCustos.Persistence.Migrations
                     b.Property<decimal>("Valor")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("juros")
+                    b.Property<decimal>("Juros")
                         .HasColumnType("TEXT");
 
                     b.HasKey("ContaId");
@@ -67,7 +70,7 @@ namespace ControleCustos.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Fornecedors");
+                    b.ToTable("Fornecedor");
                 });
 
             modelBuilder.Entity("ControleCustos.Domain.Identity.Role", b =>
