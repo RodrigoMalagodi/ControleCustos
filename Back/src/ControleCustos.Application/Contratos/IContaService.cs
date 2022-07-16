@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using ControleCustos.Application.Dtos;
 using ControleCustos.Persistence.Models;
@@ -12,5 +13,6 @@ namespace ControleCustos.Application.Contratos
 
         Task<PageList<ContaDto>> GetAllContasAsync(PageParams pageParams);
         Task<ContaDto> GetContaByIdAsync(int contaId);
+        Task<ContaDto> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim);
     }
 }

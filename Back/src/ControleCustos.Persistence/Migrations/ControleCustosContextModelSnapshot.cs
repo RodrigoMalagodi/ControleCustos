@@ -23,7 +23,7 @@ namespace ControleCustos.Persistence.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("DataPagamento")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("DATE");
 
                     b.Property<int?>("FornecedorId")
                         .HasColumnType("INTEGER");
@@ -32,10 +32,10 @@ namespace ControleCustos.Persistence.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Valor")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("MONEY");
 
                     b.Property<decimal>("Juros")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("MONEY");
 
                     b.HasKey("ContaId");
 

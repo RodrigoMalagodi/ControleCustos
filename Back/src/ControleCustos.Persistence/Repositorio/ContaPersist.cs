@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ControleCustos.Domain;
@@ -19,15 +20,13 @@ namespace ControleCustos.Persistence.Repositorio
 
         public async Task<PageList<Conta>> GetAllContasAsync(PageParams pageParams)
         {
-           IQueryable<Conta> query = _context.Conta;
-
-            query = query
-                .AsNoTracking()
-                .Where(
-                    e =>
-                        (e.Descricao.ToLower().Contains(pageParams.Term.ToLower()))
-                )
-                .OrderBy(e => e.ContaId);
+           IQueryable<Conta> query = _context.Conta
+                                            .AsNoTracking()
+                                            .Where(
+                                                e =>
+                                                    (e.Descricao.ToLower().Contains(pageParams.Term.ToLower()))
+                                            )
+                                            .OrderBy(e => e.ContaId);
 
             return await PageList<Conta>.CreateAsync(
                 query,
@@ -38,28 +37,47 @@ namespace ControleCustos.Persistence.Repositorio
 
         public async Task<Conta> GetContaByIdAsync(int contaId)
         {
-            IQueryable<Conta> query = _context.Conta;
-
-            query = query
-                .AsNoTracking()
-                .Where(e => e.ContaId == contaId);
+            IQueryable<Conta> query = _context.Conta
+                                            .AsNoTracking()
+                                            .Where(e => e.ContaId == contaId);
 
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Conta> GetDadosDashBoard(DateTime dataInicio, DateTime dataFim)
+        public async Task<Conta> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim)
         {
-            throw new Exception();
-            // IQueryable<Conta> query = _context.Conta
-            //                             .AsNoTracking()
-            //                             .Where(x => Convert.ToDateTime(x.DataPagamento) >= dataInicio && 
-            //                             Convert.ToDateTime(x.DataPagamento) <= dataFim);
+            IQueryable<Conta> resultado = _context.Conta
+                                                .AsNoTracking()
+                                                .Where 
+                                                (x => 
+                                                    x.DataPagamento >= dataInicio && 
+                                                    x.DataPagamento <= dataFim);
 
-            // query = query
-            //     .Sum(x => x.Valor)
-            //     .GroupByAsync()
+            List<int> ListaAnoMes = new List<int>();
+            List<Conta> ListaValor = new List<Conta>();
+            decimal valorTotal = 0;
 
-            // return await query.FirstOrDefaultAsync().GroupBy(x => x.AnoMes);
+            foreach (var item in resultado.Select(x => new { x.AnoMes }))
+            {
+                ListaAnoMes.Add(item.AnoMes);
+            }
+
+            foreach (var a in ListaAnoMes)
+            {
+                Conta dados = new Conta();
+                foreach (var b in resultado.Where(x=> x.AnoMes == a).Select(x => new {Valor = x.Valor }))
+                {
+                    valorTotal += b.Valor;
+                }   
+
+                dados.AnoMes = (int)a;
+                dados.Valor = valorTotal;
+                ListaValor.Add(dados);
+            }
+            
+            var query = ListaValor.OrderBy(x=>x.AnoMes) as IQueryable<Conta>;
+            
+            return await query.FirstOrDefaultAsync();
         }
     }
 }

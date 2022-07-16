@@ -106,7 +106,6 @@ namespace ControleCustos.API.Controllers
             }
         }
 
-
         [HttpPut("id/{id}")]
         public async Task<IActionResult> Put(int id, ContaDto model)
         {
@@ -129,6 +128,32 @@ namespace ControleCustos.API.Controllers
                 return this.StatusCode(
                     StatusCodes.Status500InternalServerError,
                     $"Erro ao tentar atualizar Contas. Erro: {ex.Message}"
+                );
+            }
+        }
+
+        [HttpGet("dataInicio/{dataInicio}/dataFim/{dataFim}")]
+        public async Task<IActionResult> GetDadosDashBoard(DateTime dataInicio, DateTime dataFim)
+        {
+            try
+            {
+                int userIdToken = User.GetUserId();
+                if (userIdToken >= 1)
+                {
+                    var Contas = await _contaService.GetDadosDashBoardAsync(dataInicio, dataFim);
+                    if (Contas == null)
+                    {
+                        return NoContent();
+                    }
+                    return Ok(Contas);
+                }
+                return BadRequest("Erro ao tentar recuperar Contas.");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar Contas. Erro: {ex.Message}"
                 );
             }
         }

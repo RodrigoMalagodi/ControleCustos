@@ -109,6 +109,26 @@ namespace ControleCustos.Application.Contextos
             }
         }
 
+        public async Task<ContaDto> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim)
+        {
+            try
+            {
+                var Conta = await _contaPersist.GetDadosDashBoardAsync(dataInicio, dataFim);
+                if (Conta == null)
+                {
+                    return null;
+                }
+
+                var resultado = _mapper.Map<ContaDto>(Conta);
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public async Task<ContaDto> UpdateConta(int contaId, ContaDto model)
         {
             try

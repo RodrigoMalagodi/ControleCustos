@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ControleCustos.Domain;
 using ControleCustos.Persistence.Models;
@@ -9,6 +10,6 @@ namespace ControleCustos.Persistence.Contratos
     {
         Task<PageList<Conta>> GetAllContasAsync(PageParams pageParams);
         Task<Conta> GetContaByIdAsync(int contaId);
-        Task<Conta> GetDadosDashBoard(DateTime dataInicio, DateTime dataFim );
+        Task<Conta> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim);
     }
 }
