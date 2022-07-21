@@ -24,12 +24,12 @@ namespace ControleCustos.Application.Contextos
             _geralPersist = geralPersist;
         }
 
-        public async Task<FornecedorDto> AddFornecedor(int fornecedorId, FornecedorDto model)
+        public async Task<FornecedorDto> AddFornecedor(int userId, FornecedorDto model)
         {
             try
             {
                 var fornecedor = _mapper.Map<Fornecedor>(model);
-                fornecedor.FornecedorId = fornecedorId;
+                fornecedor.UserId = userId;
                 _geralPersist.Add<Fornecedor>(fornecedor);
                 if (await _geralPersist.SaveChangesAsync())
                 {

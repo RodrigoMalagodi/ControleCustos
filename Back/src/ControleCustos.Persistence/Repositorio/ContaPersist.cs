@@ -44,40 +44,35 @@ namespace ControleCustos.Persistence.Repositorio
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Conta> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim)
+        public async Task<Conta[]> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim)
         {
-            IQueryable<Conta> resultado = _context.Conta
+            IQueryable<Conta> query =  _context.Conta
                                                 .AsNoTracking()
                                                 .Where 
                                                 (x => 
                                                     x.DataPagamento >= dataInicio && 
-                                                    x.DataPagamento <= dataFim);
+                                                    x.DataPagamento <= dataFim
+                                                )
+                                                .OrderBy(x =>x.AnoMes);
 
-            List<int> ListaAnoMes = new List<int>();
-            List<Conta> ListaValor = new List<Conta>();
-            decimal valorTotal = 0;
+            return await query.ToArrayAsync();
+        }
 
-            foreach (var item in resultado.Select(x => new { x.AnoMes }))
-            {
-                ListaAnoMes.Add(item.AnoMes);
-            }
+        public async Task<Conta[]> GetDadosDashBoardFornecedorById(int fornecedorId, DateTime dataInicio, DateTime dataFim)
+        {
+            IQueryable<Conta> query =  _context.Conta
+                                                .AsNoTracking()
+                                                .Where 
+                                                (x => 
+                                                    x.FornecedorId == fornecedorId &&
+                                                    (
+                                                        x.DataPagamento >= dataInicio && 
+                                                        x.DataPagamento <= dataFim
+                                                    )
+                                                )
+                                                .OrderBy(x =>x.AnoMes);
 
-            foreach (var a in ListaAnoMes)
-            {
-                Conta dados = new Conta();
-                foreach (var b in resultado.Where(x=> x.AnoMes == a).Select(x => new {Valor = x.Valor }))
-                {
-                    valorTotal += b.Valor;
-                }   
-
-                dados.AnoMes = (int)a;
-                dados.Valor = valorTotal;
-                ListaValor.Add(dados);
-            }
-            
-            var query = ListaValor.OrderBy(x=>x.AnoMes) as IQueryable<Conta>;
-            
-            return await query.FirstOrDefaultAsync();
+            return await query.ToArrayAsync();
         }
     }
 }

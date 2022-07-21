@@ -24,8 +24,14 @@ namespace ControleCustos.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DataVencimento")
+                        .HasColumnType("DATE");
+
                     b.Property<string>("DataPagamento")
                         .HasColumnType("DATE");
+
+                    b.Property<string>("DiasAtraso")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("AnoMes")
                         .HasColumnType("INTEGER");

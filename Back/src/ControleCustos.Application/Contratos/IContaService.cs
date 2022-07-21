@@ -13,6 +13,7 @@ namespace ControleCustos.Application.Contratos
 
         Task<PageList<ContaDto>> GetAllContasAsync(PageParams pageParams);
         Task<ContaDto> GetContaByIdAsync(int contaId);
-        Task<ContaDto> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim);
+        Task<ContaDto[]> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim);
+        Task<ContaDto[]> GetDadosDashBoardFornecedorById(int fornecedorID, DateTime dataInicio, DateTime dataFim);
     }
 }

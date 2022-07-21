@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using ControleCustos.Domain;
@@ -17,12 +18,7 @@ namespace ControleCustos.Persistence.Repositorio
             _context = context;
         }
 
-        public Task<PageList<Fornecedor>> GetAllFornecedoresAsync(PageParams pageParams)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public async Task<PageList<Fornecedor>> GetAllFornecedorsAsync(PageParams pageParams)
+        public async Task<PageList<Fornecedor>> GetAllFornecedoresAsync(PageParams pageParams)
         {
            IQueryable<Fornecedor> query = _context.Fornecedor;
 
@@ -52,6 +48,7 @@ namespace ControleCustos.Persistence.Repositorio
 
             return await query.FirstOrDefaultAsync();
         }
-     
+
+           
     }
 }

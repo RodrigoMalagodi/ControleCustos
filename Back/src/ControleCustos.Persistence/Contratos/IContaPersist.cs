@@ -10,6 +10,7 @@ namespace ControleCustos.Persistence.Contratos
     {
         Task<PageList<Conta>> GetAllContasAsync(PageParams pageParams);
         Task<Conta> GetContaByIdAsync(int contaId);
-        Task<Conta> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim);
+        Task<Conta[]> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim);
+        Task<Conta[]> GetDadosDashBoardFornecedorById(int fornecedorId, DateTime dataInicio, DateTime dataFim);
     }
 }

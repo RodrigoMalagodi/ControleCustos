@@ -18,12 +18,21 @@ namespace ControleCustos.Persistence.Migrations
 
             modelBuilder.Entity("ControleCustos.Domain.Conta", b =>
                 {
-                    b.Property<int>("ContaId")
+                   b.Property<int>("ContaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("DataVencimento")
+                        .HasColumnType("DATE");
+
                     b.Property<string>("DataPagamento")
                         .HasColumnType("DATE");
+
+                    b.Property<string>("DiasAtraso")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AnoMes")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("FornecedorId")
                         .HasColumnType("INTEGER");

@@ -1,7 +1,4 @@
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ControleCustos.Domain;
 using ControleCustos.Persistence.Contratos;
 using ControleCustos.Persistence.Contexto;
 

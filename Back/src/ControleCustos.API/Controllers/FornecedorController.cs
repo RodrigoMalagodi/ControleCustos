@@ -88,7 +88,7 @@ namespace ControleCustos.API.Controllers
                 int userIdToken = User.GetUserId();
                 if (userIdToken >= 1)
                 {
-                    model.FornecedorId = userIdToken;
+                    model.UserId = userIdToken;
                     var Fornecedor = await _fornecedorService.AddFornecedor(userIdToken, model);
                     if (Fornecedor == null)
                     {

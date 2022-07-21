@@ -88,6 +88,14 @@ namespace ControleCustos.API.Controllers
                 int userIdToken = User.GetUserId();
                 if (userIdToken >= 1)
                 {
+                    string anoMes = (model.DataVencimento.Year.ToString("0000") + model.DataVencimento.Month.ToString("00"));
+                    model.AnoMes = int.Parse(anoMes);
+
+                    DateTime vencimento = model.DataVencimento;
+                    DateTime pagamento = model.DataPagamento;
+                    int diasAtraso = (int)pagamento.Subtract(vencimento).TotalDays;
+                    model.DiasAtraso = diasAtraso;
+
                     var Contas = await _contaService.AddConta(userIdToken, model);
                     if (Contas == null)
                     {
@@ -131,32 +139,5 @@ namespace ControleCustos.API.Controllers
                 );
             }
         }
-
-        [HttpGet("dataInicio/{dataInicio}/dataFim/{dataFim}")]
-        public async Task<IActionResult> GetDadosDashBoard(DateTime dataInicio, DateTime dataFim)
-        {
-            try
-            {
-                int userIdToken = User.GetUserId();
-                if (userIdToken >= 1)
-                {
-                    var Contas = await _contaService.GetDadosDashBoardAsync(dataInicio, dataFim);
-                    if (Contas == null)
-                    {
-                        return NoContent();
-                    }
-                    return Ok(Contas);
-                }
-                return BadRequest("Erro ao tentar recuperar Contas.");
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar recuperar Contas. Erro: {ex.Message}"
-                );
-            }
-        }
-
     }
 }

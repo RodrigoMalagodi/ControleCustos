@@ -184,6 +184,8 @@ namespace ControleCustos.Persistence.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Valor = table.Column<decimal>(type: "TEXT", nullable: false),
                     DataPagamento = table.Column<string>(type: "TEXT", nullable: true),
+                    DataVencimento = table.Column<string>(type: "TEXT", nullable: true),
+                    DiasAtraso = table.Column<string>(type: "INTEGER", nullable: true),
                     AnoMes = table.Column<string>(type: "INTEGER", nullable: true),
                     Descricao = table.Column<string>(type: "TEXT", nullable: true),
                     Juros = table.Column<decimal>(type: "TEXT", nullable: false),

@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 
 namespace ControleCustos.Application.Dtos
 {
@@ -8,7 +7,9 @@ namespace ControleCustos.Application.Dtos
     {
         public int ContaId { get; set; }
         public decimal Valor { get; set; }
+        public DateTime DataVencimento { get; set; }
         public DateTime DataPagamento { get; set; }
+        public int DiasAtraso { get; set; }
         public int AnoMes { get; set; }
         public string TipoCusto { get; set; }
         public string Descricao { get; set; }
@@ -17,5 +18,7 @@ namespace ControleCustos.Application.Dtos
         public int FornecedorId { get; set; }
         public UserDto UserDto { get; set; }
         public FornecedorDto FornecedorDto { get; set; }
+
+        
     }
 }
