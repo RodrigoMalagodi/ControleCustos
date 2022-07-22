@@ -44,35 +44,6 @@ namespace ControleCustos.Persistence.Repositorio
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Conta[]> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim)
-        {
-            IQueryable<Conta> query =  _context.Conta
-                                                .AsNoTracking()
-                                                .Where 
-                                                (x => 
-                                                    x.DataPagamento >= dataInicio && 
-                                                    x.DataPagamento <= dataFim
-                                                )
-                                                .OrderBy(x =>x.AnoMes);
-
-            return await query.ToArrayAsync();
-        }
-
-        public async Task<Conta[]> GetDadosDashBoardFornecedorById(int fornecedorId, DateTime dataInicio, DateTime dataFim)
-        {
-            IQueryable<Conta> query =  _context.Conta
-                                                .AsNoTracking()
-                                                .Where 
-                                                (x => 
-                                                    x.FornecedorId == fornecedorId &&
-                                                    (
-                                                        x.DataPagamento >= dataInicio && 
-                                                        x.DataPagamento <= dataFim
-                                                    )
-                                                )
-                                                .OrderBy(x =>x.AnoMes);
-
-            return await query.ToArrayAsync();
-        }
+        
     }
 }

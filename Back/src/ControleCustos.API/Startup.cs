@@ -85,6 +85,7 @@ namespace ControleCustos.API
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IContaService, ContaService>();
             services.AddScoped<IFornecedorService, FornecedorService>();
+            services.AddScoped<IDashBoardService, DashBoardService>();
             #endregion
 
             #region Persists
@@ -92,6 +93,7 @@ namespace ControleCustos.API
             services.AddScoped<IUserPersist, UserPersist>();
             services.AddScoped<IContaPersist, ContaPersist>();
             services.AddScoped<IFornecedorPersist, FornecedorPersist>();
+            services.AddScoped<IDashboardPersist, DashboardPersist>();
             #endregion
 
             services.AddCors();

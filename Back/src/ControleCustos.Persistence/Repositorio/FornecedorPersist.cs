@@ -26,8 +26,7 @@ namespace ControleCustos.Persistence.Repositorio
                 .AsNoTracking()
                 .Where(
                     e =>
-                        (e.Nome.ToLower().Contains(pageParams.Term.ToLower()))|| 
-                        (e.TipoFornecimento.ToLower().Contains(pageParams.Term.ToLower())) 
+                        (e.Nome.ToLower().Contains(pageParams.Term.ToLower()))
                 )
                 .OrderBy(e => e.FornecedorId);
 
