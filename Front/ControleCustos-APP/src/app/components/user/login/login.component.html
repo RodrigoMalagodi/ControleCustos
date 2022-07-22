@@ -1,1 +1,48 @@
-<p>login works!</p>
+<div class="mx-auto background-image shadow-lg mb-1 bg-body rounded p-1 my-3">
+  <div class="d-flex float-md-start vh-100">
+    <div class="mx-auto text-center bg-white rounded p-5 my-5">
+      <form class="form-signin" #loginForm="ngForm" (ngSubmit)="login()">
+        <!-- <p>Form: {{frmLogin.value | json}}</p> -->
+        <!-- <p>Form: {{frmLogin.status}}</p> -->
+
+        <i class="fa fa-users mb-2"></i>
+        <h1 class="h3 mb-3 font-weight-normal">Acesso ao Sistema</h1>
+
+        <label for="nomeUsuario" class="sr-only">Usuário</label>
+        <input
+          type="email"
+          name="username"
+          id="username"
+          class="form-control mb-1"
+          [(ngModel)]="model.userName"
+          placeholder="Usuário"
+          autocomplete="off"
+        />
+        <label for="senha" class="sr-only">Password</label>
+        <input
+          type="password"
+          class="form-control mb-1"
+          name="password"
+          id="password"
+          [(ngModel)]="model.password"
+          placeholder="Senha"
+          autocomplete="off"
+        />
+        <button
+          class="btn btn-lg btn-primary btn-block"
+          type="submit"
+          [disabled]="!loginForm.valid"
+        >
+          Entrar
+        </button>
+        <p class="mt-4 mb-2 text-black">Não tem login? Cadastre-se abaixo</p>
+        <a
+          class="btn btn-lg btn-link btn-block"
+          routerLink="/user/registration"
+          style="text-decoration: none; cursor: pointer"
+          >Quero me cadastrar</a
+        >
+      </form>
+    </div>
+  </div>
+</div>
