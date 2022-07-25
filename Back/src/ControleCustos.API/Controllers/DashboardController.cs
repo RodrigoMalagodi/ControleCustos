@@ -25,7 +25,7 @@ namespace ControleCustos.API.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpGet("dataInicio/{dataInicio}/dataFim/{dataFim}")]
+        [HttpGet("periodo/{dataInicio}/{dataFim}")]
         public async Task<IActionResult> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim)
         {
             try
@@ -52,7 +52,7 @@ namespace ControleCustos.API.Controllers
 
         }
 
-        [HttpGet("fornecedorId/{fornecedorId}/dataInicio/{dataInicio}/dataFim/{dataFim}")]
+        [HttpGet("fornecedorId/{fornecedorId}/periodo/{dataInicio}/{dataFim}")]
         public async Task<IActionResult> GetDadosDashBoardFornecedorByIdAsync(int fornecedorId, DateTime dataInicio, DateTime dataFim)
         {
             try
@@ -79,7 +79,7 @@ namespace ControleCustos.API.Controllers
 
         }
 
-        [HttpGet("tipoFornecimento/{tipoFornecimento}/dataInicio/{dataInicio}/dataFim/{dataFim}")]
+        [HttpGet("tipoFornecimento/{tipoFornecimento}/periodo/{dataInicio}/{dataFim}")]
         public async Task<IActionResult> GetDadosDashBoardTipoFornecimentoAsync(int tipoFornecimento, DateTime dataInicio, DateTime dataFim)
         {
             try

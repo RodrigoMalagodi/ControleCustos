@@ -92,14 +92,39 @@ namespace ControleCustos.Application.Contextos
            try
             {
                 var Conta = await _dashboardPersist.GetDadosDashBoardTipoFornecimentoAsync(tipoCusto, dataInicio, dataFim);
-                if (Conta == null)
+                 if (Conta == null)
                 {
                     return null;
                 }
 
                 var resultado = _mapper.Map<ContaDto[]>(Conta);
 
-                return resultado;
+                List<int> ListaAnoMes = new List<int>();
+                var ListaValor = new List<ContaDto>();
+                decimal valorTotal = 0;
+
+                foreach (var item in resultado.Select(x => new { x.AnoMes }).GroupBy(x => x.AnoMes))
+                {
+                    ListaAnoMes.Add(item.Key);
+                }
+
+                foreach (int anoMes in ListaAnoMes)
+                {
+                    ContaDto dados = new ContaDto();
+                    foreach (var b in resultado.Where(x => x.AnoMes == anoMes).Select(x => new { Valor = x.Valor }))
+                    {
+                        valorTotal += b.Valor;
+                    }
+
+                    dados.AnoMes = anoMes;
+                    dados.Valor = valorTotal;
+                    ListaValor.Add(dados);
+                    valorTotal = 0;
+                }
+
+                var query = ListaValor.OrderBy(x => x.AnoMes).AsQueryable<ContaDto>();
+
+                return query.ToArray();
             }
             catch (Exception ex)
             {
