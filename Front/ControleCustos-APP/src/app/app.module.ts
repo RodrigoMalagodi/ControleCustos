@@ -34,7 +34,6 @@ import { HomeComponent } from './components/home/home.component';
 import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/user/login/login.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
-import { PerfilComponent } from './components/user/perfil/perfil.component';
 import { FornecedoresComponent } from './components/fornecedores/fornecedores.component';
 import { FornecedoresDetalhesComponent } from './components/fornecedores/fornecedores-detalhes/fornecedores-detalhes.component';
 import { FornecedoresListaComponent } from './components/fornecedores/fornecedores-lista/fornecedores-lista.component';
@@ -56,7 +55,6 @@ defineLocale('pt-br', ptBrLocale);
     UserComponent,
     LoginComponent,
     RegistrationComponent,
-    PerfilComponent,
     FornecedoresComponent,
     FornecedoresDetalhesComponent,
     FornecedoresListaComponent,

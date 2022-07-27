@@ -1,3 +1,172 @@
 <div class="container">
-  <p>registration works!</p>
+  <div class="row mt-4">
+    <div class="col-md-6 d-none d-md-block" style="height: 450px">
+      <div class="text-center col-md-12 my-auto side-header">
+        <h1>Cadastro de Usuário</h1>
+        <img
+          src="../../../../assets/img/registerImage.png"
+          class="my-4"
+          alt=""
+          width="400px"
+        />
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <form class="" [formGroup]="form" (ngSubmit)="registrar()">
+        <div class="pb-2 d-block d-md-none">
+          <h3 class="border-bottom">Cadastro de Usuário</h3>
+        </div>
+        <div class="row g-3">
+          <div class="form-group col-6">
+            <label>Primeiro Nome</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="cssValidator(f.nome)"
+              formControlName="nome"
+              placeholder="Insira o Nome"
+            />
+            <div
+              *ngIf="f.nome.errors?.['required'] && (f.nome.dirty || f.nome.touched)"
+              class="invalid-feedback"
+            >
+              <strong>Por favor, informe o Primero Nome.</strong>
+            </div>
+            <div
+              *ngIf="f.nome.errors?.['minlength'] && (f.nome.dirty || f.nome.touched)"
+              class="invalid-feedback"
+            >
+              <strong>O primeiro nome deve ter no mínimo 4 caracteres.</strong>
+            </div>
+            <div
+              *ngIf="f.nome.errors?.['maxlength'] && (f.nome.dirty || f.nome.touched)"
+              class="invalid-feedback"
+            >
+              <strong>O primeiro nome deve ter no máximo 25 caracteres.</strong>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="">Usuario:</label>
+            <input
+              class="form-control"
+              [ngClass]="cssValidator(f.userName)"
+              formControlName="userName"
+              type="text"
+              placeholder="Insira o nome de Usuário"
+            />
+            <div
+              *ngIf="f.userName.errors?.['required'] && (f.userName.dirty || f.userName.touched)"
+              class="invalid-feedback"
+            >
+              <strong>Por favor, informe o nome de usuário</strong>
+            </div>
+            <div
+              *ngIf="f.userName.errors?.['minlength'] && (f.userName.dirty || f.userName.touched)"
+              class="invalid-feedback"
+            >
+              <strong
+                >O nome de usuário deve ter no mínimo 10 caracteres.</strong
+              >
+            </div>
+            <div
+              *ngIf="f.userName.errors?.['maxlength'] && (f.userName.dirty || f.userName.touched)"
+              class="invalid-feedback"
+            >
+              O útimo nome deve ter no máximo 50 caracteres.
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="form-group col-6">
+              <label for="">Senha:</label>
+              <input
+                class="form-control"
+                [ngClass]="cssValidator(f.password)"
+                formControlName="password"
+                type="password"
+                placeholder="Digite uma Senha"
+              />
+              <div
+                *ngIf="f.password.errors?.['required'] && (f.password.dirty || f.password.touched)"
+                class="invalid-feedback"
+              >
+                <strong>Por favor, informe a senha.</strong>
+              </div>
+              <div
+                *ngIf="f.password.errors?.['minlength'] && (f.password.dirty || f.password.touched)"
+                class="invalid-feedback"
+              >
+                <strong>Senha deve conter no mínimo 6 caracteres.</strong>
+              </div>
+            </div>
+
+            <div class="form-group col-6">
+              <label for="">Confirmar Senha:</label>
+              <input
+                class="form-control"
+                [ngClass]="cssValidator(f.confirmePassword)"
+                formControlName="confirmePassword"
+                type="password"
+                placeholder="Confirme a Senha"
+              />
+              <div
+                *ngIf="f.confirmePassword.errors?.['required'] && (f.confirmePassword.dirty || f.confirmePassword.touched)"
+                class="invalid-feedback"
+              >
+                <strong>Por favor, confirme a senha.</strong>
+              </div>
+              <div
+                *ngIf="f.confirmePassword.errors?.['minlength'] && (f.confirmePassword.dirty || f.confirmePassword.touched)"
+                class="invalid-feedback"
+              >
+                <strong>Senha deve conter no mínimo 6 caracteres.</strong>
+              </div>
+              <div
+                *ngIf="f.confirmePassword.errors?.['mustMatch'] && (f.confirmePassword.dirty || f.confirmePassword.touched)"
+                class="invalid-feedback"
+              >
+                <strong>Senha inválida.</strong>
+              </div>
+            </div>
+          </div>
+          <div class="row g-3 p-1 mb-3">
+            <div class="custom-control custom-checkbox">
+              <input
+                type="checkbox"
+                class="custom-control-input me-1"
+                id="customCheck1"
+              />
+              <label for="customCheck1" class="custom-control-label"
+                >Eu concordo com os <a href="#">Termos de Uso</a>.</label
+              >
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="form-group col-12">
+              <button
+                class="btn btn-lg btn-success btn-block px-5"
+                type="submit"
+                style="width: 100%"
+                [disabled]="!form.valid"
+              >
+                Registrar
+              </button>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="form-group col-md-12">
+              <a
+                class="btn btn-link btn-block"
+                routerLink="/user/login"
+                style="text-decoration: none"
+              >
+                Já sou Cadastrado
+              </a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
