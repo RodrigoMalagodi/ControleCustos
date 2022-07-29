@@ -6,7 +6,6 @@ using ControleCustos.Domain;
 using ControleCustos.Persistence.Contexto;
 using ControleCustos.Persistence.Contratos;
 using Microsoft.EntityFrameworkCore;
-using ProEventos.Domain.Enum;
 
 namespace ControleCustos.Persistence.Repositorio
 {
@@ -51,7 +50,7 @@ namespace ControleCustos.Persistence.Repositorio
             return await query.ToArrayAsync();
         }
 
-        public async Task<List<Conta>> GetDadosDashBoardTipoFornecimentoAsync(int tipoFornecimento, DateTime dataInicio, DateTime dataFim)
+        public async Task<List<Conta>> GetDadosDashBoardTipoFornecimentoAsync(string tipoFornecimento, DateTime dataInicio, DateTime dataFim)
         {
             var query = await (
                                 from a in _context.Conta

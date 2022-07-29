@@ -26,6 +26,7 @@
               [ngClass]="cssValidator(f.nome)"
               formControlName="nome"
               placeholder="Insira o Nome"
+              autofocus
             />
             <div
               *ngIf="f.nome.errors?.['required'] && (f.nome.dirty || f.nome.touched)"

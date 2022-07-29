@@ -8,6 +8,6 @@ namespace ControleCustos.Application.Contratos
     {
         Task<ContaDto[]> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim);
         Task<ContaDto[]> GetDadosDashBoardFornecedorByIdAsync(int fornecedorId, DateTime dataInicio, DateTime dataFim);
-        Task<ContaDto[]> GetDadosDashBoardTipoFornecimentoAsync(int tipoCusto, DateTime dataInicio, DateTime dataFim);
+        Task<ContaDto[]> GetDadosDashBoardTipoFornecimentoAsync(string tipoCusto, DateTime dataInicio, DateTime dataFim);
     }
 }

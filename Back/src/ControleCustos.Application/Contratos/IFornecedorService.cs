@@ -8,7 +8,8 @@ namespace ControleCustos.Application.Contratos
     {
         Task<FornecedorDto> AddFornecedor(int userId, FornecedorDto model);
         Task<FornecedorDto> UpdateFornecedor(int fornecedorId, FornecedorDto model);
-
+        Task<FornecedorDto> UpdateSituacaoFornecedor(int fornecedorId, bool situacao);
+        
         Task<PageList<FornecedorDto>> GetAllFornecedoresAsync(PageParams pageParams);
         Task<FornecedorDto> GetFornecedorByIdAsync(int fornecedorId);
         

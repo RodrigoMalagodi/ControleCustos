@@ -80,7 +80,7 @@ namespace ControleCustos.API.Controllers
         }
 
         [HttpGet("tipoFornecimento/{tipoFornecimento}/periodo/{dataInicio}/{dataFim}")]
-        public async Task<IActionResult> GetDadosDashBoardTipoFornecimentoAsync(int tipoFornecimento, DateTime dataInicio, DateTime dataFim)
+        public async Task<IActionResult> GetDadosDashBoardTipoFornecimentoAsync(string tipoFornecimento, DateTime dataInicio, DateTime dataFim)
         {
             try
             {

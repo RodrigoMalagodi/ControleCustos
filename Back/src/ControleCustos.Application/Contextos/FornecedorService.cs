@@ -12,28 +12,36 @@ namespace ControleCustos.Application.Contextos
     public class FornecedorService : IFornecedorService
     {
         private readonly IGeralPersist _geralPersist;
+
         private readonly IFornecedorPersist _fornecedorPersist;
+
         private readonly IMapper _mapper;
 
-        public FornecedorService(IGeralPersist geralPersist,
+        public FornecedorService(
+            IGeralPersist geralPersist,
             IFornecedorPersist fornecedorPersist,
-            IMapper mapper)
+            IMapper mapper
+        )
         {
             _mapper = mapper;
             _fornecedorPersist = fornecedorPersist;
             _geralPersist = geralPersist;
         }
 
-        public async Task<FornecedorDto> AddFornecedor(int userId, FornecedorDto model)
+        public async Task<FornecedorDto>
+        AddFornecedor(int userId, FornecedorDto model)
         {
             try
             {
                 var fornecedor = _mapper.Map<Fornecedor>(model);
                 fornecedor.UserId = userId;
-                _geralPersist.Add<Fornecedor>(fornecedor);
+                fornecedor.Ativo = true;
+                _geralPersist.Add<Fornecedor> (fornecedor);
                 if (await _geralPersist.SaveChangesAsync())
                 {
-                    var fornecedorRetorno = await _fornecedorPersist.GetFornecedorByIdAsync(fornecedor.FornecedorId);
+                    var fornecedorRetorno =
+                        await _fornecedorPersist
+                            .GetFornecedorByIdAsync(fornecedor.FornecedorId);
                     return _mapper.Map<FornecedorDto>(fornecedorRetorno);
                 }
 
@@ -45,16 +53,20 @@ namespace ControleCustos.Application.Contextos
             }
         }
 
-        public async Task<PageList<FornecedorDto>> GetAllFornecedoresAsync(PageParams pageParams)
+        public async Task<PageList<FornecedorDto>>
+        GetAllFornecedoresAsync(PageParams pageParams)
         {
             try
             {
-                var Fornecedors = await _fornecedorPersist.GetAllFornecedoresAsync(pageParams);
+                var Fornecedors =
+                    await _fornecedorPersist
+                        .GetAllFornecedoresAsync(pageParams);
                 if (Fornecedors == null)
                 {
                     return null;
                 }
-                var resultado = _mapper.Map<PageList<FornecedorDto>>(Fornecedors);
+                var resultado =
+                    _mapper.Map<PageList<FornecedorDto>>(Fornecedors);
 
                 resultado.CurrentPage = Fornecedors.CurrentPage;
                 resultado.TotalPages = Fornecedors.TotalPages;
@@ -69,11 +81,14 @@ namespace ControleCustos.Application.Contextos
             }
         }
 
-        public async Task<FornecedorDto> GetFornecedorByIdAsync(int fornecedorId)
+        public async Task<FornecedorDto>
+        GetFornecedorByIdAsync(int fornecedorId)
         {
             try
             {
-                var Fornecedor = await _fornecedorPersist.GetFornecedorByIdAsync(fornecedorId);
+                var Fornecedor =
+                    await _fornecedorPersist
+                        .GetFornecedorByIdAsync(fornecedorId);
                 if (Fornecedor == null)
                 {
                     return null;
@@ -89,26 +104,65 @@ namespace ControleCustos.Application.Contextos
             }
         }
 
-        public async Task<FornecedorDto> UpdateFornecedor(int fornecedorId, FornecedorDto model)
+        public async Task<FornecedorDto>
+        UpdateFornecedor(int fornecedorId, FornecedorDto model)
         {
             try
             {
-                var Fornecedor = await _fornecedorPersist.GetFornecedorByIdAsync(fornecedorId);
+                var Fornecedor =
+                    await _fornecedorPersist
+                        .GetFornecedorByIdAsync(fornecedorId);
                 if (Fornecedor == null)
                 {
                     return null;
                 }
 
-                _mapper.Map(model, Fornecedor);
+                _mapper.Map (model, Fornecedor);
                 model.FornecedorId = Fornecedor.FornecedorId;
 
-                _geralPersist.Update<Fornecedor>(Fornecedor);
+                _geralPersist.Update<Fornecedor> (Fornecedor);
 
                 if (await _geralPersist.SaveChangesAsync())
                 {
-                    var fornecedorRetorno = await _fornecedorPersist.GetFornecedorByIdAsync(
-                        Fornecedor.FornecedorId
-                    );
+                    var fornecedorRetorno =
+                        await _fornecedorPersist
+                            .GetFornecedorByIdAsync(Fornecedor.FornecedorId);
+                    return _mapper.Map<FornecedorDto>(fornecedorRetorno);
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<FornecedorDto>
+        UpdateSituacaoFornecedor(int fornecedorId, bool situacao)
+        {
+            try
+            {
+                var Fornecedor =
+                    await _fornecedorPersist
+                        .GetFornecedorByIdAsync(fornecedorId);
+                if (Fornecedor == null)
+                {
+                    return null;
+                }
+
+                var model = new FornecedorDto();
+
+                Fornecedor.Ativo = situacao;
+                _mapper.Map(Fornecedor, model);
+
+                _geralPersist.Update<Fornecedor> (Fornecedor);
+
+                if (await _geralPersist.SaveChangesAsync())
+                {
+                    var fornecedorRetorno =
+                        await _fornecedorPersist
+                            .GetFornecedorByIdAsync(Fornecedor.FornecedorId);
                     return _mapper.Map<FornecedorDto>(fornecedorRetorno);
                 }
 

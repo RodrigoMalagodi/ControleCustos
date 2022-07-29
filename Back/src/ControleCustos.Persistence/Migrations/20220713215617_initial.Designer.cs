@@ -72,6 +72,9 @@ namespace ControleCustos.Persistence.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("BIT");
+
                     b.HasKey("FornecedorId");
 
                     b.HasIndex("UserId");

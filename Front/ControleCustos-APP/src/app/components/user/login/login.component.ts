@@ -34,18 +34,18 @@ export class LoginComponent implements OnInit {
       .login(this.model)
       .subscribe(
         () => {
-          this.router.navigateByUrl('/dashboard');
+          this.router.navigateByUrl('/home');
+          this.toastr.success('Usuário logado com sucesso.', 'Sucesso!');
         },
         (error: any) => {
-          if(error.status === 401){
-            this.toastr.error(error.error, 'Erro');
-          }
-          else{
-            this.toastr.error('Usuário ou Senha inválido.', 'Erro');
+          if (error.status === 401) {
+            this.toastr.error(error.error, 'Erro!');
+          } else {
+            this.toastr.error('Usuário ou Senha inválido.', 'Erro!');
             console.log(error);
           }
           this.spinner.hide();
-        },
+        }
       )
       .add(() => this.spinner.hide());
   }
@@ -55,7 +55,8 @@ export class LoginComponent implements OnInit {
     setInterval(() => {
       this.spinner.hide();
     }, 3000);
+
+    var user = localStorage.getItem('user');
+    if (!user) localStorage.removeItem('user');
   }
-
-
 }

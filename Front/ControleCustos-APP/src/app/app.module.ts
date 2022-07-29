@@ -41,6 +41,7 @@ import { NavComponent } from './shared/nav/nav.component';
 import { TituloComponent } from './shared/titulo/titulo.component';
 import { AccountService } from './services/account.service';
 import { PerfilComponent } from './components/user/perfil/perfil.component';
+import { PerfilDetalheComponent } from './components/user/perfil/perfil-detalhe/perfil-detalhe.component';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -63,6 +64,7 @@ defineLocale('pt-br', ptBrLocale);
     NavComponent,
     TituloComponent,
     PerfilComponent,
+    PerfilDetalheComponent,
   ],
   imports: [
     BrowserModule,

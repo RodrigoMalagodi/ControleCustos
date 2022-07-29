@@ -1,1 +1,105 @@
-<p>fornecedores-lista works!</p>
+<!-- <app-titulo
+  [tituloPagina]="'Fornecedor'"
+  [subtituloPagina]="'Lista de Fornecedor'"
+  [iconClass]="'fa-solid fa-calendar-days'"
+  [botaoListar]="true"
+></app-titulo> -->
+<div class="card rounded shadow-sm p-3">
+  <div class="d-flex">
+    <div class="flex-fill pr-3">
+      <div class="row row-cols-lg g-3 align-items-center me-2">
+        <!-- <label for="" class="mr-2">Filtro:</label> -->
+        <div class="col-12">
+          <div class="input-group">
+            <span class="input-group-text bg-light"
+              ><i class="fa-solid fa-magnifying-glass"></i
+            ></span>
+            <input
+              type="text"
+              class="form-control"
+              (input)="filtrarFornecedor($event.target);"
+              placeholder="Filtrar por Tema ou Local"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <a class="d-flex btn btn-outline-primary" routerLink="/fornecedores/detalhe">
+        <i class="fa fa-plus-square my-1"></i>
+        <b class="ms-1 d-none d-sm-block">Novo</b>
+      </a>
+    </div>
+  </div>
+  <br />
+  <!-- <h3>Filtro: {{filtroLista}}</h3> -->
+  <table class="table table-striped table-hover">
+    <!-- {{fornecedores | json}} -->
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Nome</th>
+        <th>Tipo Fornecimento</th>
+        <th>Ativar/Desativar</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="fornecedores && fornecedores.length > 0">
+      <tr *ngFor="let fornecedor of fornecedores" (click)="detalheFornecedor(fornecedor.fornecedorId);"  style="cursor: pointer;">
+        <td>{{ fornecedor.fornecedorId }}</td>
+        <td>{{ fornecedor.nome }}</td>
+        <td>{{ fornecedor.tipoFornecimento }}</td>
+        <td>
+          <button
+            ngClass="{{classButtonFornecedor(fornecedor.ativo)}}"
+            tooltip="Atualizar Status"
+            (click)="openModal($event, template, fornecedor.fornecedorId, fornecedor.nome, fornecedor.ativo)"
+            style="width: 110px;"
+          >
+            <i ngClass="{{classIconButtonFornecedor(fornecedor.ativo)}}"></i>
+            {{textoButton(fornecedor.ativo)}}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="!fornecedores.length">
+      <tr>
+        <td colspan="8" class="text-center">
+          <h4>Nenhum fornecedor encontrado</h4>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+<div class="d-flex justify-content-center mt-2">
+  <pagination
+  [boundaryLinks]="true"
+
+  [totalItems]="pagination.totalItems"
+  [(ngModel)]="pagination.currentPage"
+  (pageChanged)="pageChanged($event)"
+  pageBtnClass="btn"
+  [itemsPerPage]="pagination.itemsPerPage"
+
+  previousText="&lsaquo;"
+  nextText="&rsaquo;"
+  firstText="&laquo;"
+  lastText="&raquo;">
+
+</pagination>
+</div>
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Gostaria realmente de Atualizar o status do Fornecedor {{this.nomeFornecedor}}?</p>
+    <button
+      type="button"
+      class="btn btn-outline-success me-2"
+      (click)="confirmaAtualizacaoFornecedor();"
+    >
+      <i class="fa-solid fa-square-check me-2"></i>Sim
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="decline()">
+      <i class="fa-solid fa-rectangle-xmark me-2"></i>Não
+    </button>
+  </div>
+</ng-template>

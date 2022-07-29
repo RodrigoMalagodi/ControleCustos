@@ -142,7 +142,7 @@ namespace ControleCustos.API
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(
-                    c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProEventos.API v1")
+                    c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ControleCustos.API v1")
                 );
             }
             else
@@ -155,7 +155,12 @@ namespace ControleCustos.API
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            app.UseHttpsRedirection(); 
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
 
             app.UseEndpoints(endpoints =>
             {

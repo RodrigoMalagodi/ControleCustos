@@ -133,5 +133,31 @@ namespace ControleCustos.API.Controllers
                 );
             }
         }
+
+        [HttpPut("id/{id}/situacao/{situacao}")]
+        public async Task<IActionResult> Put(int id, bool situacao)
+        {
+            try
+            {
+                int userIdToken = User.GetUserId();
+                if (userIdToken >= 1)
+                {
+                    var Fornecedor = await _fornecedorService.UpdateSituacaoFornecedor(id, situacao);
+                    if (Fornecedor == null)
+                    {
+                        return BadRequest("Erro ao tentar atualizar Conta.");
+                    }
+                    return Ok(Fornecedor);
+                }
+                return BadRequest("Erro ao tentar atualizar Conta.");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar atualizar Fornecedor. Erro: {ex.Message}"
+                );
+            }
+        }
     }
 }

@@ -163,7 +163,8 @@ namespace ControleCustos.Persistence.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Nome = table.Column<string>(type: "TEXT", nullable: true),
                     TipoFornecimento = table.Column<string>(type: "TEXT", nullable: true),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Ativo = table.Column<bool>(type: "BIT", nullable: false)
                 },
                 constraints: table =>
                 {

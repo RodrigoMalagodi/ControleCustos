@@ -1,1 +1,8 @@
-<p>fornecedores works!</p>
+<app-titulo
+  [tituloPagina]="'Fornecedores'"
+  [subtituloPagina]="'Lista de Fornecedores'"
+  [iconClass]="'fa-solid fa-calendar-days'"
+  [botaoListar]="true"
+  [eventoListar]="'carregarFornecedores()'"
+></app-titulo>
+<router-outlet></router-outlet>

@@ -4,6 +4,8 @@ import { ContasDetalheComponent } from './components/contas/contas-detalhe/conta
 import { ContasListaComponent } from './components/contas/contas-lista/contas-lista.component';
 import { ContasComponent } from './components/contas/contas.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FornecedoresDetalhesComponent } from './components/fornecedores/fornecedores-detalhes/fornecedores-detalhes.component';
+import { FornecedoresListaComponent } from './components/fornecedores/fornecedores-lista/fornecedores-lista.component';
 import { FornecedoresComponent } from './components/fornecedores/fornecedores.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/user/login/login.component';
@@ -40,7 +42,16 @@ const routes: Routes = [
           { path: 'lista', component: ContasListaComponent },
         ],
       },
-      { path: 'fornecedores', component: FornecedoresComponent },
+      { path: 'fornecedores', redirectTo: 'fornecedores/lista' },
+      {
+        path: 'fornecedores',
+        component: FornecedoresComponent,
+        children: [
+          { path: 'detalhe/:id', component: FornecedoresDetalhesComponent },
+          { path: 'detalhe', component: FornecedoresDetalhesComponent },
+          { path: 'lista', component: FornecedoresListaComponent },
+        ],
+      },
     ],
   },
   { path: 'home', component: HomeComponent },

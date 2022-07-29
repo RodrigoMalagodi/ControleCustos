@@ -18,36 +18,31 @@ namespace ControleCustos.Persistence.Repositorio
             _context = context;
         }
 
-        public async Task<PageList<Fornecedor>> GetAllFornecedoresAsync(PageParams pageParams)
+        public async Task<PageList<Fornecedor>>
+        GetAllFornecedoresAsync(PageParams pageParams)
         {
-           IQueryable<Fornecedor> query = _context.Fornecedor;
+            IQueryable<Fornecedor> query = _context.Fornecedor;
 
-            query = query
-                .AsNoTracking()
-                .Where(
-                    e =>
-                        (e.Nome.ToLower().Contains(pageParams.Term.ToLower()))
-                )
-                .OrderBy(e => e.FornecedorId);
+            query =
+                query
+                    .AsNoTracking()
+                    .Where(e =>
+                        (e.Nome.ToLower().Contains(pageParams.Term.ToLower())))
+                    .OrderBy(e => e.FornecedorId);
 
-            return await PageList<Fornecedor>.CreateAsync(
-                query,
-                pageParams.PageNumber,
-                pageParams.pageSize
-            );
+            return await PageList<Fornecedor>
+                .CreateAsync(query, pageParams.PageNumber, pageParams.pageSize);
         }
 
         public async Task<Fornecedor> GetFornecedorByIdAsync(int fornecedorId)
         {
             IQueryable<Fornecedor> query = _context.Fornecedor;
 
-            query = query
-                .AsNoTracking()
-                .Where(e => e.FornecedorId == fornecedorId);
+            query =
+                query.AsNoTracking().Where(e => e.FornecedorId == fornecedorId);
 
             return await query.FirstOrDefaultAsync();
         }
 
-           
     }
 }

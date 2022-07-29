@@ -87,7 +87,7 @@ namespace ControleCustos.Application.Contextos
             }
         }
 
-        public async Task<ContaDto[]> GetDadosDashBoardTipoFornecimentoAsync(int tipoCusto, DateTime dataInicio, DateTime dataFim)
+        public async Task<ContaDto[]> GetDadosDashBoardTipoFornecimentoAsync(string tipoCusto, DateTime dataInicio, DateTime dataFim)
         {
            try
             {

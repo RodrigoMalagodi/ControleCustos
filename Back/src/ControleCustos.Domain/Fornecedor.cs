@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using ControleCustos.Domain.Identity;
-using ProEventos.Domain.Enum;
 
 namespace ControleCustos.Domain
 {
@@ -8,8 +7,9 @@ namespace ControleCustos.Domain
     {
         public int FornecedorId { get; set; }
         public string Nome { get; set; }
-        public int TipoFornecimento { get; set; }
+        public string TipoFornecimento { get; set; }
         public int UserId { get; set; }
+        public bool Ativo { get; set; }
 
         public User User { get; set; }
         public IEnumerable<Conta> Contas { get; set; }
