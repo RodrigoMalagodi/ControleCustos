@@ -51,6 +51,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinner.show();
+    setInterval(() => {
+      this.spinner.hide();
+    }, 3000);
   }
 
 

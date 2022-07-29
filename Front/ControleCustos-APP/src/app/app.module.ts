@@ -40,6 +40,7 @@ import { FornecedoresListaComponent } from './components/fornecedores/fornecedor
 import { NavComponent } from './shared/nav/nav.component';
 import { TituloComponent } from './shared/titulo/titulo.component';
 import { AccountService } from './services/account.service';
+import { PerfilComponent } from './components/user/perfil/perfil.component';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -55,11 +56,13 @@ defineLocale('pt-br', ptBrLocale);
     UserComponent,
     LoginComponent,
     RegistrationComponent,
+    PerfilComponent,
     FornecedoresComponent,
     FornecedoresDetalhesComponent,
     FornecedoresListaComponent,
     NavComponent,
     TituloComponent,
+    PerfilComponent,
   ],
   imports: [
     BrowserModule,

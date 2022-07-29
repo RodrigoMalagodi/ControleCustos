@@ -10,6 +10,7 @@ import {
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { timer } from 'rxjs';
 
 import { ValidatorField } from 'src/app/helpers/ValidatorField';
 import { User } from 'src/app/models/identity/User';
@@ -36,7 +37,12 @@ export class RegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.validarRegistro();
+    setInterval(() => {
+      this.spinner.hide();
+    }, 2000);
+
   }
 
   private validarRegistro(): void {
@@ -85,7 +91,7 @@ export class RegistrationComponent implements OnInit {
       .register(this.user)
       .subscribe(
         () => {
-          this.router.navigateByUrl('/dashboard');
+          this.router.navigateByUrl('/home');
         },
         (error: any) => {
           if (error.status === 401) {
