@@ -12,6 +12,8 @@ namespace ControleCustos.Application.Contratos
         Task<bool> DeleteConta(int contaId);
 
         Task<PageList<ContaDto>> GetAllContasAsync(PageParams pageParams);
+        Task<PageList<ContaDto>> GetContaByFornecedorIdAsync(int fornecedorId, PageParams pageParams);
         Task<ContaDto> GetContaByIdAsync(int contaId);
+        
     }
 }

@@ -96,7 +96,17 @@ namespace ControleCustos.API
             services.AddScoped<IDashboardPersist, DashboardPersist>();
             #endregion
 
-            services.AddCors();
+            services.AddCors(
+                options =>
+                {
+                    options.AddPolicy("CorsPolicy", builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .Build()
+                    );
+                }
+            );
             services.AddSwaggerGen(
                 options =>
                 {

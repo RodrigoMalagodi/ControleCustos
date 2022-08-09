@@ -18,8 +18,10 @@ namespace ControleCustos.API.Controllers
         private readonly IAccountService _accountService;
         private readonly ITokenService _tokenService;
         private readonly IFornecedorService _fornecedorService;
-        public FornecedorController(IAccountService accountService, ITokenService tokenService, IFornecedorService fornecedorService)
+        private readonly IContaService _contaService;
+        public FornecedorController(IAccountService accountService, ITokenService tokenService, IFornecedorService fornecedorService, IContaService contaService)
         {
+            _contaService = contaService;
             _fornecedorService = fornecedorService;
             _accountService = accountService;
             _tokenService = tokenService;
@@ -80,6 +82,35 @@ namespace ControleCustos.API.Controllers
             }
         }
 
+        [HttpGet("fornecedorId/{fornecedorId}")]
+        public async Task<IActionResult> GetByFornecedorId(int fornecedorId, [FromQuery] PageParams pageParams)
+        {
+            try
+            {
+                int userIdToken = User.GetUserId();
+                if (userIdToken >= 1)
+                {
+                    var Contas = await _contaService.GetContaByFornecedorIdAsync(fornecedorId, pageParams);
+                    if (Contas == null)
+                    {
+                        return NoContent();
+                    }
+
+                    Response.AddPagination(Contas.CurrentPage, Contas.PageSize, Contas.TotalCount, Contas.TotalPages);
+
+                    return Ok(Contas);
+                }
+                return BadRequest("Erro ao tentar recuperar Fornecedor.");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar Fornecedor. Erro: {ex.Message}"
+                );
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(FornecedorDto model)
         {
@@ -96,7 +127,7 @@ namespace ControleCustos.API.Controllers
                     }
                     return Ok(Fornecedor);
                 }
-                return BadRequest("Erro ao tentar adicionar Conta.");
+                return BadRequest("Erro ao tentar adicionar Fornecedor.");
             }
             catch (Exception ex)
             {
@@ -107,7 +138,6 @@ namespace ControleCustos.API.Controllers
             }
         }
 
-
         [HttpPut("id/{id}")]
         public async Task<IActionResult> Put(int id, FornecedorDto model)
         {
@@ -116,14 +146,16 @@ namespace ControleCustos.API.Controllers
                 int userIdToken = User.GetUserId();
                 if (userIdToken >= 1)
                 {
+                    model.UserId = userIdToken;
+                    model.Ativo = true;
                     var Fornecedor = await _fornecedorService.UpdateFornecedor(id, model);
                     if (Fornecedor == null)
                     {
-                        return BadRequest("Erro ao tentar atualizar Conta.");
+                        return BadRequest("Erro ao tentar atualizar Fornecedor.");
                     }
                     return Ok(Fornecedor);
                 }
-                return BadRequest("Erro ao tentar atualizar Conta.");
+                return BadRequest("Erro ao tentar atualizar Fornecedor.");
             }
             catch (Exception ex)
             {
@@ -145,11 +177,11 @@ namespace ControleCustos.API.Controllers
                     var Fornecedor = await _fornecedorService.UpdateSituacaoFornecedor(id, situacao);
                     if (Fornecedor == null)
                     {
-                        return BadRequest("Erro ao tentar atualizar Conta.");
+                        return BadRequest("Erro ao tentar atualizar Fornecedor.");
                     }
                     return Ok(Fornecedor);
                 }
-                return BadRequest("Erro ao tentar atualizar Conta.");
+                return BadRequest("Erro ao tentar atualizar Fornecedor.");
             }
             catch (Exception ex)
             {

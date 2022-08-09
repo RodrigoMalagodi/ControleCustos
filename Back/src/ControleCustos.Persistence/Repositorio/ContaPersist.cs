@@ -44,6 +44,19 @@ namespace ControleCustos.Persistence.Repositorio
             return await query.FirstOrDefaultAsync();
         }
 
+        public async Task<PageList<Conta>> GetContaByFornecedorIdAsync(int fornecedorId, PageParams pageParams)
+        {
+            IQueryable<Conta> query = _context.Conta
+                                            .AsNoTracking()
+                                            .Where(e => e.FornecedorId == fornecedorId);
+
+            return await PageList<Conta>.CreateAsync(
+                query,
+                pageParams.PageNumber,
+                pageParams.pageSize
+            );
+        }
+
         
     }
 }

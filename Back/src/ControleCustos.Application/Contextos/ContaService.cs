@@ -14,17 +14,22 @@ namespace ControleCustos.Application.Contextos
     public class ContaService : IContaService
     {
         private readonly IGeralPersist _geralPersist;
+
         private readonly IContaPersist _contaPersist;
+
         private readonly IMapper _mapper;
 
-        public ContaService(IGeralPersist geralPersist,
+        public ContaService(
+            IGeralPersist geralPersist,
             IContaPersist contaPersist,
-            IMapper mapper)
+            IMapper mapper
+        )
         {
             _mapper = mapper;
             _contaPersist = contaPersist;
             _geralPersist = geralPersist;
         }
+
         public async Task<ContaDto> AddConta(int userId, ContaDto model)
         {
             try
@@ -32,10 +37,11 @@ namespace ControleCustos.Application.Contextos
                 var conta = _mapper.Map<Conta>(model);
                 conta.UserId = userId;
 
-                _geralPersist.Add<Conta>(conta);
+                _geralPersist.Add<Conta> (conta);
                 if (await _geralPersist.SaveChangesAsync())
                 {
-                    var ContaRetorno = await _contaPersist.GetContaByIdAsync(conta.ContaId);
+                    var ContaRetorno =
+                        await _contaPersist.GetContaByIdAsync(conta.ContaId);
                     return _mapper.Map<ContaDto>(ContaRetorno);
                 }
 
@@ -49,7 +55,7 @@ namespace ControleCustos.Application.Contextos
 
         public async Task<bool> DeleteConta(int contaId)
         {
-           try
+            try
             {
                 var Conta = await _contaPersist.GetContaByIdAsync(contaId);
                 if (Conta == null)
@@ -57,7 +63,7 @@ namespace ControleCustos.Application.Contextos
                     throw new Exception("Conta para delete não foi encontrada.");
                 }
 
-                _geralPersist.Delete<Conta>(Conta);
+                _geralPersist.Delete<Conta> (Conta);
 
                 return await _geralPersist.SaveChangesAsync();
             }
@@ -111,8 +117,6 @@ namespace ControleCustos.Application.Contextos
             }
         }
 
-        
-
         public async Task<ContaDto> UpdateConta(int contaId, ContaDto model)
         {
             try
@@ -123,20 +127,46 @@ namespace ControleCustos.Application.Contextos
                     return null;
                 }
 
-                _mapper.Map(model, conta);
+                _mapper.Map (model, conta);
                 model.ContaId = conta.ContaId;
 
-                _geralPersist.Update<Conta>(conta);
+                _geralPersist.Update<Conta> (conta);
 
                 if (await _geralPersist.SaveChangesAsync())
                 {
-                    var ContaRetorno = await _contaPersist.GetContaByIdAsync(
-                        conta.ContaId
-                    );
+                    var ContaRetorno =
+                        await _contaPersist.GetContaByIdAsync(conta.ContaId);
                     return _mapper.Map<ContaDto>(ContaRetorno);
                 }
 
                 return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<PageList<ContaDto>>GetContaByFornecedorIdAsync(int fornecedorId, PageParams pageParams)
+        {
+            try
+            {
+                var Contas =
+                    await _contaPersist
+                        .GetContaByFornecedorIdAsync(fornecedorId, pageParams);
+                if (Contas == null)
+                {
+                    return null;
+                }
+
+                var resultado = _mapper.Map<PageList<ContaDto>>(Contas);
+
+                resultado.CurrentPage = Contas.CurrentPage;
+                resultado.TotalPages = Contas.TotalPages;
+                resultado.PageSize = Contas.PageSize;
+                resultado.TotalCount = Contas.TotalCount;
+
+                return resultado;
             }
             catch (Exception ex)
             {

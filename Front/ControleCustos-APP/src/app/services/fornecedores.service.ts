@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Contas } from '../models/identity/Contas';
 import { Fornecedor } from '../models/identity/Fornecedor';
 import { PaginatedResult } from '../models/Pagination';
 
@@ -15,7 +16,7 @@ export class FornecedoresService {
 
   public situacaoFornecedor : boolean;
 
-  public getFornecedors(
+  public getFornecedores(
     page?: number,
     itemsPerPage?: number,
     term?: string
@@ -48,6 +49,36 @@ export class FornecedoresService {
 
   public getFornecedorById(id: number): Observable<Fornecedor> {
     return this.http.get<Fornecedor>(`${this.baseURL}/id/${id}`);
+  }
+
+  public getContasByFornecedorId(
+    fornecedorId: number,
+    page?: number,
+    itemsPerPage?: number,
+    term?: string): Observable<PaginatedResult<Contas[]>> {
+      const paginatedResult: PaginatedResult<Contas[]> = new PaginatedResult<Contas[]>();
+
+      let params = new HttpParams();
+
+      if (page !== null && itemsPerPage !== null) {
+        params = params.append('pageNumber', page.toString());
+        params = params.append('pageSize', itemsPerPage.toString());
+      }
+
+      if (term != null && term != '') params = params.append('term', term)
+        return this.http.get<Contas[]>(`${this.baseURL}/fornecedorId/${fornecedorId}`, { observe: 'response', params })
+        .pipe(
+          take(1),
+          map((response) => {
+            paginatedResult.result = response.body;
+            if (response.headers.has('Pagination')) {
+              paginatedResult.pagination = JSON.parse(
+                response.headers.get('Pagination')
+              );
+            }
+            return paginatedResult;
+          })
+        );
   }
 
   public post(fornecedor: Fornecedor): Observable<Fornecedor> {

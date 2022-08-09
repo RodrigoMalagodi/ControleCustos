@@ -8,6 +8,7 @@ import { Fornecedor } from 'src/app/models/identity/Fornecedor';
 import { PaginatedResult, Pagination } from 'src/app/models/Pagination';
 import { FornecedoresService } from 'src/app/services/fornecedores.service';
 import { debounceTime } from 'rxjs/operators';
+import { Contas } from 'src/app/models/identity/Contas';
 
 @Component({
   selector: 'app-fornecedores-lista',
@@ -25,6 +26,7 @@ export class FornecedoresListaComponent implements OnInit {
 
   modalRef?: BsModalRef;
   public fornecedores: Fornecedor[] = [];
+  public contas: Contas[] = [];
   public fornecedor = {} as Fornecedor;
   public pagination = {} as Pagination;
   public fornecedorSituacao: boolean;
@@ -57,7 +59,7 @@ export class FornecedoresListaComponent implements OnInit {
         .subscribe((filtrarPor) => {
           this.spinner.show();
           this.fornecedoresService
-            .getFornecedors(
+            .getFornecedores(
               this.pagination.currentPage,
               this.pagination.itemsPerPage,
               filtrarPor
@@ -84,7 +86,7 @@ export class FornecedoresListaComponent implements OnInit {
 
   public carregarFornecedores(): void {
     this.fornecedoresService
-      .getFornecedors(this.pagination.currentPage, this.pagination.itemsPerPage)
+      .getFornecedores(this.pagination.currentPage, this.pagination.itemsPerPage)
       .subscribe({
         next: (paginatedResult: PaginatedResult<Fornecedor[]>) => {
           this.spinner.show();

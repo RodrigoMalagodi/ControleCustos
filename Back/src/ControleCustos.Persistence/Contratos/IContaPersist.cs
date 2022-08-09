@@ -9,6 +9,7 @@ namespace ControleCustos.Persistence.Contratos
     public interface IContaPersist
     {
         Task<PageList<Conta>> GetAllContasAsync(PageParams pageParams);
+        Task<PageList<Conta>> GetContaByFornecedorIdAsync(int fornecedorId, PageParams pageParams);
         Task<Conta> GetContaByIdAsync(int contaId);
        
     }
