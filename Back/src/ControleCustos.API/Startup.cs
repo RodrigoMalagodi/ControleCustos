@@ -18,6 +18,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Collections.Generic;
+using ControleCustos.API.Helpers;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace ControleCustos.API
 {
@@ -95,6 +99,10 @@ namespace ControleCustos.API
             services.AddScoped<IFornecedorPersist, FornecedorPersist>();
             services.AddScoped<IDashboardPersist, DashboardPersist>();
             #endregion
+            
+            #region Util
+            services.AddScoped<IUtil,Util>(); 
+            #endregion
 
             services.AddCors(
                 options =>
@@ -171,6 +179,15 @@ namespace ControleCustos.API
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
+            app.UseStaticFiles(
+                new StaticFileOptions()
+                {
+                    FileProvider = new PhysicalFileProvider(
+                        Path.Combine(Directory.GetCurrentDirectory(), "Resources")
+                    ),
+                    RequestPath = new PathString("/Resources")
+                }
+            );
 
             app.UseEndpoints(endpoints =>
             {

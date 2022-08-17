@@ -18,8 +18,10 @@ namespace ControleCustos.API.Controllers
         private readonly IAccountService _accountService;
         private readonly ITokenService _tokenService;
         private readonly IContaService _contaService;
-        public ContaController(IAccountService accountService, ITokenService tokenService, IContaService contaService)
+        private readonly IFornecedorService _fornecedorService;
+        public ContaController(IAccountService accountService, ITokenService tokenService, IContaService contaService, IFornecedorService fornecedorService)
         {
+            _fornecedorService = fornecedorService;
             _contaService = contaService;
             _accountService = accountService;
             _tokenService = tokenService;
@@ -37,6 +39,12 @@ namespace ControleCustos.API.Controllers
                     if (Contas == null)
                     {
                         return NoContent();
+                    }
+
+                    foreach (var conta in Contas)
+                    {
+                        var fornecedor = await _fornecedorService.GetFornecedorByIdAsync(conta.FornecedorId);
+                        conta.NomeFornecedor = fornecedor.Nome;
                     }
 
                     Response.AddPagination(Contas.CurrentPage, Contas.PageSize, Contas.TotalCount, Contas.TotalPages);
@@ -136,6 +144,37 @@ namespace ControleCustos.API.Controllers
                 return this.StatusCode(
                     StatusCodes.Status500InternalServerError,
                     $"Erro ao tentar atualizar Contas. Erro: {ex.Message}"
+                );
+            }
+        }
+    
+        [HttpDelete("contaId/{contaId}")]
+        public async Task<IActionResult> Delete(int contaId)
+        {
+            try
+            {
+                int userIdToken = User.GetUserId();
+                if (userIdToken >= 1)
+                {
+                    var evento = await _contaService.GetContaByIdAsync(contaId);
+                    if (evento == null)
+                    {
+                        return NoContent();
+                    }
+
+                    if (await _contaService.DeleteConta(contaId))
+                    {
+                        return Ok(new { message = "Deletado" });
+                    }
+                    return BadRequest("Erro ao tentar excluir evento.");
+                }
+                return BadRequest("Erro ao tentar excluir evento.");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}"
                 );
             }
         }

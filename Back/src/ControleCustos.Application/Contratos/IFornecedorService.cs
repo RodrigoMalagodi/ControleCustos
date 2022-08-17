@@ -11,6 +11,7 @@ namespace ControleCustos.Application.Contratos
         Task<FornecedorDto> UpdateSituacaoFornecedor(int fornecedorId, bool situacao);
         
         Task<PageList<FornecedorDto>> GetAllFornecedoresAsync(PageParams pageParams);
+        Task<FornecedorDto[]> GetAllFornecedoresAtivosAsync();
         Task<FornecedorDto> GetFornecedorByIdAsync(int fornecedorId);
         
     }

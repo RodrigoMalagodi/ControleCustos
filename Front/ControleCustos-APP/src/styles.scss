@@ -9,3 +9,20 @@ body{
   background-color: rgba(213, 217, 218, .8);
   overflow: hidden;
 }
+
+@media (min-width: 1200px)
+{
+  .container, .container-lg, .container-md, .container-sm, .container-xl {
+    max-width: 1200px;
+  }
+}
+
+.valorMenorQueZero {
+  color: red !important;
+  font-weight: bold;
+}
+
+.valorMaiorQueZero {
+  color: green !important;
+  font-weight: bold;
+}

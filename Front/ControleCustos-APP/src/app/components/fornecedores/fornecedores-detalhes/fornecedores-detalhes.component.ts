@@ -13,11 +13,12 @@ import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { Contas } from 'src/app/models/identity/Contas';
+import { Conta } from 'src/app/models/identity/Conta';
 import { Fornecedor } from 'src/app/models/identity/Fornecedor';
 import { PaginatedResult, Pagination } from 'src/app/models/Pagination';
 import { FornecedoresService } from 'src/app/services/fornecedores.service';
-import { CurrencyMaskInputMode, NgxCurrencyModule } from "ngx-currency";
+import { CurrencyMaskInputMode, NgxCurrencyModule } from 'ngx-currency';
+import { ContasDetalheComponent } from '../../contas/contas-detalhe/contas-detalhe.component';
 
 @Component({
   selector: 'app-fornecedores-detalhes',
@@ -26,12 +27,14 @@ import { CurrencyMaskInputMode, NgxCurrencyModule } from "ngx-currency";
 })
 export class FornecedoresDetalhesComponent implements OnInit {
   modalRef?: BsModalRef;
-  fornecedorId: number;
   acaoSalvar = 'post';
   fornecedor = {} as Fornecedor;
-  contas = [] as Contas[];
+  contas = [] as Conta[];
   form!: FormGroup;
+  public fornecedorId: number;
   public pagination = {} as Pagination;
+  public rota: string;
+  public contasDetalhe: ContasDetalheComponent;
 
   constructor(
     private fb: FormBuilder,
@@ -86,6 +89,12 @@ export class FornecedoresDetalhesComponent implements OnInit {
       ],
       tipoFornecimento: ['', Validators.required],
     });
+  }
+
+  public novaConta(rotaSalvar: string, cadastroViaFornecedor: boolean): void{
+    this.rota = rotaSalvar;
+    localStorage.setItem('fornecedorId', this.fornecedorId.toString());
+    this.router.navigate(['contas/detalhe']);
   }
 
   public salvarFornecedor(): any {
@@ -146,7 +155,7 @@ export class FornecedoresDetalhesComponent implements OnInit {
     }
   }
 
-  criarContas(conta: Contas): any {
+  criarContas(conta: Conta): any {
     return this.fb.group({
       id: [conta.contaId],
       descricao: [conta.descricao],
@@ -179,7 +188,7 @@ export class FornecedoresDetalhesComponent implements OnInit {
         this.pagination.itemsPerPage
       )
       .subscribe({
-        next: (paginatedResult: PaginatedResult<Contas[]>) => {
+        next: (paginatedResult: PaginatedResult<Conta[]>) => {
           this.spinner.show();
           this.contas = paginatedResult.result;
           this.pagination = paginatedResult.pagination;
@@ -192,5 +201,13 @@ export class FornecedoresDetalhesComponent implements OnInit {
         },
       })
       .add(() => this.spinner.hide());
+  }
+
+  public classDiasAtraso(valor: number): string {
+    return valor > 0 ? 'valorMenorQueZero' : 'valorMaiorQueZero';
+  }
+
+  public classJuros(valor: number): string {
+    return valor > 0 ? 'valorMenorQueZero' : '';
   }
 }

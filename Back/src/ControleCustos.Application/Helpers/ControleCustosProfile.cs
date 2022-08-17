@@ -2,7 +2,6 @@ using AutoMapper;
 using ControleCustos.Application.Dtos;
 using ControleCustos.Domain;
 using ControleCustos.Domain.Identity;
-using ControleCustos.Persistence.Models;
 
 namespace ControleCustos.Application.Helpers
 {
@@ -10,14 +9,13 @@ namespace ControleCustos.Application.Helpers
     {
         public ControleCustosProfile()
         {
-            CreateMap<Conta,ContaDto>().ReverseMap();
+            CreateMap<Conta, ContaDto>().ReverseMap();
 
-            CreateMap<Fornecedor,FornecedorDto>().ReverseMap();
+            CreateMap<Fornecedor, FornecedorDto>().ReverseMap();
 
-            CreateMap<User,UserDto>().ReverseMap();
-            CreateMap<User,UserLoginDto>().ReverseMap();
-            CreateMap<User,UserUpdateDto>().ReverseMap();
+            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, UserLoginDto>().ReverseMap();
+            CreateMap<User, UserUpdateDto>().ReverseMap();
         }
-
     }
 }

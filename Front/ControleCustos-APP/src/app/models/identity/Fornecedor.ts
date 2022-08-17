@@ -1,4 +1,4 @@
-import { Contas } from "./Contas"
+import { Conta } from "./Conta"
 import { User } from "./User"
 
 export class Fornecedor {
@@ -9,5 +9,5 @@ export class Fornecedor {
    ativo?: boolean;
 
    user: User;
-   contas: Contas[];
+   contas: Conta[];
 }

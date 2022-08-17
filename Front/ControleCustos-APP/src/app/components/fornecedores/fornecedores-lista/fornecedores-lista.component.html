@@ -1,9 +1,3 @@
-<!-- <app-titulo
-  [tituloPagina]="'Fornecedor'"
-  [subtituloPagina]="'Lista de Fornecedor'"
-  [iconClass]="'fa-solid fa-calendar-days'"
-  [botaoListar]="true"
-></app-titulo> -->
 <div class="card rounded shadow-sm p-3">
   <div class="d-flex">
     <div class="flex-fill pr-3">
@@ -27,7 +21,7 @@
     <div>
       <a class="d-flex btn btn-outline-primary" routerLink="/fornecedores/detalhe">
         <i class="fa fa-plus-square my-1"></i>
-        <b class="ms-1 d-none d-sm-block">Novo</b>
+        <b class="ms-1 d-none d-sm-block">Novo Fornecedor</b>
       </a>
     </div>
   </div>
@@ -63,7 +57,7 @@
     </tbody>
     <tfoot *ngIf="!fornecedores.length">
       <tr>
-        <td colspan="8" class="text-center">
+        <td colspan="4" class="text-center">
           <h4>Nenhum fornecedor encontrado</h4>
         </td>
       </tr>

@@ -58,20 +58,40 @@ namespace ControleCustos.Application.Contextos
         {
             try
             {
-                var Fornecedors =
+                var Fornecedores =
                     await _fornecedorPersist
                         .GetAllFornecedoresAsync(pageParams);
-                if (Fornecedors == null)
+                if (Fornecedores == null)
                 {
                     return null;
                 }
                 var resultado =
-                    _mapper.Map<PageList<FornecedorDto>>(Fornecedors);
+                    _mapper.Map<PageList<FornecedorDto>>(Fornecedores);
 
-                resultado.CurrentPage = Fornecedors.CurrentPage;
-                resultado.TotalPages = Fornecedors.TotalPages;
-                resultado.PageSize = Fornecedors.PageSize;
-                resultado.TotalCount = Fornecedors.TotalCount;
+                resultado.CurrentPage = Fornecedores.CurrentPage;
+                resultado.TotalPages = Fornecedores.TotalPages;
+                resultado.PageSize = Fornecedores.PageSize;
+                resultado.TotalCount = Fornecedores.TotalCount;
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<FornecedorDto[]> GetAllFornecedoresAtivosAsync()
+        {
+            try
+            {
+                var Fornecedor =  await _fornecedorPersist.GetAllFornecedoresAtivosAsync();
+                if (Fornecedor == null)
+                {
+                    return null;
+                }
+
+                var resultado = _mapper.Map<FornecedorDto[]>(Fornecedor);
 
                 return resultado;
             }

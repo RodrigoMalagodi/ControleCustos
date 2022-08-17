@@ -32,6 +32,15 @@ namespace ControleCustos.Persistence.Repositorio
                 .CreateAsync(query, pageParams.PageNumber, pageParams.pageSize);
         }
 
+        public async Task<Fornecedor[]> GetAllFornecedoresAtivosAsync()
+        {
+            IQueryable<Fornecedor> query = _context.Fornecedor
+                    .AsNoTracking()
+                    .OrderBy(e => e.Nome);
+
+            return await query.ToArrayAsync();
+        }
+
         public async Task<Fornecedor> GetFornecedorByIdAsync(int fornecedorId)
         {
             IQueryable<Fornecedor> query = _context.Fornecedor

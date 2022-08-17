@@ -1,1 +1,43 @@
-<p>perfil works!</p>
+<app-titulo
+  [tituloPagina]="'Perfil'"
+  [subtituloPagina]="'Atualização de Perfil'"
+  [iconClass]="'fa-solid fa-id-card'"
+  [botaoListar]="false"
+></app-titulo>
+<div class="card rounded shadow-sm">
+  <div class="row p-3">
+    <div class="col-lg-3 pt-1">
+      <div class="card mb-3">
+        <div class="">
+          <input
+            type="file"
+            #file
+            (change)="onFileChange($event)"
+            style="display: none"
+          />
+        </div>
+        <div class="d-flex align-self-center pt-3">
+          <img
+            [src]="imagemURL"
+            name="aboutme"
+            width="120"
+            height="120"
+            class="rounded-circle"
+            (click)="file.click()"
+            style="cursor: pointer"
+          />
+        </div>
+        <div class="card-body">
+          <div class="h4 text-center mb-3">@{{ userUpdate.userName }}</div>
+          <div class="h7 text-bold pb-1">
+            <b>Nome:</b>
+            {{ userUpdate.nome }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <app-perfil-detalhe (changeFormValue)="setFormValue($event);"></app-perfil-detalhe>
+    </div>
+  </div>
+</div>

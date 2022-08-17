@@ -63,7 +63,7 @@ namespace ControleCustos.Application.Contextos
                     throw new Exception("Conta para delete não foi encontrada.");
                 }
 
-                _geralPersist.Delete<Conta> (Conta);
+                _geralPersist.Delete<Conta>(Conta);
 
                 return await _geralPersist.SaveChangesAsync();
             }
@@ -82,6 +82,7 @@ namespace ControleCustos.Application.Contextos
                 {
                     return null;
                 }
+
                 var resultado = _mapper.Map<PageList<ContaDto>>(Contas);
 
                 resultado.CurrentPage = Contas.CurrentPage;

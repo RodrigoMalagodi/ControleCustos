@@ -11,5 +11,6 @@ export class FornecedoresComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  
 
 }

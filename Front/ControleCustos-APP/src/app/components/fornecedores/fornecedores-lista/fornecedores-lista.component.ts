@@ -8,7 +8,7 @@ import { Fornecedor } from 'src/app/models/identity/Fornecedor';
 import { PaginatedResult, Pagination } from 'src/app/models/Pagination';
 import { FornecedoresService } from 'src/app/services/fornecedores.service';
 import { debounceTime } from 'rxjs/operators';
-import { Contas } from 'src/app/models/identity/Contas';
+import { Conta } from 'src/app/models/identity/Conta';
 
 @Component({
   selector: 'app-fornecedores-lista',
@@ -26,7 +26,7 @@ export class FornecedoresListaComponent implements OnInit {
 
   modalRef?: BsModalRef;
   public fornecedores: Fornecedor[] = [];
-  public contas: Contas[] = [];
+  public contas: Conta[] = [];
   public fornecedor = {} as Fornecedor;
   public pagination = {} as Pagination;
   public fornecedorSituacao: boolean;
@@ -71,7 +71,7 @@ export class FornecedoresListaComponent implements OnInit {
               },
               error: (error: any) => {
                 this.spinner.hide();
-                this.toastr.error('Erro ao Carregar os Fornecedors', 'Erro!');
+                this.toastr.error('Erro ao Carregar os Fornecedores', 'Erro!');
               },
               complete: () => {
                 setTimeout(() => {

@@ -46,6 +46,9 @@ namespace ControleCustos.Persistence.Migrations
                     b.Property<decimal>("Juros")
                         .HasColumnType("MONEY");
 
+                    b.Property<string>("ImagemURL")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("ContaId");
 
                     b.HasIndex("FornecedorId");

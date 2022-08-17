@@ -1,7 +1,7 @@
 import { Fornecedor } from "./Fornecedor";
 import { User } from "./User";
 
-export class Contas {
+export class Conta {
   contaId: number;
   valor: number;
   dataVencimento: Date;
@@ -13,9 +13,7 @@ export class Contas {
   juros: number;
   userId: number;
   fornecedorId: number;
+  nomeFornecedor: string;
   user: User;
   fornecedor: Fornecedor;
 }
-
-
-

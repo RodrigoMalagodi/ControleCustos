@@ -7,7 +7,8 @@ namespace ControleCustos.Persistence.Contratos
 {
     public interface IFornecedorPersist
     {
-        Task<PageList<Fornecedor>> GetAllFornecedoresAsync(PageParams pageParams);
+        Task<PageList<Fornecedor>> GetAllFornecedoresAsync(PageParams pageParams = null);
+        Task<Fornecedor[]> GetAllFornecedoresAtivosAsync();
         Task<Fornecedor> GetFornecedorByIdAsync(int fornecedorId);
     }
 }

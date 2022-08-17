@@ -1,1 +1,8 @@
-<p>contas works!</p>
+<app-titulo
+  [tituloPagina]="'Contas'"
+  [subtituloPagina]="'Lista de Contas Pagas'"
+  [iconClass]="'fa-solid fa-money-bills'"
+  [botaoListar]="true"
+  [eventoListar]="'carregarContas()'"
+></app-titulo>
+<router-outlet></router-outlet>

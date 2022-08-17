@@ -1,1 +1,81 @@
-<p>perfil-detalhe works!</p>
+<form [formGroup]="frmPerfil" (submit)="onSubmit();">
+  <div class="row g-3">
+    <div class="form-group col-12">
+      <h3 class="border-bottom"></h3>
+    </div>
+    <div class="form-group col-sm-6">
+      <label>Nome</label>
+      <input type="text" class="form-control"
+      [ngClass]="{'is-invalid':f.nome.errors && (f.nome.dirty || f.nome.touched)}"
+      formControlName="nome"
+      />
+      <div *ngIf="f.nome.errors?.['required'] && (f.nome.dirty || f.nome.touched)" class="invalid-feedback">
+        <strong>Por favor, informe o primeiro nome.</strong>
+      </div>
+      <div *ngIf="f.nome.errors?.['minlength'] && (f.nome.dirty || f.nome.touched)" class="invalid-feedback">
+        <strong>Deve conter no mínimo 4 caracteres.</strong>
+      </div>
+      <div *ngIf="f.nome.errors?.['maxlength'] && (f.nome.dirty || f.nome.touched)" class="invalid-feedback">
+        <strong>Deve conter no máximo 30 caracteres.</strong>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <label>E-mail</label>
+      <input type="text" class="form-control"
+      [ngClass]="{'is-invalid':f.email.errors && (f.email.dirty || f.email.touched)}"
+      formControlName="email"
+      />
+      <div *ngIf="f.email.errors?.['required'] && (f.email.dirty || f.email.touched)" class="invalid-feedback">
+        <strong>Por favor, informe o E-mail.</strong>
+    </div>
+    <div *ngIf="f.email.errors?.['email'] && (f.email.dirty || f.email.touched)" class="invalid-feedback">
+        <strong>E-mail inválido</strong>
+    </div>
+    </div>
+  </div>
+  <div class="row g-3">
+    <div class="form-group col-sm-4">
+      <label>Telefone</label>
+      <input type="text" class="form-control"
+      [ngClass]="{'is-invalid':f.phoneNumber.errors && (f.phoneNumber.dirty || f.phoneNumber.touched)}"
+      formControlName="phoneNumber"
+      />
+      <div *ngIf="f.phoneNumber.errors?.['required'] && (f.phoneNumber.dirty || f.phoneNumber.touched)" class="invalid-feedback">
+        <strong>Por favor, informe o telefone.</strong>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h3 class="pt-3 border-bottom">Mudar Senha</h3>
+    <p>Caso mude de senha, preencha os campos abaixo:</p>
+  </div>
+  <div class="row g-3">
+    <div class="form-group col-sm">
+      <label>Senha</label>
+      <input class="form-control"
+        [ngClass]="{'is-invalid':f.password.errors && (f.password.dirty || f.password.touched)}"
+        formControlName="password"
+        type="password" placeholder="Digite uma Senha" />
+    </div>
+    <div class="form-group col-sm">
+      <label>Confirmar Senha</label>
+      <input class="form-control"
+      [ngClass]="{'is-invalid':f.confirmePassword.errors && (f.confirmePassword.dirty || f.confirmePassword.touched)}"
+      formControlName="confirmePassword"
+      type="password" placeholder="Confirme a Senha" />
+      <div *ngIf="f.confirmePassword.errors?.['mustMatch'] && (f.confirmePassword.dirty || f.confirmePassword.touched)" class="invalid-feedback">
+        <strong>Senha inválida.</strong>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex float-end me-1A mt-2">
+    <button class="btn btn-outline-dark border" (click)="resetFrmPerfil($event);">
+      Cancelar Alteração
+    </button>
+    <button class="btn btn-success ms-2" [disabled]="!frmPerfil.valid" type="submit">
+      <!-- <span class="spinner-border spinner-border-sm "></span> -->
+      Salvar Perfil
+    </button>
+  </div>
+  </form>

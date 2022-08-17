@@ -82,6 +82,32 @@ namespace ControleCustos.API.Controllers
             }
         }
 
+        [HttpGet("GetAtivos")]
+        public async Task<IActionResult> GetAtivos()
+        {
+            try
+            {
+                int userIdToken = User.GetUserId();
+                if (userIdToken >= 1)
+                {
+                    var Fornecedor = await _fornecedorService.GetAllFornecedoresAtivosAsync();
+                    if (Fornecedor == null)
+                    {
+                        return NoContent();
+                    }
+                    return Ok(Fornecedor);
+                }
+                return BadRequest("Erro ao tentar recuperar Fornecedor.");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar Fornecedor. Erro: {ex.Message}"
+                );
+            }
+        }
+
         [HttpGet("fornecedorId/{fornecedorId}")]
         public async Task<IActionResult> GetByFornecedorId(int fornecedorId, [FromQuery] PageParams pageParams)
         {

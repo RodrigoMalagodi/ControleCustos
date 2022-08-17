@@ -13,6 +13,7 @@ namespace ControleCustos.Persistence.Repositorio
     public class ContaPersist : IContaPersist
     {
         private readonly ControleCustosContext _context;
+
         public ContaPersist(ControleCustosContext context)
         {
             _context = context;
@@ -20,43 +21,43 @@ namespace ControleCustos.Persistence.Repositorio
 
         public async Task<PageList<Conta>> GetAllContasAsync(PageParams pageParams)
         {
-           IQueryable<Conta> query = _context.Conta
-                                            .AsNoTracking()
-                                            .Where(
-                                                e =>
-                                                    (e.Descricao.ToLower().Contains(pageParams.Term.ToLower()))
-                                            )
-                                            .OrderBy(e => e.ContaId);
+            IQueryable<Conta> query =
+                _context
+                    .Conta
+                    .AsNoTracking()
+                    .Where(e =>
+                        (
+                        e
+                            .Descricao
+                            .ToLower()
+                            .Contains(pageParams.Term.ToLower())
+                        ))
+                    .Include(e => e.Fornecedor)
+                    .OrderBy(e => e.ContaId);
 
-            return await PageList<Conta>.CreateAsync(
-                query,
-                pageParams.PageNumber,
-                pageParams.pageSize
-            );
+            return await PageList<Conta>
+                .CreateAsync(query, pageParams.PageNumber, pageParams.pageSize);
         }
 
         public async Task<Conta> GetContaByIdAsync(int contaId)
         {
-            IQueryable<Conta> query = _context.Conta
-                                            .AsNoTracking()
-                                            .Where(e => e.ContaId == contaId);
+            IQueryable<Conta> query =
+                _context.Conta.AsNoTracking().Where(e => e.ContaId == contaId);
 
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<PageList<Conta>> GetContaByFornecedorIdAsync(int fornecedorId, PageParams pageParams)
+        public async Task<PageList<Conta>>
+        GetContaByFornecedorIdAsync(int fornecedorId, PageParams pageParams)
         {
-            IQueryable<Conta> query = _context.Conta
-                                            .AsNoTracking()
-                                            .Where(e => e.FornecedorId == fornecedorId);
+            IQueryable<Conta> query =
+                _context
+                    .Conta
+                    .AsNoTracking()
+                    .Where(e => e.FornecedorId == fornecedorId);
 
-            return await PageList<Conta>.CreateAsync(
-                query,
-                pageParams.PageNumber,
-                pageParams.pageSize
-            );
+            return await PageList<Conta>
+                .CreateAsync(query, pageParams.PageNumber, pageParams.pageSize);
         }
-
-        
     }
 }

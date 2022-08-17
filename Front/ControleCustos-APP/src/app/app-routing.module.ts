@@ -52,9 +52,10 @@ const routes: Routes = [
           { path: 'lista', component: FornecedoresListaComponent },
         ],
       },
+      { path: 'home', component: HomeComponent },
     ],
   },
-  { path: 'home', component: HomeComponent },
+
   { path: '**', redirectTo: 'user/login', pathMatch: 'full' },
 ];
 

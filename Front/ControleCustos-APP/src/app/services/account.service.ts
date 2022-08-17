@@ -70,13 +70,13 @@ export class AccountService {
     ).nome.toString();
   }
 
-  // public postUpload(file: File): Observable<UserUpdate> {
-  //   const fileToUpload = file[0] as File;
-  //   const formData = new FormData();
-  //   formData.append('file', fileToUpload);
-  //   return this.http.post<UserUpdate>(
-  //     `${this.baseURL}/upload-image`,
-  //     formData
-  //   ).pipe(take(1));
-  // }
+  public postUpload(file: File): Observable<UserUpdate> {
+    const fileToUpload = file[0] as File;
+    const formData = new FormData();
+    formData.append('file', fileToUpload);
+    return this.http.post<UserUpdate>(
+      `${this.baseURL}/upload-image`,
+      formData
+    ).pipe(take(1));
+  }
 }

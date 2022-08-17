@@ -1,1 +1,115 @@
-<p>contas-lista works!</p>
+<div class="card rounded shadow-sm p-3">
+  <div class="d-flex">
+    <div class="flex-fill pr-3">
+      <div class="row row-cols-lg g-3 align-items-center me-2">
+        <!-- <label for="" class="mr-2">Filtro:</label> -->
+        <div class="col-12">
+          <div class="input-group">
+            <span class="input-group-text bg-light"
+              ><i class="fa-solid fa-magnifying-glass"></i
+            ></span>
+            <input
+              type="text"
+              class="form-control"
+              (input)="filtrarConta($event.target)"
+              placeholder="Filtrar por Descrição"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <a
+        class="d-flex btn btn-outline-primary"
+        routerLink="/contas/detalhe"
+        (click)="novaConta('contas/lista/', false)"
+      >
+        <i class="fa fa-plus-square my-1"></i>
+        <b class="ms-1 d-none d-sm-block">Nova Conta</b>
+      </a>
+    </div>
+  </div>
+  <br />
+  <table class="table table-striped table-hover">
+    <thead class="table-dark">
+      <tr style="position: sticky; top: 0">
+        <th>#</th>
+        <th>Fornecedor</th>
+        <th>Descrição</th>
+        <th>Tipo Fornecimento</th>
+        <th>Data Vencimento</th>
+        <th>Data Pagamento</th>
+        <th>Dias Atraso</th>
+        <th>Valor R$</th>
+        <th>Juros R$</th>
+        <th>Ano Mês</th>
+        <th>Excluir</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="contas && contas.length > 0">
+      <tr *ngFor="let conta of contas">
+        <td>{{ conta.contaId }}</td>
+        <td>{{ conta.nomeFornecedor }}</td>
+        <td>{{ conta.descricao }}</td>
+        <td>{{ conta.tipoCusto }}</td>
+        <td>{{ conta.dataVencimento | DateTimeFormatPipe }}</td>
+        <td>{{ conta.dataPagamento | DateTimeFormatPipe }}</td>
+        <td
+          ngClass="{{ classDiasAtraso(conta.diasAtraso) }}"
+          style="text-align: center"
+        >
+          {{ conta.diasAtraso }}
+        </td>
+        <td>R$ {{ conta.valor }}</td>
+        <td ngClass="{{ classJuros(conta.juros) }}">R$ {{ conta.juros }}</td>
+        <td>{{ conta.anoMes }}</td>
+        <td>
+          <button
+            class="btn btn-sm btn-danger"
+            tooltip="Excluir Conta"
+            (click)="openModal($event, template, conta.contaId)"
+          >
+            <i class="fa-solid fa-rectangle-xmark me-1"></i>Excluir
+          </button>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot *ngIf="!contas.length">
+      <tr>
+        <td colspan="10" class="text-center">
+          <h4>Nenhuma conta encontrada</h4>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+<div class="d-flex justify-content-center mt-2">
+  <pagination
+    [boundaryLinks]="true"
+    [totalItems]="pagination.totalItems"
+    [(ngModel)]="pagination.currentPage"
+    (pageChanged)="pageChanged($event)"
+    pageBtnClass="btn"
+    [itemsPerPage]="pagination.itemsPerPage"
+    previousText="&lsaquo;"
+    nextText="&rsaquo;"
+    firstText="&laquo;"
+    lastText="&raquo;"
+  >
+  </pagination>
+</div>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Gostaria realmente de excluir conta {{contaId}}?</p>
+    <button
+      type="button"
+      class="btn btn-outline-success me-2"
+      (click)="confirmaExclusaoConta()"
+    >
+      <i class="fa-solid fa-square-check me-2"></i>Sim
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="decline()">
+      <i class="fa-solid fa-rectangle-xmark me-2"></i>Não
+    </button>
+  </div>
+</ng-template>

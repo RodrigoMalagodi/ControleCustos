@@ -1,1 +1,161 @@
-<p>contas-detalhe works!</p>
+<div class="card rounded shadow-sm">
+  <form [formGroup]="form">
+    <div class="p-2">
+      <div class="row g-3">
+        <div class="form-group col-md-4">
+          <label>Descrição</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="cssValidator(f.descricao)"
+            formControlName="descricao"
+            placeholder="Energia elétrica apartamento"
+          />
+          <div *ngIf="f.descricao.errors?.['required']" class="invalid-feedback">
+            <strong>Descrição é obrigatório.</strong>
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <label>Fornecedor</label>
+          <select
+            type="text"
+            [ngClass]="cssValidator(f.fornecedorId)"
+            class="form-control"
+            formControlName="fornecedorId"
+          >
+            *ngIf="fornecedoresCombo && fornecedoresCombo.length > 0"
+            <option value="" selected>Selecione</option>
+            <option
+              *ngFor="let fornecedor of fornecedoresCombo"
+              [value]="fornecedor.fornecedorId"
+            >
+              {{ fornecedor.nome }}
+            </option>
+          </select>
+          <div
+            *ngIf="f.fornecedorId.errors?.['required']"
+            class="invalid-feedback"
+          >
+            <strong>Tipo de Custo é obrigatório.</strong>
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <label>Tipo Custo</label>
+          <select
+            type="text"
+            class="form-control"
+            formControlName="tipoCusto"
+            [ngClass]="cssValidator(f.tipoCusto)"
+          >
+            <option value="" selected>Selecione</option>
+            <option value="Fixo">Fixo</option>
+            <option value="Variável">Variável</option>
+          </select>
+          <div
+            *ngIf="f.tipoCusto.errors?.['required']"
+            class="invalid-feedback"
+          >
+            <strong>Tipo de Custo é obrigatório.</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-2">
+      <div class="row g-3">
+        <div class="form-group col-md-4">
+          <label>Valor R$</label>
+          <input
+            type="text"
+            currencyMask
+            class="form-control"
+            [ngClass]="cssValidator(f.valor)"
+            formControlName="valor"
+            currencyMask
+            [options]="{
+              prefix: 'R$ ',
+              thousands: '.',
+              decimal: ',',
+              align: 'left'
+            }"
+            placeholder="R$ 0,00"
+          />
+          <div *ngIf="f.valor.errors?.['required']" class="invalid-feedback">
+            <strong>Valor é obrigatório.</strong>
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <label>Juros R$</label>
+          <input
+            type="text"
+            currencyMask
+            class="form-control"
+            formControlName="juros"
+            [value]="0"
+            currencyMask
+            [options]="{
+              prefix: 'R$ ',
+              thousands: '.',
+              decimal: ',',
+              align: 'left'
+            }"
+            placeholder="R$ 0,00"
+          />
+          <div *ngIf="f.juros.errors?.['required']" class="invalid-feedback">
+            <strong>Valor é obrigatório.</strong>
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <label>Data Vencimento</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="cssValidator(f.dataVencimento)"
+            bsDatepicker
+            [bsConfig]="bsConfig"
+            placeholder="01/01/2022"
+            formControlName="dataVencimento"
+          />
+          <div
+            *ngIf="f.dataVencimento.errors?.['required']"
+            class="invalid-feedback"
+          >
+            <strong>Data de Vencimento é obrigatório.</strong>
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+          <label>Data Pagamento</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngClass]="cssValidator(f.dataPagamento)"
+            bsDatepicker
+            [bsConfig]="bsConfig"
+            placeholder="01/01/2022"
+            formControlName="dataPagamento"
+          />
+          <div
+            *ngIf="f.dataPagamento.errors?.['required']"
+            class="invalid-feedback"
+          >
+            <strong>Data de Pagamento é obrigatório.</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex float-end m-3">
+      <button
+        class="btn btn-outline-dark me-auto border"
+        (click)="resetForm($event)"
+      >
+        Cancelar
+      </button>
+      <button
+        class="btn btn-success ms-2"
+        [disabled]="!form.valid"
+        (click)="salvarConta()"
+      >
+        Salvar Conta
+      </button>
+    </div>
+  </form>
+</div>

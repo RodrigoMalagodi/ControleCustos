@@ -16,9 +16,10 @@ namespace ControleCustos.Application.Dtos
         public decimal Juros { get; set; }
         public int UserId { get; set; }
         public int FornecedorId { get; set; }
+        public string NomeFornecedor { get; set; }
+        
         public UserDto UserDto { get; set; }
         public FornecedorDto FornecedorDto { get; set; }
-
         
     }
 }

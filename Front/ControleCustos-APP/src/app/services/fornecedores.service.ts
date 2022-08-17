@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, take } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Contas } from '../models/identity/Contas';
+import { Conta } from '../models/identity/Conta';
 import { Fornecedor } from '../models/identity/Fornecedor';
 import { PaginatedResult } from '../models/Pagination';
 
@@ -51,12 +51,16 @@ export class FornecedoresService {
     return this.http.get<Fornecedor>(`${this.baseURL}/id/${id}`);
   }
 
+  public getFornecedorAtivos(): Observable<Fornecedor[]> {
+    return this.http.get<Fornecedor[]>(`${this.baseURL}/GetAtivos`);
+  }
+
   public getContasByFornecedorId(
     fornecedorId: number,
     page?: number,
     itemsPerPage?: number,
-    term?: string): Observable<PaginatedResult<Contas[]>> {
-      const paginatedResult: PaginatedResult<Contas[]> = new PaginatedResult<Contas[]>();
+    term?: string): Observable<PaginatedResult<Conta[]>> {
+      const paginatedResult: PaginatedResult<Conta[]> = new PaginatedResult<Conta[]>();
 
       let params = new HttpParams();
 
@@ -66,7 +70,7 @@ export class FornecedoresService {
       }
 
       if (term != null && term != '') params = params.append('term', term)
-        return this.http.get<Contas[]>(`${this.baseURL}/fornecedorId/${fornecedorId}`, { observe: 'response', params })
+        return this.http.get<Conta[]>(`${this.baseURL}/fornecedorId/${fornecedorId}`, { observe: 'response', params })
         .pipe(
           take(1),
           map((response) => {

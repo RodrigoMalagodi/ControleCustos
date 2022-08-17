@@ -191,7 +191,9 @@ namespace ControleCustos.Persistence.Migrations
                     Descricao = table.Column<string>(type: "TEXT", nullable: true),
                     Juros = table.Column<decimal>(type: "TEXT", nullable: false),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    FornecedorId = table.Column<int>(type: "INTEGER", nullable: true)
+                    FornecedorId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ImagemURL = table.Column<string>(type: "TEXT", nullable: true)
+
                 },
                 constraints: table =>
                 {

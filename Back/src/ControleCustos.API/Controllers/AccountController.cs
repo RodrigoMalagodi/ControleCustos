@@ -5,8 +5,8 @@ using System;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using ControleCustos.Application.Dtos;
-using System.Security.Claims;
 using ControleCustos.API.Extensions;
+using ControleCustos.API.Helpers;
 
 namespace ControleCustos.API.Controllers
 {
@@ -16,14 +16,18 @@ namespace ControleCustos.API.Controllers
     public class AccountController : ControllerBase
     {
         
+        private readonly string _destino = "Images/Users";
         private readonly IAccountService _accountService;
         private readonly ITokenService _tokenService;
+        private readonly IUtil _iUtil;
 
         public AccountController(
             IAccountService accountService,
-            ITokenService tokenService
+            ITokenService tokenService,
+            IUtil iUtil
         )
         {
+            _iUtil = iUtil;
             _accountService = accountService;
             _tokenService = tokenService;
         }
@@ -152,6 +156,50 @@ namespace ControleCustos.API.Controllers
             }
         }
 
+          [HttpPost("upload-image")]
+        public async Task<IActionResult> UploadImage()
+        {
+            try
+            {
+                int userIdToken = User.GetUserId();
+                if (userIdToken >= 1)
+                {
+                    string userName = User.GetUserName();
+
+                    var user = await _accountService.GetUserByUserNameAsync(
+                        userName
+                    );
+                    if (user == null)
+                    {
+                        return NoContent();
+                    }
+
+                    var file = Request.Form.Files[0];
+
+                    if (file.Length > 0)
+                    {
+                        if (!string.IsNullOrEmpty(user.ImagemURL))
+                        {
+                            _iUtil.DeleteImage(user.ImagemURL, _destino);
+                        }
+                        user.ImagemURL = await _iUtil.SaveImage(file, _destino);
+                    }
+
+                    var UserRetorno = await _accountService.UpdateAccount(user);
+
+                    return Ok(UserRetorno);
+                }
+
+                return BadRequest("Erro ao tentar atualizar imagem do usuário.");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar adicionar imagem ao usuário. Erro: {ex.Message}"
+                );
+            }
+        }
         
     }
 }
