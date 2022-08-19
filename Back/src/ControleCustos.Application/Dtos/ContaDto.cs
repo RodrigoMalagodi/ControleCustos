@@ -8,7 +8,7 @@ namespace ControleCustos.Application.Dtos
         public int ContaId { get; set; }
         public decimal Valor { get; set; }
         public DateTime DataVencimento { get; set; }
-        public DateTime DataPagamento { get; set; }
+        public DateTime? DataPagamento { get; set; }
         public int DiasAtraso { get; set; }
         public int AnoMes { get; set; }
         public string TipoCusto { get; set; }

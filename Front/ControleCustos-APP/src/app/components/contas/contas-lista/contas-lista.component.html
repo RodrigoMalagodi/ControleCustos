@@ -47,7 +47,7 @@
       </tr>
     </thead>
     <tbody *ngIf="contas && contas.length > 0">
-      <tr *ngFor="let conta of contas">
+      <tr *ngFor="let conta of contas" (click)="detalheConta(conta.contaId);" style="cursor: pointer;">
         <td>{{ conta.contaId }}</td>
         <td>{{ conta.nomeFornecedor }}</td>
         <td>{{ conta.descricao }}</td>

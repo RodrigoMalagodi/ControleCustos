@@ -19,7 +19,8 @@ namespace ControleCustos.Persistence.Repositorio
             _context = context;
         }
 
-        public async Task<PageList<Conta>> GetAllContasAsync(PageParams pageParams)
+        public async Task<PageList<Conta>>
+        GetAllContasAsync(PageParams pageParams)
         {
             IQueryable<Conta> query =
                 _context
@@ -58,6 +59,18 @@ namespace ControleCustos.Persistence.Repositorio
 
             return await PageList<Conta>
                 .CreateAsync(query, pageParams.PageNumber, pageParams.pageSize);
+        }
+
+        public async Task<Conta[]>
+        GetContasSemanaCorrente(DateTime dataInicio, DateTime dataFim)
+        {
+            IQueryable<Conta> query =
+                _context
+                    .Conta
+                    .AsNoTracking()
+                    .Where(e => e.DataVencimento >= dataInicio && e.DataVencimento <= dataFim);
+
+           return await query.ToArrayAsync();
         }
     }
 }

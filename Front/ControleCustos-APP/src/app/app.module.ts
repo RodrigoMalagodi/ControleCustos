@@ -42,6 +42,9 @@ import { TituloComponent } from './shared/titulo/titulo.component';
 import { AccountService } from './services/account.service';
 import { PerfilComponent } from './components/user/perfil/perfil.component';
 import { PerfilDetalheComponent } from './components/user/perfil/perfil-detalhe/perfil-detalhe.component';
+import { HomeDetalhesComponent } from './components/home/home-detalhes/home-detalhes.component';
+import { ContasService } from './services/contas.service';
+import { FornecedoresService } from './services/fornecedores.service';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -80,6 +83,7 @@ export const customCurrencyMaskConfig = {
     TituloComponent,
     PerfilComponent,
     PerfilDetalheComponent,
+    HomeDetalhesComponent,
   ],
   imports: [
     BrowserModule,
@@ -107,6 +111,8 @@ export const customCurrencyMaskConfig = {
   ],
   providers: [
     AccountService,
+    ContasService,
+    FornecedoresService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
   ],
   bootstrap: [AppComponent],

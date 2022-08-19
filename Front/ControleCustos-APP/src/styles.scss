@@ -26,3 +26,30 @@ body{
   color: green !important;
   font-weight: bold;
 }
+
+.card-header {
+  padding: .5rem 1rem;
+  margin-bottom: 0;
+  background-color: #4d4d4d;
+  border-bottom: 1px solid rgba(0,0,0,.125);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

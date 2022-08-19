@@ -16,10 +16,19 @@ namespace ControleCustos.API.Controllers
     public class ContaController : ControllerBase
     {
         private readonly IAccountService _accountService;
+
         private readonly ITokenService _tokenService;
+
         private readonly IContaService _contaService;
+
         private readonly IFornecedorService _fornecedorService;
-        public ContaController(IAccountService accountService, ITokenService tokenService, IContaService contaService, IFornecedorService fornecedorService)
+
+        public ContaController(
+            IAccountService accountService,
+            ITokenService tokenService,
+            IContaService contaService,
+            IFornecedorService fornecedorService
+        )
         {
             _fornecedorService = fornecedorService;
             _contaService = contaService;
@@ -35,7 +44,8 @@ namespace ControleCustos.API.Controllers
                 int userIdToken = User.GetUserId();
                 if (userIdToken >= 1)
                 {
-                    var Contas = await _contaService.GetAllContasAsync(pageParams);
+                    var Contas =
+                        await _contaService.GetAllContasAsync(pageParams);
                     if (Contas == null)
                     {
                         return NoContent();
@@ -43,11 +53,17 @@ namespace ControleCustos.API.Controllers
 
                     foreach (var conta in Contas)
                     {
-                        var fornecedor = await _fornecedorService.GetFornecedorByIdAsync(conta.FornecedorId);
+                        var fornecedor =
+                            await _fornecedorService
+                                .GetFornecedorByIdAsync(conta.FornecedorId);
                         conta.NomeFornecedor = fornecedor.Nome;
                     }
 
-                    Response.AddPagination(Contas.CurrentPage, Contas.PageSize, Contas.TotalCount, Contas.TotalPages);
+                    Response
+                        .AddPagination(Contas.CurrentPage,
+                        Contas.PageSize,
+                        Contas.TotalCount,
+                        Contas.TotalPages);
 
                     return Ok(Contas);
                 }
@@ -55,10 +71,9 @@ namespace ControleCustos.API.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar recuperar Contas. Erro: {ex.Message}"
-                );
+                return this
+                    .StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar Contas. Erro: {ex.Message}");
             }
         }
 
@@ -81,10 +96,45 @@ namespace ControleCustos.API.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar recuperar Contas. Erro: {ex.Message}"
-                );
+                return this
+                    .StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar Contas. Erro: {ex.Message}");
+            }
+        }
+
+        [HttpGet("periodo/{dataInicio}/{dataFim}")]
+        public async Task<IActionResult>
+        GetContasSemanaCorrente(DateTime dataInicio, DateTime dataFim)
+        {
+            try
+            {
+                int userIdToken = User.GetUserId();
+                if (userIdToken >= 1)
+                {
+                    var Contas =
+                        await _contaService
+                            .GetContasSemanaCorrente(dataInicio, dataFim);
+                    if (Contas == null)
+                    {
+                        return NoContent();
+                    }
+
+                    foreach (var conta in Contas)
+                    {
+                        var fornecedor =
+                            await _fornecedorService
+                                .GetFornecedorByIdAsync(conta.FornecedorId);
+                        conta.NomeFornecedor = fornecedor.Nome;
+                    }
+                    return Ok(Contas);
+                }
+                return BadRequest("Erro ao tentar recuperar Contas.");
+            }
+            catch (Exception ex)
+            {
+                return this
+                    .StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar Contas. Erro: {ex.Message}");
             }
         }
 
@@ -96,15 +146,16 @@ namespace ControleCustos.API.Controllers
                 int userIdToken = User.GetUserId();
                 if (userIdToken >= 1)
                 {
-                    string anoMes = (model.DataVencimento.Year.ToString("0000") + model.DataVencimento.Month.ToString("00"));
+                    string anoMes =
+                        (
+                            model.DataVencimento.Year.ToString("0000") +
+                            model.DataVencimento.Month.ToString("00")
+                        );
+                        
                     model.AnoMes = int.Parse(anoMes);
 
-                    DateTime vencimento = model.DataVencimento;
-                    DateTime pagamento = model.DataPagamento;
-                    int diasAtraso = (int)pagamento.Subtract(vencimento).TotalDays;
-                    model.DiasAtraso = diasAtraso;
-
-                    var Contas = await _contaService.AddConta(userIdToken, model);
+                    var Contas =
+                        await _contaService.AddConta(userIdToken, model);
                     if (Contas == null)
                     {
                         return BadRequest("Erro ao tentar adicionar Conta.");
@@ -115,10 +166,9 @@ namespace ControleCustos.API.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar adicionar Contas. Erro: {ex.Message}"
-                );
+                return this
+                    .StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar adicionar Contas. Erro: {ex.Message}");
             }
         }
 
@@ -130,6 +180,12 @@ namespace ControleCustos.API.Controllers
                 int userIdToken = User.GetUserId();
                 if (userIdToken >= 1)
                 {
+                    DateTime vencimento = model.DataVencimento;
+                    DateTime pagamento = (DateTime)model.DataPagamento;
+                    int diasAtraso =
+                        (int) pagamento.Subtract(vencimento).TotalDays;
+                    model.DiasAtraso = diasAtraso;
+
                     var Contas = await _contaService.UpdateConta(id, model);
                     if (Contas == null)
                     {
@@ -141,13 +197,12 @@ namespace ControleCustos.API.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar atualizar Contas. Erro: {ex.Message}"
-                );
+                return this
+                    .StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar atualizar Contas. Erro: {ex.Message}");
             }
         }
-    
+
         [HttpDelete("contaId/{contaId}")]
         public async Task<IActionResult> Delete(int contaId)
         {
@@ -172,10 +227,9 @@ namespace ControleCustos.API.Controllers
             }
             catch (Exception ex)
             {
-                return this.StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}"
-                );
+                return this
+                    .StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
             }
         }
     }

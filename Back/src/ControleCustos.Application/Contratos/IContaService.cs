@@ -14,6 +14,6 @@ namespace ControleCustos.Application.Contratos
         Task<PageList<ContaDto>> GetAllContasAsync(PageParams pageParams);
         Task<PageList<ContaDto>> GetContaByFornecedorIdAsync(int fornecedorId, PageParams pageParams);
         Task<ContaDto> GetContaByIdAsync(int contaId);
-        
+        Task<ContaDto[]> GetContasSemanaCorrente(DateTime dataInicio, DateTime dataFim);
     }
 }

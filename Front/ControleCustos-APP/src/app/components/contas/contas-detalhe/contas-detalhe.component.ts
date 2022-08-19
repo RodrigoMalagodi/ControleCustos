@@ -59,6 +59,10 @@ export class ContasDetalheComponent implements OnInit {
     };
   }
 
+  formatDate(date: Date): any {
+    return date.toISOString().slice(0, 10);
+  }
+
   public get f(): any {
     return this.form.controls;
   }
@@ -79,12 +83,35 @@ export class ContasDetalheComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.validationConta();
     setTimeout(() => {
       this.fornecedorId = parseInt(localStorage.getItem('fornecedorId'));
     }, 3000);
     this.fornecedoresCombo = [];
     this.getFornecedorAtivos();
+    this.getContaById();
+  }
+
+  public getContaById(): void {
+    this.contaId = +this.activedRouter.snapshot.paramMap.get('id');
+    if (this.contaId != null && this.contaId != 0) {
+      this.acaoSalvar = 'put';
+      this.contaService
+        .getContaById(this.contaId)
+        .subscribe({
+          next: (conta: Conta) => {
+            this.conta = { ...conta };
+            this.form.patchValue(this.conta);
+            console.log(this.conta);
+          },
+          error: (error: any) => {
+            console.log(error), this.spinner.hide();
+            this.toastr.error('Erro ao carregar a conta.', 'Erro');
+          },
+        })
+        .add(() => this.spinner.hide());
+    }
   }
 
   public getFornecedorAtivos() {
@@ -134,7 +161,7 @@ export class ContasDetalheComponent implements OnInit {
       valor: [0, [Validators.required]],
       juros: [0],
       dataVencimento: ['', Validators.required],
-      dataPagamento: ['', Validators.required],
+      dataPagamento: [''],
     });
   }
 

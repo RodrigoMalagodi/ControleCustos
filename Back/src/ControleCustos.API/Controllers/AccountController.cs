@@ -75,7 +75,8 @@ namespace ControleCustos.API.Controllers
                     {
                         userName = user.UserName,
                         Nome = user.Nome,
-                        token = _tokenService.CreateToken(user).Result
+                        token = _tokenService.CreateToken(user).Result,
+                        imagemURL = user.ImagemURL
                     }
                 );
             }
@@ -156,7 +157,7 @@ namespace ControleCustos.API.Controllers
             }
         }
 
-          [HttpPost("upload-image")]
+        [HttpPost("UploadImageUsuario")]
         public async Task<IActionResult> UploadImage()
         {
             try

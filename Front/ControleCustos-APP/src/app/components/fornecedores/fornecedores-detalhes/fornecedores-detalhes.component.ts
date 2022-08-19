@@ -155,19 +155,6 @@ export class FornecedoresDetalhesComponent implements OnInit {
     }
   }
 
-  criarContas(conta: Conta): any {
-    return this.fb.group({
-      id: [conta.contaId],
-      descricao: [conta.descricao],
-      dataVencimento: [conta.dataVencimento],
-      dataPagamento: [conta.dataPagamento],
-      diasAtraso: [conta.diasAtraso],
-      valor: [conta.valor],
-      juros: [conta.juros],
-      tipoCusto: [conta.tipoCusto],
-    });
-  }
-
   public resetForm(event: any): void {
     event.preventDefault();
     this.form.reset();

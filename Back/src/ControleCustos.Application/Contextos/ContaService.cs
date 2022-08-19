@@ -174,5 +174,25 @@ namespace ControleCustos.Application.Contextos
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<ContaDto[]> GetContasSemanaCorrente(DateTime dataInicio, DateTime dataFim)
+        {
+            try
+            {
+                var Conta = await _contaPersist.GetContasSemanaCorrente(dataInicio, dataFim);
+                if (Conta == null)
+                {
+                    return null;
+                }
+
+                var resultado = _mapper.Map<ContaDto[]>(Conta);
+
+                return resultado;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

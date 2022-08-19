@@ -122,6 +122,10 @@ export class ContasListaComponent implements OnInit {
     this.carregarContas();
   }
 
+  public detalheConta(contaId: number): void {
+    this.router.navigate([`contas/detalhe/${contaId}`]);
+  }
+
   public openModal(
     event: any,
     template: TemplateRef<any>,

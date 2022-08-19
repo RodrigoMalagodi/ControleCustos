@@ -112,8 +112,9 @@
             [ngClass]="cssValidator(f.dataVencimento)"
             bsDatepicker
             [bsConfig]="bsConfig"
-            placeholder="01/01/2022"
+            placeholder=""
             formControlName="dataVencimento"
+            [(ngModel)]="conta.dataVencimento"
           />
           <div
             *ngIf="f.dataVencimento.errors?.['required']"
@@ -127,18 +128,12 @@
           <input
             type="text"
             class="form-control"
-            [ngClass]="cssValidator(f.dataPagamento)"
+            formControlName="dataPagamento"
+            placeholder=""
             bsDatepicker
             [bsConfig]="bsConfig"
-            placeholder="01/01/2022"
-            formControlName="dataPagamento"
+            [(ngModel)]="conta.dataPagamento"
           />
-          <div
-            *ngIf="f.dataPagamento.errors?.['required']"
-            class="invalid-feedback"
-          >
-            <strong>Data de Pagamento é obrigatório.</strong>
-          </div>
         </div>
       </div>
     </div>
