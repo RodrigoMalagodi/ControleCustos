@@ -165,6 +165,10 @@ export class ContasDetalheComponent implements OnInit {
     });
   }
 
+  public mudarValorData(value: Date, campo: string): void {
+    this.conta[campo] = value;
+  }
+
   public salvarConta(): any {
     this.rota = '';
     // this.cadastroViaFornecedor = false;

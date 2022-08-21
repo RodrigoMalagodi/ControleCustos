@@ -1,5 +1,6 @@
 <div class="card rounded shadow-sm">
   <form [formGroup]="form">
+     <!-- <p>Form: {{form.value | json}}</p> -->
     <div class="p-2">
       <div class="row g-3">
         <div class="form-group col-md-4">
@@ -114,7 +115,8 @@
             [bsConfig]="bsConfig"
             placeholder=""
             formControlName="dataVencimento"
-            [(ngModel)]="conta.dataVencimento"
+            value="{{ f.dataVencimento.value | DateTimeFormatPipe }}"
+            (bsValueChange)="mudarValorData($event, 'dataVencimento')"
           />
           <div
             *ngIf="f.dataVencimento.errors?.['required']"
@@ -132,7 +134,8 @@
             placeholder=""
             bsDatepicker
             [bsConfig]="bsConfig"
-            [(ngModel)]="conta.dataPagamento"
+            value="{{ f.dataPagamento.value | DateTimeFormatPipe }}"
+            (bsValueChange)="mudarValorData($event, 'dataPagamento')"
           />
         </div>
       </div>
