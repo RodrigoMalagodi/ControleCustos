@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { Conta } from 'src/app/models/identity/Conta';
 import { ContasService } from 'src/app/services/contas.service';
 
 @Component({
@@ -14,6 +13,7 @@ import { ContasService } from 'src/app/services/contas.service';
 })
 export class HomeDetalhesComponent implements OnInit {
   public diaAtual = new Date();
+  public horaAtual = new Date().getTime();
 
   constructor(
     private contaService: ContasService,
@@ -22,7 +22,7 @@ export class HomeDetalhesComponent implements OnInit {
     private activedRouter: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
   ) {
     this.localeService.use('pt-br');
   }
@@ -30,15 +30,12 @@ export class HomeDetalhesComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
     setTimeout(() => {
-
       this.spinner.hide();
     }, 3000);
   }
 
-
   formatDate(date: Date): any {
     return date.toISOString().slice(0, 10);
   }
-
 
 }

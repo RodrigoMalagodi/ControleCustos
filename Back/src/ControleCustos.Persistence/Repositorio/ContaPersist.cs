@@ -43,7 +43,10 @@ namespace ControleCustos.Persistence.Repositorio
         public async Task<Conta> GetContaByIdAsync(int contaId)
         {
             IQueryable<Conta> query =
-                _context.Conta.AsNoTracking().Where(e => e.ContaId == contaId);
+                                _context.Conta
+                                .AsNoTracking()
+                                .Where(e => e.ContaId == contaId)
+                                .Include(e =>e.Fornecedor);
 
             return await query.FirstOrDefaultAsync();
         }

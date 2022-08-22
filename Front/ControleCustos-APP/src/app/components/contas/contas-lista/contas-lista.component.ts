@@ -58,8 +58,8 @@ export class ContasListaComponent implements OnInit {
     }, 3000);
   }
 
-  public novaConta(rotaSalvar: string, cadastroViaFornecedor: boolean): void{
-    this.rota = rotaSalvar;
+  public novaConta(cadastroViaFornecedor: boolean): void{
+    localStorage.setItem('cadastroViaFornecedor', cadastroViaFornecedor.toString());
     this.router.navigate(['contas/detalhe']);
   }
 

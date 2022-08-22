@@ -36,12 +36,11 @@ namespace ControleCustos.Application.Contextos
             {
                 var conta = _mapper.Map<Conta>(model);
                 conta.UserId = userId;
+                _geralPersist.Add<Conta>(conta);
 
-                _geralPersist.Add<Conta> (conta);
                 if (await _geralPersist.SaveChangesAsync())
                 {
-                    var ContaRetorno =
-                        await _contaPersist.GetContaByIdAsync(conta.ContaId);
+                    var ContaRetorno = await _contaPersist.GetContaByIdAsync(conta.ContaId);
                     return _mapper.Map<ContaDto>(ContaRetorno);
                 }
 
@@ -128,10 +127,9 @@ namespace ControleCustos.Application.Contextos
                     return null;
                 }
 
-                _mapper.Map (model, conta);
-                model.ContaId = conta.ContaId;
+                _mapper.Map(model, conta);
 
-                _geralPersist.Update<Conta> (conta);
+                _geralPersist.Update<Conta>(conta);
 
                 if (await _geralPersist.SaveChangesAsync())
                 {

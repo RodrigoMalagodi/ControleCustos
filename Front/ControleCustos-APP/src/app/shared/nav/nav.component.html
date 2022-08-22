@@ -48,14 +48,17 @@
       <ul class="navbar-nav float-end">
         <li role="nav-item">
           <!-- <a class="nav-link" routerLink="/user/perfil" tooltip="Acesse o perfil do usuário"><i class="fa-solid fa-user"></i> {{user}}</a> -->
-          <a class="nav-link" routerLink="/user/perfil" tooltip="Acesse o perfil do usuário"><img
-            [src]="imgUrl"
-            name="aboutme"
-            width="20"
-            height="20"
-            class="rounded-circle"
-            style="cursor: pointer"
-          /> {{user}}</a>
+          <a class="nav-link" routerLink="/user/perfil" tooltip="Acesse o perfil do usuário">
+            <img
+              [src]="imgUrl"
+              name="aboutme"
+              width="30"
+              height="30"
+              class="rounded-circle"
+              style="cursor: pointer"
+            />
+            {{user}}
+          </a>
         </li>
         <li role="nav-item">
           <a class="nav-link" routerLink="/user/login" (click)="logout();"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</a>

@@ -1,10 +1,13 @@
 using System;
-
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ControleCustos.Application.Dtos
 {
     public class ContaDto
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 1)]
         public int ContaId { get; set; }
         public decimal Valor { get; set; }
         public DateTime DataVencimento { get; set; }

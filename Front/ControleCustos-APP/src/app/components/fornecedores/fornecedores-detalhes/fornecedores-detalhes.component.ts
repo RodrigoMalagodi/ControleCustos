@@ -34,7 +34,7 @@ export class FornecedoresDetalhesComponent implements OnInit {
   public fornecedorId: number;
   public pagination = {} as Pagination;
   public rota: string;
-  public contasDetalhe: ContasDetalheComponent;
+  contasDetalhe: ContasDetalheComponent;
 
   constructor(
     private fb: FormBuilder,
@@ -91,8 +91,8 @@ export class FornecedoresDetalhesComponent implements OnInit {
     });
   }
 
-  public novaConta(rotaSalvar: string, cadastroViaFornecedor: boolean): void{
-    this.rota = rotaSalvar;
+  public novaConta(cadastroViaFornecedor: boolean): void{
+    localStorage.setItem('cadastroViaFornecedor', cadastroViaFornecedor.toString());
     localStorage.setItem('fornecedorId', this.fornecedorId.toString());
     this.router.navigate(['contas/detalhe']);
   }
@@ -112,7 +112,6 @@ export class FornecedoresDetalhesComponent implements OnInit {
           next: (fornecedorRetorno: Fornecedor) => {
             this.toastr.success('Fornecedor salvo com sucesso.', 'Sucesso');
             this.router.navigate(['fornecedores/lista']);
-            console.log(fornecedorRetorno);
           },
           error: (error: any) => {
             console.log(error);

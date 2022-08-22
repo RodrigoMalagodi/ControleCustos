@@ -5,9 +5,9 @@ export class Conta {
   contaId: number;
   valor: number;
   dataVencimento: Date;
-  dataPagamento: Date;
+  dataPagamento?: Date;
   diasAtraso: number;
-  anoMes: number;
+  anoMes?: number;
   tipoCusto: string;
   descricao: string;
   juros: number;

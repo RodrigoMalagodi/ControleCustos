@@ -75,7 +75,7 @@ export class AccountService {
     const formData = new FormData();
     formData.append('file', fileToUpload);
     return this.http.post<UserUpdate>(
-      `${this.baseURL}/upload-image`,
+      `${this.baseURL}/UploadImageUsuario`,
       formData
     ).pipe(take(1));
   }

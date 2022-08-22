@@ -35,6 +35,13 @@ body{
   color: #fff;
 }
 
+.li > active {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  border-bottom: 3px solid #0d6efd;
+}
+
 ::-webkit-scrollbar {
   width: 3px;
 }

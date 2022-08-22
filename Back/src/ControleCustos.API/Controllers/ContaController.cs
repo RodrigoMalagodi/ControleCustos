@@ -153,7 +153,8 @@ namespace ControleCustos.API.Controllers
                         );
                         
                     model.AnoMes = int.Parse(anoMes);
-
+                    model.DataPagamento = new DateTime();
+                    model.DiasAtraso = 0;
                     var Contas =
                         await _contaService.AddConta(userIdToken, model);
                     if (Contas == null)
@@ -180,11 +181,11 @@ namespace ControleCustos.API.Controllers
                 int userIdToken = User.GetUserId();
                 if (userIdToken >= 1)
                 {
-                    DateTime vencimento = model.DataVencimento;
+                    DateTime vencimento = (DateTime)model.DataVencimento;
                     DateTime pagamento = (DateTime)model.DataPagamento;
-                    int diasAtraso =
-                        (int) pagamento.Subtract(vencimento).TotalDays;
+                    int diasAtraso = (int)Math.Floor(pagamento.Subtract(vencimento).TotalDays);
                     model.DiasAtraso = diasAtraso;
+                    model.UserId = userIdToken;
 
                     var Contas = await _contaService.UpdateConta(id, model);
                     if (Contas == null)

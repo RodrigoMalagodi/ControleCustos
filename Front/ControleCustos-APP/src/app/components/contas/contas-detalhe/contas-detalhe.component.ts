@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
+  AbstractControlOptions,
   FormArray,
   FormBuilder,
   FormControl,
@@ -12,6 +13,7 @@ import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { ValidatorField } from 'src/app/helpers/ValidatorField';
 import { Conta } from 'src/app/models/identity/Conta';
 import { Fornecedor } from 'src/app/models/identity/Fornecedor';
 import { ContasService } from 'src/app/services/contas.service';
@@ -34,7 +36,8 @@ export class ContasDetalheComponent implements OnInit {
   fornecedores = [] as Fornecedor[];
   fornecedoresCombo = [];
   public rota: string;
-  public cadastroViaFornecedor: boolean = false;
+  public cadastroViaFornecedor: boolean =
+    localStorage.getItem('cadastroViaFornecedor') === 'true' ? true : false;
 
   constructor(
     private fb: FormBuilder,
@@ -88,9 +91,11 @@ export class ContasDetalheComponent implements OnInit {
     setTimeout(() => {
       this.fornecedorId = parseInt(localStorage.getItem('fornecedorId'));
     }, 3000);
+
     this.fornecedoresCombo = [];
     this.getFornecedorAtivos();
     this.getContaById();
+    this.spinner.hide();
   }
 
   public getContaById(): void {
@@ -138,11 +143,11 @@ export class ContasDetalheComponent implements OnInit {
           nome: fornecedor.nome,
         });
       }
-      if (this.cadastroViaFornecedor) {
-        this.form = this.fb.group({
-          fornecedorId: [`${this.fornecedorId}`],
-        });
-      }
+      // if (this.cadastroViaFornecedor) {
+      //   this.form = this.fb.group({
+      //     fornecedorId: [`${this.fornecedorId}`],
+      //   });
+      // }
     });
   }
 
@@ -160,6 +165,7 @@ export class ContasDetalheComponent implements OnInit {
       tipoCusto: ['', Validators.required],
       valor: [0, [Validators.required]],
       juros: [0],
+      anoMes: [0],
       dataVencimento: ['', Validators.required],
       dataPagamento: [''],
     });
@@ -172,6 +178,11 @@ export class ContasDetalheComponent implements OnInit {
   public salvarConta(): any {
     this.rota = '';
     // this.cadastroViaFornecedor = false;
+    if (!this.cadastroViaFornecedor) {
+      this.rota = 'contas/lista';
+    } else {
+      this.rota = 'fornecedores/lista';
+    }
     if (this.form.valid) {
       this.spinner.show();
       this.acaoSalvar === 'post'

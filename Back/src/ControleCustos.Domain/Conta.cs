@@ -1,10 +1,14 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using ControleCustos.Domain.Identity;
 
 namespace ControleCustos.Domain
 {
     public class Conta
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column(Order = 1)]
         public int ContaId { get; set; }
         public decimal Valor { get; set; }
         public DateTime DataVencimento { get; set; }
