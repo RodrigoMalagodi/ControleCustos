@@ -26,14 +26,14 @@ namespace ControleCustos.API.Controllers
         }
 
         [HttpGet("periodo/{dataInicio}/{dataFim}")]
-        public async Task<IActionResult> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim)
+        public async Task<IActionResult> GetDadosDashBoardPeriodoAsync(DateTime dataInicio, DateTime dataFim)
         {
             try
             {
                 int userIdToken = User.GetUserId();
                 if (userIdToken >= 1)
                 {
-                    var Contas = await _dashboardService.GetDadosDashBoardAsync(dataInicio, dataFim);
+                    var Contas = await _dashboardService.GetDadosDashBoardPeriodoAsync(dataInicio, dataFim);
                     if (Contas == null)
                     {
                         return NoContent();
@@ -88,6 +88,33 @@ namespace ControleCustos.API.Controllers
                 if (userIdToken >= 1)
                 {
                     var Contas = await _dashboardService.GetDadosDashBoardTipoFornecimentoAsync(tipoFornecimento, dataInicio, dataFim);
+                    if (Contas == null)
+                    {
+                        return NoContent();
+                    }
+                    return Ok(Contas);
+                }
+                return BadRequest("Erro ao tentar recuperar dados.");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar dados. Erro: {ex.Message}"
+                );
+            }
+
+        }
+
+        [HttpGet("fornecedor/{dataInicio}/{dataFim}")]
+        public async Task<IActionResult> GetDadosDashBoardByFornececedorAsync(DateTime dataInicio, DateTime dataFim)
+        {
+            try
+            {
+                int userIdToken = User.GetUserId();
+                if (userIdToken >= 1)
+                {
+                    var Contas = await _dashboardService.GetDadosDashBoardByFornececedorAsync(dataInicio, dataFim);
                     if (Contas == null)
                     {
                         return NoContent();

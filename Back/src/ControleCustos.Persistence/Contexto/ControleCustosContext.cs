@@ -27,7 +27,6 @@ namespace ControleCustos.Persistence.Contexto
         }
 
         public DbSet<Conta> Conta { get; set; }
-
         public DbSet<Fornecedor> Fornecedor { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -51,14 +50,14 @@ namespace ControleCustos.Persistence.Contexto
                         .IsRequired();
                 });
 
-             modelBuilder
-                .Entity<Conta>()
-                .HasKey(CO => new { CO.ContaId, CO.FornecedorId });
 
              modelBuilder
                 .Entity<Fornecedor>()
-                .HasMany(e => e.Contas)
-                .WithOne(rs => rs.Fornecedor);
+                .HasMany(c => c.Contas)
+                .WithOne(f => f.Fornecedor);
+            
+             modelBuilder
+                .Entity<Conta>();
         }
     }
 }

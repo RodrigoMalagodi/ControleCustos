@@ -22,11 +22,11 @@ namespace ControleCustos.Application.Contextos
 
         }
 
-        public async Task<ContaDto[]> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim)
+        public async Task<ContaDto[]> GetDadosDashBoardPeriodoAsync(DateTime dataInicio, DateTime dataFim)
         {
             try
             {
-                var Conta = await _dashboardPersist.GetDadosDashBoardAsync(dataInicio, dataFim);
+                var Conta = await _dashboardPersist.GetDadosDashBoardPeriodoAsync(dataInicio, dataFim);
                 if (Conta == null)
                 {
                     return null;
@@ -89,7 +89,7 @@ namespace ControleCustos.Application.Contextos
 
         public async Task<ContaDto[]> GetDadosDashBoardTipoFornecimentoAsync(string tipoCusto, DateTime dataInicio, DateTime dataFim)
         {
-           try
+            try
             {
                 var Conta = await _dashboardPersist.GetDadosDashBoardTipoFornecimentoAsync(tipoCusto, dataInicio, dataFim);
                  if (Conta == null)
@@ -123,6 +123,51 @@ namespace ControleCustos.Application.Contextos
                 }
 
                 var query = ListaValor.OrderBy(x => x.AnoMes).AsQueryable<ContaDto>();
+
+                return query.ToArray();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ContaDto[]> GetDadosDashBoardByFornececedorAsync(DateTime dataInicio, DateTime dataFim)
+        {
+            try
+            {
+                var Conta = await _dashboardPersist.GetDadosDashBoardByFornececedorAsync(dataInicio, dataFim);
+                if (Conta == null)
+                {
+                    return null;
+                }
+
+                var resultado = _mapper.Map<ContaDto[]>(Conta);
+
+                List<string> ListaNome = new List<string>();
+                var ListaValor = new List<ContaDto>();
+                decimal valorTotal = 0;
+
+                foreach (var item in resultado.Select(x => new { x.Descricao }).GroupBy(x => x.Descricao))
+                {
+                    ListaNome.Add(item.Key);
+                }
+
+                foreach (string nomeFornecedor in ListaNome)
+                {
+                    ContaDto dados = new ContaDto();
+                    foreach (var b in resultado.Where(x => x.Descricao == nomeFornecedor).Select(x => new { Valor = x.Valor }))
+                    {
+                        valorTotal += b.Valor;
+                    }
+
+                    dados.NomeFornecedor = nomeFornecedor;
+                    dados.Valor = valorTotal;
+                    ListaValor.Add(dados);
+                    valorTotal = 0;
+                }
+
+                var query = ListaValor.OrderBy(x => x.NomeFornecedor).AsQueryable<ContaDto>();
 
                 return query.ToArray();
             }

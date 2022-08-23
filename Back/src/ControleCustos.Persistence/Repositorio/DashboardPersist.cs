@@ -16,10 +16,9 @@ namespace ControleCustos.Persistence.Repositorio
         public DashboardPersist(ControleCustosContext context)
         {
             _context = context;
-
         }
 
-        public async Task<Conta[]> GetDadosDashBoardAsync(DateTime dataInicio, DateTime dataFim)
+        public async Task<Conta[]> GetDadosDashBoardPeriodoAsync(DateTime dataInicio, DateTime dataFim)
         {
             IQueryable<Conta> query = _context.Conta
                                                 .AsNoTracking()
@@ -68,6 +67,31 @@ namespace ControleCustos.Persistence.Repositorio
             {
                 var conta = new Conta();
                 conta.AnoMes = item.AnoMes;
+                conta.Valor = item.Valor;
+                ListaValores.Add(conta);
+            }
+
+            return ListaValores;
+        }
+
+        public async Task<List<Conta>> GetDadosDashBoardByFornececedorAsync(DateTime dataInicio, DateTime dataFim)
+        {
+             var query = await (
+                                from a in _context.Conta
+                                join b in _context.Fornecedor on a.FornecedorId equals b.FornecedorId
+                                where
+                                a.DataPagamento >= dataInicio &&
+                                a.DataPagamento <= dataFim
+                                orderby a.AnoMes
+                                select new { b.Nome, a.Valor }
+                            ).ToListAsync();
+
+            List<Conta> ListaValores = new List<Conta>();
+
+            foreach (var item in query.OrderBy(x => x.Nome))
+            {
+                var conta = new Conta();
+                conta.Descricao = item.Nome;
                 conta.Valor = item.Valor;
                 ListaValores.Add(conta);
             }
