@@ -1,6 +1,6 @@
 <div class="card rounded shadow-sm">
   <form [formGroup]="form">
-     <!-- <p>Form: {{form.value | json}}</p> -->
+    <!-- <p>Form: {{form.value | json}}</p> -->
     <div class="p-2">
       <div class="row g-3">
         <div class="form-group col-md-4">
@@ -12,7 +12,10 @@
             formControlName="descricao"
             placeholder="Energia elétrica apartamento"
           />
-          <div *ngIf="f.descricao.errors?.['required']" class="invalid-feedback">
+          <div
+            *ngIf="f.descricao.errors?.['required']"
+            class="invalid-feedback"
+          >
             <strong>Descrição é obrigatório.</strong>
           </div>
         </div>
@@ -142,9 +145,18 @@
     </div>
     <div class="d-flex float-end m-3">
       <button
-        class="btn btn-outline-dark me-auto border"
+        class="btn btn-outline-primary me-auto border"
+        (click)="voltarFormulario()"
+        [hidden]="!this.visibilidadeVoltar"
+      >
+        <i class="fa-solid fa-circle-left"></i>
+        Voltar Para Fornecedor
+      </button>
+      <button
+        class="btn btn-outline-danger me-auto border ms-2"
         (click)="resetForm($event)"
       >
+      <i class="fa-solid fa-rectangle-xmark me-1"></i>
         Cancelar
       </button>
       <button
@@ -152,7 +164,8 @@
         [disabled]="!form.valid"
         (click)="salvarConta()"
       >
-        Salvar Conta
+        <i class="fa-solid fa-floppy-disk"></i>
+        Salvar
       </button>
     </div>
   </form>

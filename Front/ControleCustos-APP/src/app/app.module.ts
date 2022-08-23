@@ -45,6 +45,7 @@ import { PerfilDetalheComponent } from './components/user/perfil/perfil-detalhe/
 import { HomeDetalhesComponent } from './components/home/home-detalhes/home-detalhes.component';
 import { ContasService } from './services/contas.service';
 import { FornecedoresService } from './services/fornecedores.service';
+import { HomeService } from './services/home.service';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -107,13 +108,14 @@ export const customCurrencyMaskConfig = {
     }),
     NgxSpinnerModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
-    TabsModule.forRoot()
+    TabsModule.forRoot(),
   ],
   providers: [
     AccountService,
     ContasService,
     FornecedoresService,
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
+    HomeService,
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

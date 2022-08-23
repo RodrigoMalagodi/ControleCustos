@@ -57,6 +57,6 @@ export class LoginComponent implements OnInit {
     }, 3000);
 
     var user = localStorage.getItem('user');
-    if (!user) localStorage.removeItem('user');
+    if (!user) localStorage.clear();
   }
 }

@@ -17,6 +17,17 @@ body{
   }
 }
 
+.btn-dark-black {
+  color: #fff;
+  background-color: #040404;
+  border-color: #17a2b8 !important;
+}
+
+.btn-dark-black:hover {
+  color: #fff;
+}
+
+
 .valorMenorQueZero {
   color: red !important;
   font-weight: bold;
@@ -30,16 +41,13 @@ body{
 .card-header {
   padding: .5rem 1rem;
   margin-bottom: 0;
-  background-color: #4d4d4d;
+  background-color: #555;
   border-bottom: 1px solid rgba(0,0,0,.125);
   color: #fff;
 }
 
-.li > active {
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-  border-bottom: 3px solid #0d6efd;
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255,255,255,1);
 }
 
 ::-webkit-scrollbar {

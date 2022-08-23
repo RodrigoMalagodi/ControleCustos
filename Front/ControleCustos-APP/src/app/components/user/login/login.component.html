@@ -5,7 +5,7 @@
         <!-- <p>Form: {{frmLogin.value | json}}</p> -->
         <!-- <p>Form: {{frmLogin.status}}</p> -->
 
-        <i class="fa fa-users mb-2"></i>
+        <!-- <i class="fa fa-users mb-2"></i> -->
         <h1 class="h3 mb-3 font-weight-normal">Acesso ao Sistema</h1>
 
         <label for="nomeUsuario" class="sr-only">Usuário</label>
@@ -30,9 +30,10 @@
           autocomplete="off"
         />
         <button
-          class="btn btn-lg btn-primary btn-block"
+          class="btn btn-lg btn-dark-black btn-block"
           type="submit"
           [disabled]="!loginForm.valid"
+          style="width: 100%;"
         >
           Entrar
         </button>

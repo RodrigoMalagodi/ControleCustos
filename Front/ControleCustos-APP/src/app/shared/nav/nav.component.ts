@@ -12,11 +12,13 @@ export class NavComponent implements OnInit {
   isCollapsed = true;
   user: string = '';
   imgUrl: string = '';
+  imagemUsuario: string = '';
   constructor(public accountService: AccountService, private router: Router) {}
 
   ngOnInit(): void {}
 
   logout(): void {
+    localStorage.clear();
     this.accountService.logout();
     this.router.navigateByUrl('/user/login');
   }
@@ -27,9 +29,17 @@ export class NavComponent implements OnInit {
       this.router.url !== '/user/registration'
     ) {
       this.user = this.accountService.userLog;
-      this.imgUrl = `${environment.apiURL}/resources/images/users/${JSON.parse(
-        localStorage.getItem('user')!
-      ).imagemURL.toString()}`;
+      var user = localStorage.getItem('user');
+      if (user) {
+        this.imagemUsuario = JSON.parse(
+          localStorage.getItem('user')!
+        ).imagemURL.toString();
+        if (this.imagemUsuario !== 'NULL') {
+          this.imgUrl = `${environment.apiURL}/resources/images/users/${this.imagemUsuario}`;
+        } else {
+          this.imgUrl = 'assets/img/default_user.png';
+        }
+      }
       return true;
     } else {
       this.user = '';

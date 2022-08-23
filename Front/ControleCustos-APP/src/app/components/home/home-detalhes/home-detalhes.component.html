@@ -1,28 +1,40 @@
 <div class="card rounded shadow-sm p-3">
   <div class="d-flex">
-    <div class="flex-fill pr-3">
-      <div class="row row-cols-lg g-3 align-items-center me-2">
-        <div class="mt-3 row">
-          <div class="col-sm-4">
+    <div class="flex-fill">
+      <div class="row row-cols-lg g-3 align-items-center me-1">
+        <div class="mt-3 row ms-1">
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-header">
+                <i class="fa-solid fa-map-location" style="font-size: 24px"></i>
+              </div>
+              <div class="card-body text-center">
+                <span style="font-size: 48px">
+                  {{ location }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
             <div class="card">
               <div class="card-header">
                 <i class="fa-solid fa-calendar" style="font-size: 24px"></i>
               </div>
-              <div class="card-body">
+              <div class="card-body text-center">
                 <span style="font-size: 48px">
                   {{ diaAtual | DateTimeFormatPipe }}
                 </span>
               </div>
             </div>
           </div>
-          <div class="col-sm-4">
+          <div class="col-md-4">
             <div class="card">
               <div class="card-header">
                 <i class="fa-solid fa-clock" style="font-size: 24px"></i>
               </div>
-              <div class="card-body">
+              <div class="card-body text-center">
                 <span style="font-size: 48px">
-                  {{ horaAtual | date: "HH:mm" }}
+                  {{ horaAtual }}
                 </span>
               </div>
             </div>

@@ -33,7 +33,6 @@ export class ContasListaComponent implements OnInit {
   public fornecedor: Fornecedor[] = [];
   public pagination = {} as Pagination;
   public contaSituacao: boolean;
-  public cadastroViaFornecedor: boolean = false;
   public contasDetalhe: ContasDetalheComponent;
 
   private acaoSalvar: string = '';
@@ -123,6 +122,7 @@ export class ContasListaComponent implements OnInit {
   }
 
   public detalheConta(contaId: number): void {
+    localStorage.setItem('cadastroViaFornecedor', 'false');
     this.router.navigate([`contas/detalhe/${contaId}`]);
   }
 

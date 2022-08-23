@@ -36,8 +36,8 @@ export class ContasDetalheComponent implements OnInit {
   fornecedores = [] as Fornecedor[];
   fornecedoresCombo = [];
   public rota: string;
-  public cadastroViaFornecedor: boolean =
-    localStorage.getItem('cadastroViaFornecedor') === 'true' ? true : false;
+  public cadastroViaFornecedor: boolean = false;
+  public visibilidadeVoltar: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -95,6 +95,9 @@ export class ContasDetalheComponent implements OnInit {
     this.fornecedoresCombo = [];
     this.getFornecedorAtivos();
     this.getContaById();
+    this.cadastroViaFornecedor =
+      localStorage.getItem('cadastroViaFornecedor') === 'true' ? true : false;
+      this.visibilidadeVoltar = this.cadastroViaFornecedor;
     this.spinner.hide();
   }
 
@@ -177,11 +180,10 @@ export class ContasDetalheComponent implements OnInit {
 
   public salvarConta(): any {
     this.rota = '';
-    // this.cadastroViaFornecedor = false;
-    if (!this.cadastroViaFornecedor) {
-      this.rota = 'contas/lista';
-    } else {
+    if (this.cadastroViaFornecedor) {
       this.rota = 'fornecedores/lista';
+    } else {
+      this.rota = 'contas/lista';
     }
     if (this.form.valid) {
       this.spinner.show();
@@ -211,6 +213,12 @@ export class ContasDetalheComponent implements OnInit {
           },
         })
         .add(() => this.spinner.hide());
+    }
+  }
+
+  voltarFormulario(): void{
+    if(this.cadastroViaFornecedor){
+      this.router.navigate([`fornecedores/detalhe/${this.fornecedorId}`]);
     }
   }
 }
