@@ -29,8 +29,8 @@ export class HomeDetalhesComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-    this.getLocation();
     setTimeout(() => {
+      this.getLocation();
       this.spinner.hide();
     }, 3000);
     const setIntervalConst: ReturnType<typeof setInterval> = setInterval(() => {

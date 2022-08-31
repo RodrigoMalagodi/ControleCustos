@@ -8,8 +8,8 @@
       <small>{{ subtituloPagina }}</small>
     </div>
   </div>
-  <div class="p-3" *ngIf="botaoListar">
-    <button class="btn btn-outline-dark" (click)="listar()">
+  <div class="p-3" >
+    <button class="btn btn-outline-dark" (click)="listar()" *ngIf="botaoListar">
       <i class="fa-solid fa-rectangle-list"></i>
       Listar {{ tituloPagina }}
     </button>

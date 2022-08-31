@@ -67,19 +67,19 @@ namespace ControleCustos.Application.Contextos
             }
         }
 
-        public async Task<ContaDto[]> GetDadosDashBoardFornecedorByIdAsync(int fornecedorID, DateTime dataInicio, DateTime dataFim)
+        public async Task<ContaDto[]> GetDadosDashBoardFornecedorAsync(DateTime dataInicio, DateTime dataFim)
         {
             try
             {
-                var Conta = await _dashboardPersist.GetDadosDashBoardFornecedorByIdAsync(fornecedorID, dataInicio, dataFim);
+                var Conta = await _dashboardPersist.GetDadosDashBoardFornecedorAsync(dataInicio, dataFim);
                 if (Conta == null)
                 {
                     return null;
                 }
 
                 var resultado = _mapper.Map<ContaDto[]>(Conta);
-
-                return resultado;
+                
+                return resultado.ToArray();
             }
             catch (Exception ex)
             {
@@ -87,12 +87,32 @@ namespace ControleCustos.Application.Contextos
             }
         }
 
-        public async Task<ContaDto[]> GetDadosDashBoardTipoFornecimentoAsync(string tipoCusto, DateTime dataInicio, DateTime dataFim)
+        public async Task<ContaDto[]> GetDadosDashBoardTipoCustoAsync(DateTime dataInicio, DateTime dataFim)
         {
             try
             {
-                var Conta = await _dashboardPersist.GetDadosDashBoardTipoFornecimentoAsync(tipoCusto, dataInicio, dataFim);
-                 if (Conta == null)
+                var Conta = await _dashboardPersist.GetDadosDashBoardTipoCustoAsync(dataInicio, dataFim);
+                if (Conta == null)
+                {
+                    return null;
+                }
+
+                var resultado = _mapper.Map<ContaDto[]>(Conta);
+
+                return resultado.ToArray();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ContaDto[]> GetDadosDashBoardTipoFornecimentoAsync(DateTime dataInicio, DateTime dataFim)
+        {
+            try
+            {
+                var Conta = await _dashboardPersist.GetDadosDashBoardTipoFornecimentoAsync(dataInicio, dataFim);
+                if (Conta == null)
                 {
                     return null;
                 }
@@ -102,6 +122,7 @@ namespace ControleCustos.Application.Contextos
                 List<int> ListaAnoMes = new List<int>();
                 var ListaValor = new List<ContaDto>();
                 decimal valorTotal = 0;
+                string tipoFornecimento = string.Empty;
 
                 foreach (var item in resultado.Select(x => new { x.AnoMes }).GroupBy(x => x.AnoMes))
                 {
@@ -110,13 +131,15 @@ namespace ControleCustos.Application.Contextos
 
                 foreach (int anoMes in ListaAnoMes)
                 {
-                    ContaDto dados = new ContaDto();
-                    foreach (var b in resultado.Where(x => x.AnoMes == anoMes).Select(x => new { Valor = x.Valor }))
+                    var dados = new ContaDto();
+                    foreach (var b in resultado.Where(x => x.AnoMes == anoMes).Select(x => new { Valor = x.Valor, TipoFornecimento = x.Descricao }))
                     {
                         valorTotal += b.Valor;
+                        tipoFornecimento = b.TipoFornecimento;
                     }
 
                     dados.AnoMes = anoMes;
+                    dados.TipoFornecimento = tipoFornecimento;
                     dados.Valor = valorTotal;
                     ListaValor.Add(dados);
                     valorTotal = 0;
@@ -132,49 +155,6 @@ namespace ControleCustos.Application.Contextos
             }
         }
 
-        public async Task<ContaDto[]> GetDadosDashBoardByFornececedorAsync(DateTime dataInicio, DateTime dataFim)
-        {
-            try
-            {
-                var Conta = await _dashboardPersist.GetDadosDashBoardByFornececedorAsync(dataInicio, dataFim);
-                if (Conta == null)
-                {
-                    return null;
-                }
-
-                var resultado = _mapper.Map<ContaDto[]>(Conta);
-
-                List<string> ListaNome = new List<string>();
-                var ListaValor = new List<ContaDto>();
-                decimal valorTotal = 0;
-
-                foreach (var item in resultado.Select(x => new { x.Descricao }).GroupBy(x => x.Descricao))
-                {
-                    ListaNome.Add(item.Key);
-                }
-
-                foreach (string nomeFornecedor in ListaNome)
-                {
-                    ContaDto dados = new ContaDto();
-                    foreach (var b in resultado.Where(x => x.Descricao == nomeFornecedor).Select(x => new { Valor = x.Valor }))
-                    {
-                        valorTotal += b.Valor;
-                    }
-
-                    dados.NomeFornecedor = nomeFornecedor;
-                    dados.Valor = valorTotal;
-                    ListaValor.Add(dados);
-                    valorTotal = 0;
-                }
-
-                var query = ListaValor.OrderBy(x => x.NomeFornecedor).AsQueryable<ContaDto>();
-
-                return query.ToArray();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+    
     }
 }

@@ -103,8 +103,7 @@ namespace ControleCustos.API.Controllers
         }
 
         [HttpGet("periodo/{dataInicio}/{dataFim}")]
-        public async Task<IActionResult>
-        GetContasSemanaCorrente(DateTime dataInicio, DateTime dataFim)
+        public async Task<IActionResult> GetContasSemanaCorrente(DateTime dataInicio, DateTime dataFim)
         {
             try
             {
@@ -113,7 +112,7 @@ namespace ControleCustos.API.Controllers
                 {
                     var Contas =
                         await _contaService
-                            .GetContasSemanaCorrente(dataInicio, dataFim);
+                            .GetContasSemanaCorrenteAsync(dataInicio, dataFim);
                     if (Contas == null)
                     {
                         return NoContent();

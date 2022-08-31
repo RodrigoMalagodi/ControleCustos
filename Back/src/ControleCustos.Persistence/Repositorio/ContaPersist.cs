@@ -65,7 +65,7 @@ namespace ControleCustos.Persistence.Repositorio
         }
 
         public async Task<Conta[]>
-        GetContasSemanaCorrente(DateTime dataInicio, DateTime dataFim)
+        GetContasSemanaCorrenteAsync(DateTime dataInicio, DateTime dataFim)
         {
             IQueryable<Conta> query =
                 _context
@@ -75,5 +75,6 @@ namespace ControleCustos.Persistence.Repositorio
 
            return await query.ToArrayAsync();
         }
+
     }
 }

@@ -1,18 +1,22 @@
-@import  '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-@import  '../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css';
-@import  '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css';
+@import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 @import '../node_modules/ngx-spinner/animations/ball-scale-multiple.css';
 @import '../node_modules/ngx-toastr/toastr.css';
 @import '../node_modules/bootswatch/dist/Lumen/bootstrap.min.css';
 
-body{
+body {
   background-color: rgba(213, 217, 218, .8);
   overflow: hidden;
 }
 
-@media (min-width: 1200px)
-{
-  .container, .container-lg, .container-md, .container-sm, .container-xl {
+@media (min-width: 1200px) {
+
+  .container,
+  .container-lg,
+  .container-md,
+  .container-sm,
+  .container-xl {
     max-width: 1200px;
   }
 }
@@ -26,7 +30,6 @@ body{
 .btn-dark-black:hover {
   color: #fff;
 }
-
 
 .valorMenorQueZero {
   color: red !important;
@@ -42,12 +45,27 @@ body{
   padding: .5rem 1rem;
   margin-bottom: 0;
   background-color: #555;
-  border-bottom: 1px solid rgba(0,0,0,.125);
+  border-bottom: 1px solid rgba(0, 0, 0, .125);
   color: #fff;
 }
 
 .navbar-dark .navbar-nav .nav-link {
-  color: rgba(255,255,255,1);
+  color: rgba(255, 255, 255, 1);
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link:not(.disabled):focus,
+.nav-tabs .nav-link:not(.disabled):hover {
+  padding-bottom: calc(.5rem + 6px);
+  border-bottom-color: transparent;
+  margin-top: 0;
+}
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+  color: #222;
+  background-color: #f0f0f0;
+  border-color: #f0f0f0;
 }
 
 ::-webkit-scrollbar {

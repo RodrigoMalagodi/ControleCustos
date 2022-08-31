@@ -173,11 +173,11 @@ namespace ControleCustos.Application.Contextos
             }
         }
 
-        public async Task<ContaDto[]> GetContasSemanaCorrente(DateTime dataInicio, DateTime dataFim)
+        public async Task<ContaDto[]> GetContasSemanaCorrenteAsync(DateTime dataInicio, DateTime dataFim)
         {
             try
             {
-                var Conta = await _contaPersist.GetContasSemanaCorrente(dataInicio, dataFim);
+                var Conta = await _contaPersist.GetContasSemanaCorrenteAsync(dataInicio, dataFim);
                 if (Conta == null)
                 {
                     return null;
@@ -192,5 +192,6 @@ namespace ControleCustos.Application.Contextos
                 throw new Exception(ex.Message);
             }
         }
+
     }
 }

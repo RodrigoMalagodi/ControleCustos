@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ControleCustos.Application.Dtos;
 using ControleCustos.Persistence.Models;
@@ -14,6 +15,6 @@ namespace ControleCustos.Application.Contratos
         Task<PageList<ContaDto>> GetAllContasAsync(PageParams pageParams);
         Task<PageList<ContaDto>> GetContaByFornecedorIdAsync(int fornecedorId, PageParams pageParams);
         Task<ContaDto> GetContaByIdAsync(int contaId);
-        Task<ContaDto[]> GetContasSemanaCorrente(DateTime dataInicio, DateTime dataFim);
+        Task<ContaDto[]> GetContasSemanaCorrenteAsync(DateTime dataInicio, DateTime dataFim);
     }
 }

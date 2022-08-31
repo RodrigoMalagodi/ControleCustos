@@ -146,11 +146,6 @@ export class ContasDetalheComponent implements OnInit {
           nome: fornecedor.nome,
         });
       }
-      // if (this.cadastroViaFornecedor) {
-      //   this.form = this.fb.group({
-      //     fornecedorId: [`${this.fornecedorId}`],
-      //   });
-      // }
     });
   }
 

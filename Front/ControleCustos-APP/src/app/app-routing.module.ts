@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ContasDetalheComponent } from './components/contas/contas-detalhe/contas-detalhe.component';
 import { ContasListaComponent } from './components/contas/contas-lista/contas-lista.component';
 import { ContasComponent } from './components/contas/contas.component';
+import { DashboardDetalhesComponent } from './components/dashboard/dashboard-detalhes/dashboard-detalhes.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FornecedoresDetalhesComponent } from './components/fornecedores/fornecedores-detalhes/fornecedores-detalhes.component';
 import { FornecedoresListaComponent } from './components/fornecedores/fornecedores-lista/fornecedores-lista.component';
@@ -31,7 +32,14 @@ const routes: Routes = [
     children: [
       { path: 'user/perfil', component: PerfilComponent },
       { path: 'contas', component: ContasComponent },
-      { path: 'dashboard', component: DashboardComponent },
+      { path: 'dashboard', redirectTo: 'dashboard/detalhe' },
+      {
+        path: 'dashboard',
+        component: DashboardComponent,
+        children: [
+          { path: 'detalhe', component: DashboardDetalhesComponent },
+        ],
+      },
       { path: 'contas', redirectTo: 'contas/lista' },
       {
         path: 'contas',

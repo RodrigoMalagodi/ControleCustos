@@ -7,9 +7,9 @@ namespace ControleCustos.Persistence.Contratos
 {
     public interface IDashboardPersist
     {
-        Task<Conta[]> GetDadosDashBoardPeriodoAsync(DateTime dataInicio, DateTime dataFim);
-        Task<Conta[]> GetDadosDashBoardFornecedorByIdAsync(int fornecedorId, DateTime dataInicio, DateTime dataFim);
-        Task<List<Conta>> GetDadosDashBoardTipoFornecimentoAsync(string tipoCusto, DateTime dataInicio, DateTime dataFim);
-        Task<List<Conta>> GetDadosDashBoardByFornececedorAsync(DateTime dataInicio, DateTime dataFim);
+        Task<List<Conta>> GetDadosDashBoardPeriodoAsync(DateTime dataInicio, DateTime dataFim);
+        Task<List<Conta>> GetDadosDashBoardFornecedorAsync(DateTime dataInicio, DateTime dataFim);
+        Task<List<Conta>> GetDadosDashBoardTipoCustoAsync(DateTime dataInicio, DateTime dataFim);
+        Task<List<Conta>> GetDadosDashBoardTipoFornecimentoAsync(DateTime dataInicio, DateTime dataFim);
     }
 }

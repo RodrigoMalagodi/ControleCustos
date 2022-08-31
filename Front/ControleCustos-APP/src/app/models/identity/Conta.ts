@@ -9,6 +9,7 @@ export class Conta {
   diasAtraso: number;
   anoMes?: number;
   tipoCusto: string;
+  tipoFornecimento: string;
   descricao: string;
   juros: number;
   userId: number;

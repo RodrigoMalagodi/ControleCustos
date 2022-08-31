@@ -29,23 +29,35 @@ import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
 import { ContasComponent } from './components/contas/contas.component';
 import { ContasDetalheComponent } from './components/contas/contas-detalhe/contas-detalhe.component';
 import { ContasListaComponent } from './components/contas/contas-lista/contas-lista.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+
 import { HomeComponent } from './components/home/home.component';
-import { UserComponent } from './components/user/user.component';
-import { LoginComponent } from './components/user/login/login.component';
-import { RegistrationComponent } from './components/user/registration/registration.component';
+
 import { FornecedoresComponent } from './components/fornecedores/fornecedores.component';
 import { FornecedoresDetalhesComponent } from './components/fornecedores/fornecedores-detalhes/fornecedores-detalhes.component';
 import { FornecedoresListaComponent } from './components/fornecedores/fornecedores-lista/fornecedores-lista.component';
+
 import { NavComponent } from './shared/nav/nav.component';
 import { TituloComponent } from './shared/titulo/titulo.component';
-import { AccountService } from './services/account.service';
+
+import { UserComponent } from './components/user/user.component';
+import { LoginComponent } from './components/user/login/login.component';
+import { RegistrationComponent } from './components/user/registration/registration.component';
 import { PerfilComponent } from './components/user/perfil/perfil.component';
 import { PerfilDetalheComponent } from './components/user/perfil/perfil-detalhe/perfil-detalhe.component';
 import { HomeDetalhesComponent } from './components/home/home-detalhes/home-detalhes.component';
+
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardDetalhesComponent } from './components/dashboard/dashboard-detalhes/dashboard-detalhes.component';
+import { PeriodoComponent } from './components/dashboard/dashboard-detalhes/periodo/periodo.component';
+import { TipoCustoComponent } from './components/dashboard/dashboard-detalhes/tipo-custo/tipo-custo.component';
+import { FornecedorComponent } from './components/dashboard/dashboard-detalhes/fornecedor/fornecedor.component';
+
+import { AccountService } from './services/account.service';
 import { ContasService } from './services/contas.service';
 import { FornecedoresService } from './services/fornecedores.service';
 import { HomeService } from './services/home.service';
+import { DashboardsService } from './services/dashboards.service';
+import { TipoFornecimentoComponent } from './components/dashboard/dashboard-detalhes/tipo-fornecimento/tipo-fornecimento.component';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -85,6 +97,11 @@ export const customCurrencyMaskConfig = {
     PerfilComponent,
     PerfilDetalheComponent,
     HomeDetalhesComponent,
+    DashboardDetalhesComponent,
+    PeriodoComponent,
+    TipoCustoComponent,
+    FornecedorComponent,
+    TipoFornecimentoComponent,
   ],
   imports: [
     BrowserModule,
@@ -115,6 +132,7 @@ export const customCurrencyMaskConfig = {
     ContasService,
     FornecedoresService,
     HomeService,
+    DashboardsService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
   ],
   bootstrap: [AppComponent],

@@ -18,47 +18,59 @@ namespace ControleCustos.Persistence.Repositorio
             _context = context;
         }
 
-        public async Task<Conta[]> GetDadosDashBoardPeriodoAsync(DateTime dataInicio, DateTime dataFim)
+        public async Task<List<Conta>>  GetDadosDashBoardPeriodoAsync(DateTime dataInicio, DateTime dataFim)
         {
             IQueryable<Conta> query = _context.Conta
                                                 .AsNoTracking()
                                                 .Where
                                                 (x =>
-                                                    x.DataPagamento >= dataInicio &&
-                                                    x.DataPagamento <= dataFim
+                                                    x.DataVencimento >= dataInicio &&
+                                                    x.DataVencimento <= dataFim
                                                 )
                                                 .OrderBy(x => x.AnoMes);
 
-            return await query.ToArrayAsync();
+            return await query.ToListAsync();
         }
 
-        public async Task<Conta[]> GetDadosDashBoardFornecedorByIdAsync(int fornecedorId, DateTime dataInicio, DateTime dataFim)
+        public async Task<List<Conta>> GetDadosDashBoardFornecedorAsync(DateTime dataInicio, DateTime dataFim)
         {
-            IQueryable<Conta> query = _context.Conta
-                                                .AsNoTracking()
-                                                .Where
-                                                (x =>
-                                                    x.FornecedorId == fornecedorId &&
-                                                    (
-                                                        x.DataPagamento >= dataInicio &&
-                                                        x.DataPagamento <= dataFim
-                                                    )
-                                                )
-                                                .OrderBy(x => x.AnoMes);
-
-            return await query.ToArrayAsync();
-        }
-
-        public async Task<List<Conta>> GetDadosDashBoardTipoFornecimentoAsync(string tipoFornecimento, DateTime dataInicio, DateTime dataFim)
-        {
-            var query = await (
+            var query = await 
+                            (
                                 from a in _context.Conta
                                 join b in _context.Fornecedor on a.FornecedorId equals b.FornecedorId
-                                where b.TipoFornecimento == tipoFornecimento &&
-                                a.DataPagamento >= dataInicio &&
-                                a.DataPagamento <= dataFim
+                                where
+                                a.DataVencimento >= dataInicio &&
+                                a.DataVencimento <= dataFim
                                 orderby a.AnoMes
-                                select new { a.AnoMes, a.Valor }
+                                select new { b.Nome, a.Valor, a.AnoMes }
+                            )
+                            .Distinct()
+                            .ToListAsync();
+
+            List<Conta> ListaValores = new List<Conta>();
+
+            foreach (var item in query.OrderBy(x => x.Nome))
+            {
+                var conta = new Conta();
+                conta.Descricao = item.Nome;
+                conta.Valor = item.Valor;
+                conta.AnoMes = item.AnoMes;
+                ListaValores.Add(conta);
+            }
+
+            return ListaValores.OrderBy(x => x.AnoMes).ToList();
+        }
+
+        public async Task<List<Conta>> GetDadosDashBoardTipoCustoAsync(DateTime dataInicio, DateTime dataFim)
+        {
+            var query = await 
+                            (
+                                from a in _context.Conta
+                                where 
+                                a.DataVencimento >= dataInicio &&
+                                a.DataVencimento <= dataFim
+                                orderby a.AnoMes
+                                select new { a.AnoMes, a.Valor, a.TipoCusto }
                             ).ToListAsync();
 
             List<Conta> ListaValores = new List<Conta>();
@@ -68,35 +80,39 @@ namespace ControleCustos.Persistence.Repositorio
                 var conta = new Conta();
                 conta.AnoMes = item.AnoMes;
                 conta.Valor = item.Valor;
+                conta.TipoCusto = item.TipoCusto;
                 ListaValores.Add(conta);
             }
 
-            return ListaValores;
+           return ListaValores.OrderBy(x => x.AnoMes).ToList();
         }
-
-        public async Task<List<Conta>> GetDadosDashBoardByFornececedorAsync(DateTime dataInicio, DateTime dataFim)
+ 
+        public async Task<List<Conta>> GetDadosDashBoardTipoFornecimentoAsync(DateTime dataInicio, DateTime dataFim)
         {
-             var query = await (
+            var query = await       
+                            (
                                 from a in _context.Conta
                                 join b in _context.Fornecedor on a.FornecedorId equals b.FornecedorId
-                                where
-                                a.DataPagamento >= dataInicio &&
-                                a.DataPagamento <= dataFim
+                                where 
+                                a.DataVencimento >= dataInicio &&
+                                a.DataVencimento <= dataFim
                                 orderby a.AnoMes
-                                select new { b.Nome, a.Valor }
+                                select new { a.AnoMes, a.Valor, b.TipoFornecimento }
                             ).ToListAsync();
 
             List<Conta> ListaValores = new List<Conta>();
 
-            foreach (var item in query.OrderBy(x => x.Nome))
+            foreach (var item in query.OrderBy(x => x.AnoMes))
             {
                 var conta = new Conta();
-                conta.Descricao = item.Nome;
+                conta.AnoMes = item.AnoMes;
                 conta.Valor = item.Valor;
+                conta.Descricao = item.TipoFornecimento;
                 ListaValores.Add(conta);
             }
 
-            return ListaValores;
+            return ListaValores.OrderBy(x => x.AnoMes).ToList();
         }
+
     }
 }

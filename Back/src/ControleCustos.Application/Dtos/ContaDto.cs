@@ -15,6 +15,7 @@ namespace ControleCustos.Application.Dtos
         public int DiasAtraso { get; set; }
         public int AnoMes { get; set; }
         public string TipoCusto { get; set; }
+        public string TipoFornecimento { get; set; }
         public string Descricao { get; set; }
         public decimal Juros { get; set; }
         public int UserId { get; set; }
