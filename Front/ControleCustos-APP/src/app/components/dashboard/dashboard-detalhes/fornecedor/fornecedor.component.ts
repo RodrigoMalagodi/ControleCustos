@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -13,6 +13,11 @@ import { Conta } from 'src/app/models/identity/Conta';
 import { Fornecedor } from 'src/app/models/identity/Fornecedor';
 import { DashboardsService } from 'src/app/services/dashboards.service';
 import { FornecedoresService } from 'src/app/services/fornecedores.service';
+
+import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
+import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import DataLabelsPlugin from 'chartjs-plugin-datalabels';
+
 
 @Component({
   selector: 'app-fornecedor',
@@ -104,5 +109,48 @@ export class FornecedorComponent implements OnInit {
         },
       })
       .add(() => this.spinner.hide());
+  }
+
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
+
+  public barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    // We use these empty structures as placeholders for dynamic theming.
+    scales: {
+      x: {},
+      y: {
+        min: 10
+      }
+    },
+    plugins: {
+      legend: {
+        display: true,
+      },
+      datalabels: {
+        anchor: 'end',
+        align: 'end'
+      }
+    }
+  };
+  public barChartType: ChartType = 'bar';
+  public barChartPlugins = [
+    DataLabelsPlugin
+  ];
+
+  public barChartData: ChartData<'bar'> = {
+    labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
+    datasets: [
+      { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Series A' },
+      { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Series B' }
+    ]
+  };
+
+  // events
+  public chartClicked({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
+    console.log(event, active);
+  }
+
+  public chartHovered({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
+    console.log(event, active);
   }
 }

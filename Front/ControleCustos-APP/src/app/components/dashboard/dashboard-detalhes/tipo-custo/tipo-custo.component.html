@@ -1,49 +1,69 @@
-<form [formGroup]="form">
+<div>
   <div class="card mt-1">
     <div class="card-body" style="height: 395px">
-      <div class="row g-3">
-        <div class="col-md-4">
-          <input
-            type="text"
-            class="form-control"
-            [ngClass]="cssValidator(f.dataInicio)"
-            bsDatepicker
-            [bsConfig]="bsConfig"
-            placeholder=""
-            formControlName="dataInicio"
-          />
-          <div
-            *ngIf="f.dataInicio.errors?.['required']"
-            class="invalid-feedback"
-          >
-            <strong>Data Inicial é obrigatória.</strong>
+      <form [formGroup]="form">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="cssValidator(f.dataInicio)"
+              bsDatepicker
+              [bsConfig]="bsConfig"
+              placeholder=""
+              formControlName="dataInicio"
+            />
+            <div
+              *ngIf="f.dataInicio.errors?.['required']"
+              class="invalid-feedback"
+            >
+              <strong>Data Inicial é obrigatória.</strong>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <input
+              type="text"
+              class="form-control"
+              [ngClass]="cssValidator(f.dataFim)"
+              bsDatepicker
+              [bsConfig]="bsConfig"
+              placeholder=""
+              formControlName="dataFim"
+            />
+            <div
+              *ngIf="f.dataFim.errors?.['required']"
+              class="invalid-feedback"
+            >
+              <strong>Data Final é obrigatória.</strong>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <button
+              class="btn btn-outline-primary ms-2 float-end"
+              [disabled]="!form.valid"
+              (click)="gerarDados()"
+            >
+              <i class="fa-solid fa-rotate"></i>
+              Gerar Dados
+            </button>
           </div>
         </div>
-        <div class="col-md-4">
-          <input
-            type="text"
-            class="form-control"
-            [ngClass]="cssValidator(f.dataFim)"
-            bsDatepicker
-            [bsConfig]="bsConfig"
-            placeholder=""
-            formControlName="dataFim"
-          />
-          <div *ngIf="f.dataFim.errors?.['required']" class="invalid-feedback">
-            <strong>Data Final é obrigatória.</strong>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <button
-            class="btn btn-outline-primary ms-2 float-end"
-            [disabled]="!form.valid"
-            (click)="gerarDados()"
+      </form>
+      <div>
+        <div style="display: block">
+          <canvas
+            baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [plugins]="barChartPlugins"
+            [type]="barChartType"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"
+            style="max-height: 322px;"
           >
-          <i class="fa-solid fa-rotate"></i>
-            Gerar Dados
-          </button>
+          </canvas>
         </div>
       </div>
     </div>
   </div>
-</form>
+</div>

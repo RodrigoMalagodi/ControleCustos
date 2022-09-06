@@ -58,6 +58,7 @@ import { FornecedoresService } from './services/fornecedores.service';
 import { HomeService } from './services/home.service';
 import { DashboardsService } from './services/dashboards.service';
 import { TipoFornecimentoComponent } from './components/dashboard/dashboard-detalhes/tipo-fornecimento/tipo-fornecimento.component';
+import { NgChartsModule } from 'ng2-charts';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -126,6 +127,7 @@ export const customCurrencyMaskConfig = {
     NgxSpinnerModule,
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     TabsModule.forRoot(),
+    NgChartsModule
   ],
   providers: [
     AccountService,

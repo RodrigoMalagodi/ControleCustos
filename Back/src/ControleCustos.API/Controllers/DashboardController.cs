@@ -92,8 +92,8 @@ namespace ControleCustos.API.Controllers
                             for (int i = 0; i < item.Count(); i++)
                             {
                                 var dataPoint = new DataPoints();    
-                                dataPoint.Descricao = item.ToArray()[i].NomeFornecedor;
-                                dataPoint.Valor = item.ToArray()[i].Valor;
+                                dataPoint.Description = item.ToArray()[i].NomeFornecedor;
+                                dataPoint.Value = item.ToArray()[i].Valor;
                                 ListaResult.Add(dataPoint);
                             }
                             
@@ -155,8 +155,8 @@ namespace ControleCustos.API.Controllers
                             for (int i = 0; i < conta.Count(); i++)
                             {
                                 var dataPoint = new DataPoints();    
-                                dataPoint.Descricao = conta.ToArray()[i].AnoMes.ToString();
-                                dataPoint.Valor = conta.ToArray()[i].Valor;
+                                dataPoint.Description = conta.ToArray()[i].AnoMes.ToString();
+                                dataPoint.Value = conta.ToArray()[i].Valor;
                                 ListaResult.Add(dataPoint);
                             }
                             
@@ -218,8 +218,8 @@ namespace ControleCustos.API.Controllers
                             for (int i = 0; i < conta.Count(); i++)
                             {
                                 var dataPoint = new DataPoints();    
-                                dataPoint.Descricao = conta.ToArray()[i].AnoMes.ToString();
-                                dataPoint.Valor = conta.ToArray()[i].Valor;
+                                dataPoint.Description = conta.ToArray()[i].AnoMes.ToString();
+                                dataPoint.Value = conta.ToArray()[i].Valor;
                                 ListaResult.Add(dataPoint);
                             }
                             

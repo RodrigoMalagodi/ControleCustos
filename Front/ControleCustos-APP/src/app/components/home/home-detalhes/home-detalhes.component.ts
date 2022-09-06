@@ -35,7 +35,7 @@ export class HomeDetalhesComponent implements OnInit {
     }, 3000);
     const setIntervalConst: ReturnType<typeof setInterval> = setInterval(() => {
       this.horaAtual = this.homeService.getDate();
-    }, 1000);
+    }, 1100);
   }
 
   getDateTime() {
