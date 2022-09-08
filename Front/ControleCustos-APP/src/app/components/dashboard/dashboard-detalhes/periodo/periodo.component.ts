@@ -3,13 +3,15 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { Router } from '@angular/router';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
-import { Conta } from 'src/app/models/identity/Conta';
+import { ToastInjector, ToastrService } from 'ngx-toastr';
 
-import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
+import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import { DashboardsService } from 'src/app/services/dashboards.service';
 import DataLabelsPlugin from 'chartjs-plugin-datalabels';
+import { Dashboard } from 'src/app/models/identity/Dashboard';
+import { Conta } from 'src/app/models/identity/Conta';
+
 
 @Component({
   selector: 'app-periodo',
@@ -18,12 +20,17 @@ import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 })
 export class PeriodoComponent implements OnInit {
 
+  dashboard = {} as Dashboard;
+  dashboards = [] as Dashboard[];
+
   conta = {} as Conta;
   contas = [] as Conta[];
+  labelSeriesChart = [];
+  valueSeriesChart = [];
   form!: FormGroup;
 
-  dataInicio : Date;
-  dataFim : Date;
+  dataInicio : string;
+  dataFim : string;
 
   constructor(
     private fb: FormBuilder,
@@ -81,12 +88,22 @@ export class PeriodoComponent implements OnInit {
   }
 
   getDadosDashBoardPeriodo(): void {
+    this.dashboard = { ...this.form.value };
+
+    this.dataInicio = this.formatDate(this.dashboard.dataInicio);
+    this.dataFim = this.formatDate(this.dashboard.dataFim);
+
+    console.log(this.dashboards);
+    this.spinner.show();
     this.dashBoardsService
-      .getDadosDashBoardPeriodo(this.dataInicio, this.dataFim)
-      .subscribe({
+    .getDadosDashBoardPeriodo(this.dataInicio , this.dataFim)
+    .subscribe({
         next: (conta: Conta[]) => {
-          this.contas = { ...conta };
-          console.log(this.conta);
+          this.contas = { ... conta};
+          console.log(this.contas);
+          this.criarSeriesLabel(this.contas);
+          this.criarSeriesValue(this.contas);
+          this.updateChart();
         },
         error: (error: any) => {
           console.log(error), this.spinner.hide();
@@ -96,88 +113,89 @@ export class PeriodoComponent implements OnInit {
       .add(() => this.spinner.hide());
   }
 
+  criarSeriesLabel(contas: Conta[]): any {
+    Object.entries(contas).forEach(([key, value], index) => {
+      this.labelSeriesChart = [];
+      for (let key in this.contas) {
+        let conta = this.contas[key];
+        this.labelSeriesChart.push([
+          conta.anoMes
+        ]
+        );
+      }
+    });
+    console.log(this.labelSeriesChart);
+  }
+
+  criarSeriesValue(contas: Conta[]): any {
+    Object.entries(contas).forEach(([key, value], index) => {
+      this.valueSeriesChart = [];
+      for (let key in this.contas) {
+        let conta = this.contas[key];
+        this.valueSeriesChart.push([
+          conta.valor
+        ]);
+      }
+    });
+    console.log(this.valueSeriesChart);
+  }
+
+  formatDate(date: Date): string {
+      date = new Date(date);
+
+      var day = ('0' + date.getDate()).slice(-2);
+      var month = ('0' + (date.getMonth() + 1)).slice(-2);
+      var year = date.getFullYear();
+
+      return year + '-' + month + '-' + day;
+  }
+
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
-  // Pie
-  public pieChartOptions: ChartConfiguration['options'] = {
+  public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
+    scales: {
+      x: {},
+      y: {
+        min: 10
+      }
+    },
     plugins: {
       legend: {
         display: true,
-        position: 'top',
       },
       datalabels: {
-        formatter: (value, ctx) => {
-          if (ctx.chart.data.labels) {
-            return ctx.chart.data.labels[ctx.dataIndex];
-          }
-        },
-      },
+        anchor: 'end',
+        align: 'end'
+      }
     }
   };
-  public pieChartData: ChartData<'pie', number[], string | string[]> = {
-    labels: [ [ 'Download', 'Sales' ], [ 'In', 'Store', 'Sales' ], 'Mail Sales' ],
-    datasets: [ {
-      data: [ 300, 500, 100 ]
-    } ]
+  public barChartType: ChartType = 'bar';
+  public barChartPlugins = [
+    DataLabelsPlugin
+  ];
+
+  public barChartData: ChartData<'bar'> = {
+    labels: [],
+    datasets: [
+      { data: [ ], label: 'R$ - Ano/Mês' }
+    ],
+
   };
-  public pieChartType: ChartType = 'pie';
-  public pieChartPlugins = [ DataLabelsPlugin ];
+
+  public updateChart(): void {
+    this.barChartData.labels = this.labelSeriesChart,
+    this.barChartData.datasets = [
+      { data: this.valueSeriesChart, label: 'R$ - Ano/Mês' }
+    ];
+
+    this.chart?.update();
+  }
 
   // events
-  public chartClicked({ event, active }: { event: ChartEvent, active: {}[] }): void {
-    console.log(event, active);
+  public chartClicked({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
   }
 
-  public chartHovered({ event, active }: { event: ChartEvent, active: {}[] }): void {
-    console.log(event, active);
-  }
-
-  changeLabels(): void {
-    const words = [ 'hen', 'variable', 'embryo', 'instal', 'pleasant', 'physical', 'bomber', 'army', 'add', 'film',
-      'conductor', 'comfortable', 'flourish', 'establish', 'circumstance', 'chimney', 'crack', 'hall', 'energy',
-      'treat', 'window', 'shareholder', 'division', 'disk', 'temptation', 'chord', 'left', 'hospital', 'beef',
-      'patrol', 'satisfied', 'academy', 'acceptance', 'ivory', 'aquarium', 'building', 'store', 'replace', 'language',
-      'redeem', 'honest', 'intention', 'silk', 'opera', 'sleep', 'innocent', 'ignore', 'suite', 'applaud', 'funny' ];
-    const randomWord = () => words[Math.trunc(Math.random() * words.length)];
-    this.pieChartData.labels = new Array(3).map(_ => randomWord());
-
-    this.chart?.update();
-  }
-
-  addSlice(): void {
-    if (this.pieChartData.labels) {
-      this.pieChartData.labels.push([ 'Line 1', 'Line 2', 'Line 3' ]);
-    }
-
-    this.pieChartData.datasets[0].data.push(400);
-
-    this.chart?.update();
-  }
-
-  removeSlice(): void {
-    if (this.pieChartData.labels) {
-      this.pieChartData.labels.pop();
-    }
-
-    this.pieChartData.datasets[0].data.pop();
-
-    this.chart?.update();
-  }
-
-  changeLegendPosition(): void {
-    if (this.pieChartOptions?.plugins?.legend) {
-      this.pieChartOptions.plugins.legend.position = this.pieChartOptions.plugins.legend.position === 'left' ? 'top' : 'left';
-    }
-
-    this.chart?.render();
-  }
-
-  toggleLegend(): void {
-    if (this.pieChartOptions?.plugins?.legend) {
-      this.pieChartOptions.plugins.legend.display = !this.pieChartOptions.plugins.legend.display;
-    }
-
-    this.chart?.render();
+  public chartHovered({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
   }
 }

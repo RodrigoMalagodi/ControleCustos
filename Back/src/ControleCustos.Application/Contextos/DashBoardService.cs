@@ -46,9 +46,9 @@ namespace ControleCustos.Application.Contextos
                 foreach (int anoMes in ListaAnoMes)
                 {
                     ContaDto dados = new ContaDto();
-                    foreach (var b in resultado.Where(x => x.AnoMes == anoMes).Select(x => new { Valor = x.Valor }))
+                    foreach (var b in resultado.Where(x => x.AnoMes == anoMes).Select(x => new { Valor = x.Valor, Juros = x.Juros }))
                     {
-                        valorTotal += b.Valor;
+                        valorTotal += (b.Valor + b.Juros);
                     }
 
                     dados.AnoMes = anoMes;

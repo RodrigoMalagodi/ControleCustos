@@ -12,7 +12,7 @@
               [bsConfig]="bsConfig"
               placeholder=""
               formControlName="dataInicio"
-            />
+              />
             <div
               *ngIf="f.dataInicio.errors?.['required']"
               class="invalid-feedback"
@@ -29,7 +29,7 @@
               [bsConfig]="bsConfig"
               placeholder=""
               formControlName="dataFim"
-            />
+              />
             <div
               *ngIf="f.dataFim.errors?.['required']"
               class="invalid-feedback"
@@ -52,10 +52,12 @@
       <div>
         <div style="display: block">
           <canvas baseChart
-          [data]="pieChartData"
-          [type]="pieChartType"
-          [options]="pieChartOptions"
-          [plugins]="pieChartPlugins"
+          [data]="barChartData"
+          [options]="barChartOptions"
+          [plugins]="barChartPlugins"
+          [type]="barChartType"
+          (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"
           style="max-height: 322px;"
           ></canvas>
         </div>

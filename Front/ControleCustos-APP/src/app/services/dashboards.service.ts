@@ -13,24 +13,20 @@ export class DashboardsService {
 
   constructor(private http: HttpClient) {}
 
-  public getDadosDashBoardPeriodo(dataInicio: Date, dataFim: Date): Observable<Conta[]> {
+  public getDadosDashBoardPeriodo(dataInicio: string, dataFim: string): Observable<Conta[]> {
     return this.http.get<Conta[]>(`${this.baseURL}/periodo/${dataInicio}/${dataFim}`);
   }
 
-  public getDadosDashBoardFornecedorId(fornecedorId: number, dataInicio: Date, dataFim: Date): Observable<Conta[]> {
-    return this.http.get<Conta[]>(`${this.baseURL}/fornecedorId/${fornecedorId}/${dataInicio}/${dataFim}`);
+  public getDadosDashBoardTipoCusto(dataInicio: Date, dataFim: Date): Observable<Object[]> {
+    return this.http.get<Object[]>(`${this.baseURL}/tipoCusto/${dataInicio}/${dataFim}`);
   }
 
-  public getDadosDashBoardTipoCusto(tipoCusto:string, dataInicio: Date, dataFim: Date): Observable<Conta[]> {
-    return this.http.get<Conta[]>(`${this.baseURL}/tipoCusto/${tipoCusto}/${dataInicio}/${dataFim}`);
+  public getDadosDashBoardTipoFornecimento(dataInicio: Date, dataFim: Date): Observable<Object[]> {
+    return this.http.get<Object[]>(`${this.baseURL}/tipoFornecimento/${dataInicio}/${dataFim}`);
   }
 
-  public getDadosDashBoardTipoFornecimento(tipoFornecimento:string, dataInicio: Date, dataFim: Date): Observable<Conta[]> {
-    return this.http.get<Conta[]>(`${this.baseURL}/tipoFornecimento/${tipoFornecimento}/${dataInicio}/${dataFim}`);
-  }
-
-  public getDadosDashBoardFornecedor(dataInicio: Date, dataFim: Date): Observable<Conta[]> {
-    return this.http.get<Conta[]>(`${this.baseURL}/fornecedor/${dataInicio}/${dataFim}`);
+  public getDadosDashBoardFornecedor(dataInicio: Date, dataFim: Date): Observable<Object[]> {
+    return this.http.get<Object[]>(`${this.baseURL}/fornecedor/${dataInicio}/${dataFim}`);
   }
 
 }

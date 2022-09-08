@@ -93,8 +93,7 @@ export class FornecedorComponent implements OnInit {
 
   getDadosDashBoardFornecedorId(): void {
     this.dashBoardsService
-      .getDadosDashBoardFornecedorId(
-        this.fornecedorId,
+      .getDadosDashBoardFornecedor(
         this.dataInicio,
         this.dataFim
       )

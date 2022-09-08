@@ -83,7 +83,7 @@ export class TipoFornecimentoComponent implements OnInit {
 
   getDadosDashBoardTipoCusto(): void {
     this.dashBoardsService
-      .getDadosDashBoardTipoCusto(this.tipoFornecimento, this.dataInicio, this.dataFim)
+      .getDadosDashBoardTipoCusto(this.dataInicio, this.dataFim)
       .subscribe({
         next: (conta: Conta[]) => {
           this.contas = { ...conta };
