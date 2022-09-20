@@ -50,7 +50,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { DashboardDetalhesComponent } from './components/dashboard/dashboard-detalhes/dashboard-detalhes.component';
 import { PeriodoComponent } from './components/dashboard/dashboard-detalhes/periodo/periodo.component';
 import { TipoCustoComponent } from './components/dashboard/dashboard-detalhes/tipo-custo/tipo-custo.component';
-import { HomeDetalhesMapaComponent } from './components/home/home-detalhes/home-detalhes-mapa/home-detalhes-mapa.component';
 import { FornecedorComponent } from './components/dashboard/dashboard-detalhes/fornecedor/fornecedor.component';
 
 import { AccountService } from './services/account.service';
@@ -60,7 +59,6 @@ import { HomeService } from './services/home.service';
 import { DashboardsService } from './services/dashboards.service';
 import { TipoFornecimentoComponent } from './components/dashboard/dashboard-detalhes/tipo-fornecimento/tipo-fornecimento.component';
 import { NgChartsModule } from 'ng2-charts';
-import { GoogleMapsModule } from '@angular/google-maps';
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -105,7 +103,6 @@ export const customCurrencyMaskConfig = {
     TipoCustoComponent,
     FornecedorComponent,
     TipoFornecimentoComponent,
-    HomeDetalhesMapaComponent,
   ],
   imports: [
     BrowserModule,
@@ -131,7 +128,6 @@ export const customCurrencyMaskConfig = {
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
     TabsModule.forRoot(),
     NgChartsModule,
-    GoogleMapsModule
   ],
   providers: [
     AccountService,

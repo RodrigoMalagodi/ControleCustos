@@ -2,6 +2,8 @@
   <div class="card mt-1">
     <div class="card-body" style="height: 435px">
       <form [formGroup]="form">
+        <!-- <p>Form: {{form.value | json}}</p> -->
+        <!-- <p>Form: {{form.status}}</p> -->
         <div class="row g-3">
           <div class="col-md-3">
             <input
@@ -10,7 +12,7 @@
               [ngClass]="cssValidator(f.dataInicio)"
               bsDatepicker
               [bsConfig]="bsConfig"
-              placeholder=""
+              placeholder="Data Inicial"
               formControlName="dataInicio"
             />
             <div
@@ -19,6 +21,12 @@
             >
               <strong>Data Inicial é obrigatória.</strong>
             </div>
+            <div
+            *ngIf="f.dataInicio.errors?.['dateValid'] && (f.dataInicio.dirty || f.dataInicio.touched)"
+            class="invalid-feedback"
+          >
+            <strong>Data Inicial não pode ser maior que Data Final</strong>
+          </div>
           </div>
           <div class="col-md-3">
             <input
@@ -27,7 +35,7 @@
               [ngClass]="cssValidator(f.dataFim)"
               bsDatepicker
               [bsConfig]="bsConfig"
-              placeholder=""
+              placeholder="Data Final"
               formControlName="dataFim"
             />
             <div
@@ -35,6 +43,12 @@
               class="invalid-feedback"
             >
               <strong>Data Final é obrigatória.</strong>
+            </div>
+            <div
+              *ngIf="f.dataFim.errors?.['dateValid'] && (f.dataFim.dirty || f.dataFim.touched)"
+              class="invalid-feedback"
+            >
+              <strong>Data Final não pode ser menor que Data Inicial</strong>
             </div>
           </div>
           <div class="col-md-6">
@@ -44,7 +58,6 @@
               (click)="gerarDados('line')"
             >
               <i class="fa-solid fa-chart-line"></i>
-              Linha
             </button>
             <button
               class="btn btn-outline-primary ms-2 float-end"
@@ -52,7 +65,6 @@
               (click)="gerarDados('doughnut')"
             >
               <i class="fa-solid fa-chart-pie"></i>
-              Rosca
             </button>
             <button
               class="btn btn-outline-primary ms-2 float-end"
@@ -60,7 +72,13 @@
               (click)="gerarDados('bar')"
             >
               <i class="fa-sharp fa-solid fa-chart-simple"></i>
-              Barras
+            </button>
+            <button
+              class="btn btn-outline-success ms-2 float-end"
+              [disabled]="!form.valid"
+              (click)="gerarExcel()"
+            >
+              <i class="fa-solid fa-file-excel"></i>
             </button>
           </div>
         </div>
@@ -89,13 +107,20 @@
             style="max-height: 375px"
           ></canvas>
         </div>
-        <div [ngStyle]="{ display: visibleDonut }">
+        <div class="relative" [ngStyle]="{ display: visibleDonut }">
           <canvas
             baseChart
             [data]="doughnutChartData"
+            [options]="doughnutChartOptions"
             [type]="doughnutChartType"
             style="max-height: 375px"
           ></canvas>
+          <div
+            class="absolute-center text-center"
+            [ngStyle]="{ display: visibleDonut }"
+          >
+            <p class="p-doughnut">R${{ this.sumValues }}</p>
+          </div>
         </div>
       </div>
     </div>

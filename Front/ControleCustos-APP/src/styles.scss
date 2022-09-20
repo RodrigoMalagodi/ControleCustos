@@ -7,7 +7,7 @@
 
 body {
   background-color: rgba(213, 217, 218, .8);
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 @media (min-width: 1200px) {
@@ -85,4 +85,24 @@ body {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute-center {
+  position:absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+}
+
+.text-center{
+  text-align: center;
+}
+
+.p-doughnut{
+  font-weight: bold;
+  font-size: 35px;
 }

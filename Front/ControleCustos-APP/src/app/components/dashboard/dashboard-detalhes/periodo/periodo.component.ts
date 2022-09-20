@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
+  AbstractControlOptions,
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, TitleStrategy } from '@angular/router';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -17,6 +18,8 @@ import { DashboardsService } from 'src/app/services/dashboards.service';
 import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 import { Dashboard } from 'src/app/models/identity/Dashboard';
 import { Conta } from 'src/app/models/identity/Conta';
+import writeXlsxFile from 'write-excel-file';
+import { ValidatorField } from 'src/app/helpers/ValidatorField';
 
 @Component({
   selector: 'app-periodo',
@@ -24,21 +27,24 @@ import { Conta } from 'src/app/models/identity/Conta';
   styleUrls: ['./periodo.component.scss'],
 })
 export class PeriodoComponent implements OnInit {
-  dashboard = {} as Dashboard;
+  public sumValues: number = 0;
 
+  dashboard = {} as Dashboard;
   conta = {} as Conta;
   contas = [] as Conta[];
   labelSeriesChart = [];
   valueSeriesChart = [];
+  headerExcel = [];
+  rowExcel = [];
   form!: FormGroup;
   retornoMes: string = '';
-
   dataInicio: string;
   dataFim: string;
 
   visibleBar = 'none';
   visibleLine = 'none';
   visibleDonut = 'none';
+  dataSet = [];
 
   constructor(
     private fb: FormBuilder,
@@ -85,34 +91,58 @@ export class PeriodoComponent implements OnInit {
   }
 
   public validationForm(): void {
+
+    const formOptions: AbstractControlOptions = {
+      validators: ValidatorField.DateValid('dataInicio', 'dataFim'),
+    };
+
     this.form = this.fb.group({
       dataInicio: ['', Validators.required],
-      dataFim: ['', Validators.required],
-    });
+      dataFim: ['', Validators.required]
+    },
+    formOptions
+    );
   }
 
   public gerarDados(typeChart: string): void {
-    //this.barCharType(typeChart);
     this.spinner.show();
     setTimeout(() => {
-      this.getDadosDashBoardPeriodo(typeChart);
+      this.getDadosDashBoardPeriodo(typeChart, false);
     }, 3000);
   }
 
-  getDadosDashBoardPeriodo(typeChart: string): void {
+  public gerarExcel(): void {
+    this.spinner.show();
+    setTimeout(() => {
+      this.getDadosDashBoardPeriodo('', true);
+    }, 3000);
+  }
+
+  getDadosDashBoardPeriodo(typeChart: string, exportData: boolean): void {
     this.dashboard = { ...this.form.value };
 
-    this.dataInicio = this.formatDate(this.dashboard.dataInicio);
-    this.dataFim = this.formatDate(this.dashboard.dataFim);
+    this.dataInicio = ValidatorField.formatDate(this.dashboard.dataInicio);
+    this.dataFim = ValidatorField.formatDate(this.dashboard.dataFim);
 
     this.dashBoardsService
       .getDadosDashBoardPeriodo(this.dataInicio, this.dataFim)
       .subscribe({
         next: (conta: Conta[]) => {
           this.contas = { ...conta };
+          console.log(this.contas);
+          if (Object.entries(this.contas).length === 0)
+          {
+            this.toastr.info("Não existem dados para serem exibidos no período solicitado", "Informação");
+            this.spinner.hide()
+            return;
+          }
           this.criarSeriesLabel(this.contas);
           this.criarSeriesValue(this.contas);
-          this.showChart(typeChart);
+          if (exportData) {
+            this.exportarDadosExcel(this.contas);
+          } else {
+            this.showChart(typeChart);
+          }
         },
         error: (error: any) => {
           console.log(error), this.spinner.hide();
@@ -120,6 +150,62 @@ export class PeriodoComponent implements OnInit {
         },
       })
       .add(() => this.spinner.hide());
+  }
+
+  exportarDadosExcel(contas: Conta[]): any {
+    try {
+      this.labelSeriesChart = [];
+      for (let key in this.contas) {
+        let conta = this.contas[key];
+        this.headerExcel.push({
+          value: this.nomeAnoMes(conta.anoMes),
+          fontWeight: 'bold',
+        });
+
+        this.rowExcel.push({
+          type: Number,
+          value: conta.valor,
+        });
+      }
+
+      this.headerExcel.push({
+        value: 'Total R$',
+        fontWeight: 'bold',
+      });
+
+      this.rowExcel.push({
+        type: Number,
+        value: this.sumValues,
+      });
+
+      this.dataSet = [this.headerExcel, this.rowExcel];
+
+      this.downloadBlob(
+        this.dataSet,
+        `ControleCustos_${this.dataInicio.replace(
+          '-',
+          '_'
+        )}_${this.dataFim.replace('-', '_')}`
+      );
+      this.toastr.success(
+        'Dados exportados para Excel com sucesso.',
+        'Sucesso'
+      );
+    } catch (error) {
+      this.toastr.error('Falha ao tentar exportar dados para o Excel.', 'Erro');
+    }
+  }
+
+  downloadBlob(data: any, filename: string) {
+    writeXlsxFile(data, {
+      headerStyle: {
+        backgroundColor: '#eeeeee',
+        fontWeight: 'bold',
+        align: 'center',
+      },
+
+      fileName: filename,
+    });
   }
 
   showChart(typeChart: string) {
@@ -145,7 +231,6 @@ export class PeriodoComponent implements OnInit {
     }
   }
 
-
   criarSeriesLabel(contas: Conta[]): any {
     Object.entries(contas).forEach(([key, value], index) => {
       this.labelSeriesChart = [];
@@ -157,15 +242,16 @@ export class PeriodoComponent implements OnInit {
   }
 
   criarSeriesValue(contas: Conta[]): any {
+
     Object.entries(contas).forEach(([key, value], index) => {
       this.valueSeriesChart = [];
-      for (let key in this.contas) {
-        let conta = this.contas[key];
+      this.sumValues = 0;
+      for (let key in contas) {
+        let conta = contas[key];
         this.valueSeriesChart.push(conta.valor);
+        this.sumValues = this.sumValues + conta.valor;
       }
     });
-
-    console.log(this.valueSeriesChart);
   }
 
   formatDate(date: Date): string {
@@ -249,13 +335,13 @@ export class PeriodoComponent implements OnInit {
   //#region line
 
   public lineChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
     elements: {
       line: {
-        tension: 0
-      }
+        tension: 0,
+      },
     },
     scales: {
-      // We use this empty structure as a placeholder for dynamic theming.
       x: {
         grid: {
           lineWidth: 0,
@@ -265,14 +351,19 @@ export class PeriodoComponent implements OnInit {
         },
       },
       y: {
-
-      }
+        min: 10,
+        grid: {
+          lineWidth: 0,
+        },
+        ticks: {
+          color: '#000',
+        },
+      },
     },
-
     plugins: {
       legend: { display: true },
-    }
-  }
+    },
+  };
 
   public lineChartType: ChartType = 'line';
   public lineChartPlugins = [DataLabelsPlugin];
@@ -291,15 +382,15 @@ export class PeriodoComponent implements OnInit {
           backgroundColor: '#005580',
           borderColor: '#005580',
           pointStyle: '#005580',
-          pointBorderColor:'#005580',
-          pointBackgroundColor:'#005580',
-          datalabels:{
+          pointBorderColor: '#005580',
+          pointBackgroundColor: '#005580',
+          datalabels: {
             color: '#000',
             font: {
               weight: 'bold',
             },
             anchor: 'start',
-            align: 'top'
+            align: 'top',
           },
 
           fill: true,
@@ -313,42 +404,59 @@ export class PeriodoComponent implements OnInit {
 
   //#region donut
 
+  public doughnutChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    animation: {
+      duration: 1000,
+    },
+    plugins: {
+      legend: {
+        display: true,
+        position: 'left',
+        labels: {
+          font: {
+            weight: 'bold',
+          },
+          color: '#000',
+        },
+      },
+    },
+  };
+
   public doughnutChartLabels: string[] = this.labelSeriesChart;
   public doughnutChartData: ChartData<'doughnut'> = {
     labels: this.doughnutChartLabels,
     datasets: [
       {
-         data: []
-      }
-    ]
+        data: [],
+      },
+    ],
   };
 
   public doughnutChartType: ChartType = 'doughnut';
   updateDonutChart() {
-
     (this.doughnutChartData.labels = this.labelSeriesChart),
-    (this.doughnutChartData.datasets = [
-      {
-        data: this.valueSeriesChart,
-        hoverOffset: 4,
-        backgroundColor: ["#0886c9", "#0affc1", "#05838b", "#0eddcb", "#0c78a5", "#09fa97", "#0bd60d", "#014f44", "#068ee0", "#06cf01", "#07fdd8", "#0684e7"],
-        hoverBackgroundColor: ["#0886c9", "#0affc1", "#05838b", "#0eddcb", "#0c78a5", "#09fa97", "#0bd60d", "#014f44", "#068ee0", "#06cf01", "#07fdd8", "#0684e7"],
-        hoverBorderColor: ["#0886c9", "#0affc1", "#05838b", "#0eddcb", "#0c78a5", "#09fa97", "#0bd60d", "#014f44", "#068ee0", "#06cf01", "#07fdd8", "#0684e7"],
-        offset: 4,
-        datalabels:{
-          color: '#000',
-          font: {
-            weight: 'bold',
+      (this.doughnutChartData.datasets = [
+        {
+          data: this.valueSeriesChart,
+          hoverOffset: 4,
+          backgroundColor: ["#04601a", "#01ab84", "#040479", "#028c71", "#02355e", "#03742e", "#06a962", "#031da0", "#05f769", "#01535e", "#05d185", "#01b38e", "#0307fc", "#005a03", "#02b3aa", "#044251", "#0453c4", "#02c509", "#040a40", "#043ef6"],
+          hoverBackgroundColor: ["#04601a", "#01ab84", "#040479", "#028c71", "#02355e", "#03742e", "#06a962", "#031da0", "#05f769", "#01535e", "#05d185", "#01b38e", "#0307fc", "#005a03", "#02b3aa", "#044251", "#0453c4", "#02c509", "#040a40", "#043ef6"],
+          hoverBorderColor: ["#04601a", "#01ab84", "#040479", "#028c71", "#02355e", "#03742e", "#06a962", "#031da0", "#05f769", "#01535e", "#05d185", "#01b38e", "#0307fc", "#005a03", "#02b3aa", "#044251", "#0453c4", "#02c509", "#040a40", "#043ef6"],
+          offset: 4,
+          datalabels: {
+            color: '#fff',
+            font: {
+              weight: 'bold',
+            },
           },
         },
-      },
-    ]);
+      ]);
 
     this.chart?.update();
   }
 
   //#endregion
-
 
   // events
   public chartClicked({
@@ -366,11 +474,6 @@ export class PeriodoComponent implements OnInit {
     event?: ChartEvent;
     active?: {}[];
   }): void {}
-
-  barCharType(typeChart: string): void {
-    this.barChartType =
-      typeChart === 'bar' ? 'bar' : typeChart == 'line' ? 'line' : 'doughnut';
-  }
 
   nomeAnoMes(anoMes: number): string {
     switch (anoMes.toString().substring(anoMes.toString().length - 2)) {

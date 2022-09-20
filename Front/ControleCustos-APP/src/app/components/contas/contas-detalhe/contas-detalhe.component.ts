@@ -88,16 +88,13 @@ export class ContasDetalheComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
     this.validationConta();
-    setTimeout(() => {
-      this.fornecedorId = parseInt(localStorage.getItem('fornecedorId'));
-    }, 3000);
-
+    this.fornecedorId = parseInt(localStorage.getItem('fornecedorId'));
     this.fornecedoresCombo = [];
     this.getFornecedorAtivos();
     this.getContaById();
     this.cadastroViaFornecedor =
       localStorage.getItem('cadastroViaFornecedor') === 'true' ? true : false;
-      this.visibilidadeVoltar = this.cadastroViaFornecedor;
+    this.visibilidadeVoltar = this.cadastroViaFornecedor;
     this.spinner.hide();
   }
 

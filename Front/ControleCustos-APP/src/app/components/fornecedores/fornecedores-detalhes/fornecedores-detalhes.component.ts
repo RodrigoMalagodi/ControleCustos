@@ -19,6 +19,7 @@ import { PaginatedResult, Pagination } from 'src/app/models/Pagination';
 import { FornecedoresService } from 'src/app/services/fornecedores.service';
 import { CurrencyMaskInputMode, NgxCurrencyModule } from 'ngx-currency';
 import { ContasDetalheComponent } from '../../contas/contas-detalhe/contas-detalhe.component';
+import { TabHeadingDirective } from 'ngx-bootstrap/tabs';
 
 @Component({
   selector: 'app-fornecedores-detalhes',
@@ -91,10 +92,16 @@ export class FornecedoresDetalhesComponent implements OnInit {
     });
   }
 
-  public novaConta(cadastroViaFornecedor: boolean): void{
-    localStorage.setItem('cadastroViaFornecedor', cadastroViaFornecedor.toString());
-    localStorage.setItem('fornecedorId', this.fornecedorId.toString());
-    this.router.navigate(['contas/detalhe']);
+  public novaConta(cadastroViaFornecedor: boolean): void {
+    this.spinner.show();
+    localStorage.setItem(
+      'cadastroViaFornecedor',
+      cadastroViaFornecedor.toString()
+    );
+
+    setTimeout(() => {
+      this.router.navigate(['contas/detalhe']);
+    }, 3000);
   }
 
   public salvarFornecedor(): any {
@@ -128,9 +135,10 @@ export class FornecedoresDetalhesComponent implements OnInit {
   public getFornecedorById(): void {
     this.fornecedorId = +this.activedRouter.snapshot.paramMap.get('id');
     if (this.fornecedorId != null && this.fornecedorId != 0) {
+      localStorage.removeItem('fornecedorId');
+      localStorage.setItem('fornecedorId', this.fornecedorId.toString());
       this.spinner.show();
       this.acaoSalvar = 'put';
-      this.spinner.show();
       this.fornecedorService
         .getFornecedorById(this.fornecedorId)
         .subscribe({
@@ -142,8 +150,6 @@ export class FornecedoresDetalhesComponent implements OnInit {
                 this.getContasFornecedorId(this.fornecedorId);
               }, 3000);
             }
-
-            console.log(this.fornecedor);
           },
           error: (error: any) => {
             console.log(error), this.spinner.hide();
@@ -179,7 +185,6 @@ export class FornecedoresDetalhesComponent implements OnInit {
           this.contas = paginatedResult.result;
           this.pagination = paginatedResult.pagination;
           this.form.patchValue(this.contas);
-          console.log(this.fornecedor);
         },
         error: (error: any) => {
           console.log(error), this.spinner.hide();
