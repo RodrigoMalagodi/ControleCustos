@@ -1,12 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { Conta } from 'src/app/models/identity/Conta';
+import { Dashboard } from 'src/app/models/identity/Dashboard';
 import { ContasService } from 'src/app/services/contas.service';
 import { DashboardsService } from 'src/app/services/dashboards.service';
+
+import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
+import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
+import DataLabelsPlugin from 'chartjs-plugin-datalabels';
+import { BuildArrayChart } from 'src/app/models/identity/BuildArrayChart';
 
 @Component({
   selector: 'app-tipo-fornecimento',
@@ -15,15 +20,18 @@ import { DashboardsService } from 'src/app/services/dashboards.service';
 })
 export class TipoFornecimentoComponent implements OnInit {
 
-  conta = {} as Conta;
-  contas = [] as Conta[];
+  dashboard = {} as Dashboard;
+
+  conta = {} as BuildArrayChart;
+  contas = [] as BuildArrayChart[];
+  labelSeriesChart = [];
+  valueSeriesChart = [];
   form!: FormGroup;
 
-  tipoFornecimento : string;
-  dataInicio : Date;
-  dataFim : Date;
+  dataInicio : string;
+  dataFim : string;
 
-  tipoFornecimentoCombo = [];
+  visible = 'none';
 
   constructor(
     private fb: FormBuilder,
@@ -78,16 +86,38 @@ export class TipoFornecimentoComponent implements OnInit {
   }
 
   public gerarDados(): void {
-    this.getDadosDashBoardTipoCusto();
+    this.spinner.show();
+    setTimeout(() => {
+      this.getDadosDashBoardTipoFornecimento();
+    }, 3000);
   }
 
-  getDadosDashBoardTipoCusto(): void {
+  formatDate(date: Date): string {
+    date = new Date(date);
+
+    var day = ('0' + date.getDate()).slice(-2);
+    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+    var year = date.getFullYear();
+
+    return year + '-' + month + '-' + day;
+}
+
+  getDadosDashBoardTipoFornecimento(): void {
+    this.dashboard = { ...this.form.value };
+
+    this.dataInicio = this.formatDate(this.dashboard.dataInicio);
+    this.dataFim = this.formatDate(this.dashboard.dataFim);
+
     this.dashBoardsService
-      .getDadosDashBoardTipoCusto(this.dataInicio, this.dataFim)
+      .getDadosDashBoardTipoFornecimento(this.dataInicio, this.dataFim)
       .subscribe({
-        next: (conta: Conta[]) => {
-          this.contas = { ...conta };
-          console.log(this.conta);
+        next: (conta: BuildArrayChart[]) => {
+          this.contas = { ... conta};
+          console.log(this.contas);
+          this.criarSeriesLabel(this.contas);
+          this.criarSeriesValue(this.contas);
+          this.updateChart();
+          this.visible = 'block';
         },
         error: (error: any) => {
           console.log(error), this.spinner.hide();
@@ -95,6 +125,92 @@ export class TipoFornecimentoComponent implements OnInit {
         },
       })
       .add(() => this.spinner.hide());
+  }
+
+  criarSeriesLabel(contas: BuildArrayChart[]): any {
+    Object.entries(contas).forEach(([key, value], index) => {
+      this.labelSeriesChart = [];
+      for (let key in this.contas) {
+        let conta = this.contas[key];
+        this.labelSeriesChart.push([
+          conta[key].description
+        ]
+        );
+      }
+    });
+    console.log(this.labelSeriesChart);
+  }
+
+  criarSeriesValue(contas: BuildArrayChart[]): any {
+    Object.entries(contas).forEach(([key, value], index) => {
+      this.valueSeriesChart = [];
+      for (let key in this.contas) {
+        let conta = this.contas[key];
+        this.valueSeriesChart.push([
+          conta.target,
+          [conta[key].description, conta[key].value]
+        ]);
+      }
+    });
+    console.log(this.valueSeriesChart);
+  }
+
+
+
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
+
+  public barChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    // We use these empty structures as placeholders for dynamic theming.
+    scales: {
+      x: {
+        min: 10
+      },
+      y: {
+      }
+    },
+    plugins: {
+      legend: {
+        display: true,
+      },
+      datalabels: {
+        anchor: 'end',
+        align: 'end'
+      }
+    },
+    indexAxis: 'y',
+  };
+  public barChartType: ChartType = 'bar';
+  public barChartPlugins = [
+    DataLabelsPlugin
+  ];
+
+  public barChartData: ChartData<'bar'> = {
+    labels: [],
+    datasets: [{ data: [], label: 'R$', backgroundColor: ['#005580'] }],
+  };
+
+  public updateChart(): void {
+    (this.barChartData.labels = this.labelSeriesChart),
+      (this.barChartData.datasets = [
+        {
+          data: this.valueSeriesChart,
+          label: 'R$',
+          backgroundColor: ['#005580'],
+          hoverBackgroundColor: ['#0099e6'],
+        },
+      ]);
+
+    this.chart?.update();
+  }
+
+  // events
+  public chartClicked({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
+
+  }
+
+  public chartHovered({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
+
   }
 
 }

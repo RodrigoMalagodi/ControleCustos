@@ -1,9 +1,9 @@
 <div>
   <div class="card mt-1">
-    <div class="card-body" style="height: 395px">
+    <div class="card-body" style="height: 435px">
       <form [formGroup]="form">
         <div class="row g-3">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <input
               type="text"
               class="form-control"
@@ -12,7 +12,7 @@
               [bsConfig]="bsConfig"
               placeholder=""
               formControlName="dataInicio"
-              />
+            />
             <div
               *ngIf="f.dataInicio.errors?.['required']"
               class="invalid-feedback"
@@ -20,7 +20,7 @@
               <strong>Data Inicial é obrigatória.</strong>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <input
               type="text"
               class="form-control"
@@ -29,7 +29,7 @@
               [bsConfig]="bsConfig"
               placeholder=""
               formControlName="dataFim"
-              />
+            />
             <div
               *ngIf="f.dataFim.errors?.['required']"
               class="invalid-feedback"
@@ -37,28 +37,64 @@
               <strong>Data Final é obrigatória.</strong>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
             <button
               class="btn btn-outline-primary ms-2 float-end"
               [disabled]="!form.valid"
-              (click)="gerarDados()"
+              (click)="gerarDados('line')"
             >
-              <i class="fa-solid fa-rotate"></i>
-              Gerar Dados
+              <i class="fa-solid fa-chart-line"></i>
+              Linha
+            </button>
+            <button
+              class="btn btn-outline-primary ms-2 float-end"
+              [disabled]="!form.valid"
+              (click)="gerarDados('doughnut')"
+            >
+              <i class="fa-solid fa-chart-pie"></i>
+              Rosca
+            </button>
+            <button
+              class="btn btn-outline-primary ms-2 float-end"
+              [disabled]="!form.valid"
+              (click)="gerarDados('bar')"
+            >
+              <i class="fa-sharp fa-solid fa-chart-simple"></i>
+              Barras
             </button>
           </div>
         </div>
       </form>
       <div>
-        <div style="display: block">
-          <canvas baseChart
-          [data]="barChartData"
-          [options]="barChartOptions"
-          [plugins]="barChartPlugins"
-          [type]="barChartType"
-          (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"
-          style="max-height: 322px;"
+        <div [ngStyle]="{ display: visibleBar }">
+          <canvas
+            baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [plugins]="barChartPlugins"
+            [type]="barChartType"
+            (chartClick)="chartClicked($event)"
+            (chartHover)="chartHovered($event)"
+            style="max-height: 375px"
+          ></canvas>
+        </div>
+        <div [ngStyle]="{ display: visibleLine }">
+          <canvas
+            baseChart
+            [data]="lineChartData"
+            [options]="lineChartOptions"
+            [type]="lineChartType"
+            (chartClick)="chartClicked($event)"
+            (chartHover)="chartHovered($event)"
+            style="max-height: 375px"
+          ></canvas>
+        </div>
+        <div [ngStyle]="{ display: visibleDonut }">
+          <canvas
+            baseChart
+            [data]="doughnutChartData"
+            [type]="doughnutChartType"
+            style="max-height: 375px"
           ></canvas>
         </div>
       </div>

@@ -31,9 +31,10 @@ export class LoginComponent implements OnInit {
   public login() {
     this.spinner.show();
     this.accountService
-      .login(this.model)
-      .subscribe(
-        () => {
+    .login(this.model)
+    .subscribe(
+      () => {
+          this.spinner.show();
           this.router.navigateByUrl('/home');
           this.toastr.success('Usuário logado com sucesso.', 'Sucesso!');
         },
@@ -47,7 +48,7 @@ export class LoginComponent implements OnInit {
           this.spinner.hide();
         }
       )
-      .add(() => this.spinner.hide());
+      //.add(() => this.spinner.hide());
   }
 
   ngOnInit(): void {

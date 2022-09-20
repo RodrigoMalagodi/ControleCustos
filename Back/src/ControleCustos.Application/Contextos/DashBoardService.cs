@@ -119,35 +119,7 @@ namespace ControleCustos.Application.Contextos
 
                 var resultado = _mapper.Map<ContaDto[]>(Conta);
 
-                List<int> ListaAnoMes = new List<int>();
-                var ListaValor = new List<ContaDto>();
-                decimal valorTotal = 0;
-                string tipoFornecimento = string.Empty;
-
-                foreach (var item in resultado.Select(x => new { x.AnoMes }).GroupBy(x => x.AnoMes))
-                {
-                    ListaAnoMes.Add(item.Key);
-                }
-
-                foreach (int anoMes in ListaAnoMes)
-                {
-                    var dados = new ContaDto();
-                    foreach (var b in resultado.Where(x => x.AnoMes == anoMes).Select(x => new { Valor = x.Valor, TipoFornecimento = x.Descricao }))
-                    {
-                        valorTotal += b.Valor;
-                        tipoFornecimento = b.TipoFornecimento;
-                    }
-
-                    dados.AnoMes = anoMes;
-                    dados.TipoFornecimento = tipoFornecimento;
-                    dados.Valor = valorTotal;
-                    ListaValor.Add(dados);
-                    valorTotal = 0;
-                }
-
-                var query = ListaValor.OrderBy(x => x.AnoMes).AsQueryable<ContaDto>();
-
-                return query.ToArray();
+                return resultado.ToArray();
             }
             catch (Exception ex)
             {

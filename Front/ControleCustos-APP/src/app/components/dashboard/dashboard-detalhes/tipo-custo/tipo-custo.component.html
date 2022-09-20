@@ -46,11 +46,19 @@
               <i class="fa-solid fa-rotate"></i>
               Gerar Dados
             </button>
+            <button
+              class="btn btn-outline-success ms-2 float-end"
+              [disabled]="!form.valid"
+              (click)="gerarDados()"
+            >
+              <i class="fa-solid fa-file-excel"></i>
+              Gerar Excel
+            </button>
           </div>
         </div>
       </form>
       <div>
-        <div style="display: block">
+        <div [ngStyle]="{ display: visible }">
           <canvas
             baseChart
             [data]="barChartData"
@@ -59,7 +67,7 @@
             [type]="barChartType"
             (chartHover)="chartHovered($event)"
             (chartClick)="chartClicked($event)"
-            style="max-height: 322px;"
+            style="max-height: 322px"
           >
           </canvas>
         </div>

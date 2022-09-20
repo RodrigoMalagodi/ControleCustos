@@ -17,7 +17,7 @@ export class HomeDetalhesComponent implements OnInit {
   public lng;
   currentCity: string = '';
   currentState: string = '';
-  public location: string = '';
+  public location: string = 'Buscando...';
 
   constructor(
     private localeService: BsLocaleService,
@@ -86,4 +86,6 @@ export class HomeDetalhesComponent implements OnInit {
   formatDate(date: Date): any {
     return date.toISOString().slice(0, 10);
   }
+
+
 }

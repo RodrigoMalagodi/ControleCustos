@@ -1,47 +1,46 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { Conta } from 'src/app/models/identity/Conta';
-import { Fornecedor } from 'src/app/models/identity/Fornecedor';
+import { Dashboard } from 'src/app/models/identity/Dashboard';
+import { ContasService } from 'src/app/services/contas.service';
 import { DashboardsService } from 'src/app/services/dashboards.service';
-import { FornecedoresService } from 'src/app/services/fornecedores.service';
 
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import DataLabelsPlugin from 'chartjs-plugin-datalabels';
-
+import { BuildArrayChart } from 'src/app/models/identity/BuildArrayChart';
 
 @Component({
   selector: 'app-fornecedor',
   templateUrl: './fornecedor.component.html',
-  styleUrls: ['./fornecedor.component.scss'],
+  styleUrls: ['./fornecedor.component.scss']
 })
 export class FornecedorComponent implements OnInit {
-  conta = {} as Conta;
-  contas = [] as Conta[];
+
+  dashboard = {} as Dashboard;
+
+  conta = {} as BuildArrayChart;
+  contas = [] as BuildArrayChart[];
+  labelSeriesChart = [];
+  valueSeriesChart = [];
   form!: FormGroup;
 
-  fornecedorId: number;
-  fornecedores = [] as Fornecedor[];
+  dataInicio : string;
+  dataFim : string;
 
-  dataInicio: Date;
-  dataFim: Date;
+  visible = 'none';
 
   constructor(
     private fb: FormBuilder,
     private dashBoardsService: DashboardsService,
+    private contaService: ContasService,
     private localeService: BsLocaleService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
-    private fornecedorService: FornecedoresService
+    private router: Router
   ) {
     this.localeService.use('pt-br');
   }
@@ -81,26 +80,44 @@ export class FornecedorComponent implements OnInit {
 
   public validationForm(): void {
     this.form = this.fb.group({
-      fornecedorId: [0, Validators.required],
       dataInicio: ['', Validators.required],
       dataFim: ['', Validators.required],
     });
   }
 
   public gerarDados(): void {
-    this.getDadosDashBoardFornecedorId();
+    this.spinner.show();
+    setTimeout(() => {
+      this.getDadosDashBoardFornecedor();
+    }, 3000);
   }
 
-  getDadosDashBoardFornecedorId(): void {
+  formatDate(date: Date): string {
+    date = new Date(date);
+
+    var day = ('0' + date.getDate()).slice(-2);
+    var month = ('0' + (date.getMonth() + 1)).slice(-2);
+    var year = date.getFullYear();
+
+    return year + '-' + month + '-' + day;
+}
+
+  getDadosDashBoardFornecedor(): void {
+    this.dashboard = { ...this.form.value };
+
+    this.dataInicio = this.formatDate(this.dashboard.dataInicio);
+    this.dataFim = this.formatDate(this.dashboard.dataFim);
+
     this.dashBoardsService
-      .getDadosDashBoardFornecedor(
-        this.dataInicio,
-        this.dataFim
-      )
+      .getDadosDashBoardFornecedor(this.dataInicio, this.dataFim)
       .subscribe({
-        next: (conta: Conta[]) => {
-          this.contas = { ...conta };
-          console.log(this.conta);
+        next: (conta: BuildArrayChart[]) => {
+          this.contas = { ... conta};
+          console.log(this.contas);
+          // this.criarSeriesLabel(this.contas);
+          // this.criarSeriesValue(this.contas);
+          // this.updateChart();
+          this.visible = 'block';
         },
         error: (error: any) => {
           console.log(error), this.spinner.hide();
@@ -110,15 +127,46 @@ export class FornecedorComponent implements OnInit {
       .add(() => this.spinner.hide());
   }
 
+  criarSeriesLabel(contas: BuildArrayChart[]): any {
+    Object.entries(contas).forEach(([key, value], index) => {
+      this.labelSeriesChart = [];
+      for (let key in this.contas) {
+        let conta = this.contas[key];
+        this.labelSeriesChart.push([
+          conta[key].description
+        ]
+        );
+      }
+    });
+    console.log(this.labelSeriesChart);
+  }
+
+  criarSeriesValue(contas: BuildArrayChart[]): any {
+    Object.entries(contas).forEach(([key, value], index) => {
+      this.valueSeriesChart = [];
+      for (let key in this.contas) {
+        let conta = this.contas[key];
+        this.valueSeriesChart.push([
+          conta.target,
+          [conta[key].description, conta[key].value]
+        ]);
+      }
+    });
+    console.log(this.valueSeriesChart);
+  }
+
+
+
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
   public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
     // We use these empty structures as placeholders for dynamic theming.
     scales: {
-      x: {},
-      y: {
+      x: {
         min: 10
+      },
+      y: {
       }
     },
     plugins: {
@@ -129,7 +177,7 @@ export class FornecedorComponent implements OnInit {
         anchor: 'end',
         align: 'end'
       }
-    }
+    },
   };
   public barChartType: ChartType = 'bar';
   public barChartPlugins = [
@@ -137,19 +185,30 @@ export class FornecedorComponent implements OnInit {
   ];
 
   public barChartData: ChartData<'bar'> = {
-    labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
-    datasets: [
-      { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Series A' },
-      { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Series B' }
-    ]
+    labels: [],
+    datasets: [{ data: [], label: 'R$', backgroundColor: ['#005580'] }],
   };
+
+  public updateChart(): void {
+    (this.barChartData.labels = this.labelSeriesChart),
+      (this.barChartData.datasets = [
+        {
+          data: this.valueSeriesChart,
+          label: 'R$',
+          backgroundColor: ['#005580'],
+          hoverBackgroundColor: ['#0099e6'],
+        },
+      ]);
+
+    this.chart?.update();
+  }
 
   // events
   public chartClicked({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
-    console.log(event, active);
+
   }
 
   public chartHovered({ event, active }: { event?: ChartEvent, active?: {}[] }): void {
-    console.log(event, active);
+
   }
 }
