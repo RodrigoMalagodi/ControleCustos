@@ -34,7 +34,6 @@ export class LoginComponent implements OnInit {
     .login(this.model)
     .subscribe(
       () => {
-          this.spinner.show();
           this.router.navigateByUrl('/home');
           this.toastr.success('Usuário logado com sucesso.', 'Sucesso!');
         },

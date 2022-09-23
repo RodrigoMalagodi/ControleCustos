@@ -1,0 +1,22 @@
+.background-image {
+  background-image: url('../../../../assets/img/registerImagee.png');
+  background-size: cover;
+  z-index: -1;
+  border-radius: 5px;
+  background-color: rgb(213, 217, 218);
+  height: 600px;
+  background-repeat: no-repeat;
+
+}
+
+.bg-white {
+  --bs-bg-opacity: .0;
+  background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important;
+  height: 450px;
+}
+
+.btn-link {
+  font-weight: 400;
+  color: black;
+  text-decoration: underline;
+}
