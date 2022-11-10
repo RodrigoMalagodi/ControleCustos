@@ -34,7 +34,6 @@ D:\ControleCustos\Back\src\ControleCustos.API\bin\Debug\net5.0\ControleCustos.AP
 D:\ControleCustos\Back\src\ControleCustos.API\bin\Debug\net5.0\ControleCustos.API.runtimeconfig.json
 D:\ControleCustos\Back\src\ControleCustos.API\bin\Debug\net5.0\ControleCustos.API.runtimeconfig.dev.json
 D:\ControleCustos\Back\src\ControleCustos.API\bin\Debug\net5.0\ControleCustos.API.dll
-D:\ControleCustos\Back\src\ControleCustos.API\bin\Debug\net5.0\ref\ControleCustos.API.dll
 D:\ControleCustos\Back\src\ControleCustos.API\bin\Debug\net5.0\ControleCustos.API.pdb
 D:\ControleCustos\Back\src\ControleCustos.API\bin\Debug\net5.0\AutoMapper.dll
 D:\ControleCustos\Back\src\ControleCustos.API\bin\Debug\net5.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
@@ -105,7 +104,6 @@ D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\ControleCustos.AP
 D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\ControleCustos.API.MvcApplicationPartsAssemblyInfo.cs
 D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\ControleCustos.API.MvcApplicationPartsAssemblyInfo.cache
 D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\staticwebassets\ControleCustos.API.StaticWebAssets.Manifest.cache
-D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\staticwebassets\ControleCustos.API.StaticWebAssets.xml
 D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\scopedcss\bundle\ControleCustos.API.styles.css
 D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\ControleCustos.API.RazorTargetAssemblyInfo.cache
 D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\ControleCustos.API.csproj.CopyComplete
@@ -113,3 +111,5 @@ D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\ControleCustos.AP
 D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\ref\ControleCustos.API.dll
 D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\ControleCustos.API.pdb
 D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\ControleCustos.API.genruntimeconfig.cache
+D:\ControleCustos\Back\src\ControleCustos.API\bin\Debug\net5.0\ControleCustos.API.StaticWebAssets.xml
+D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\refint\ControleCustos.API.dll

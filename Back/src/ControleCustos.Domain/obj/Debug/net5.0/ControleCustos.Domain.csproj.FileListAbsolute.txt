@@ -1,6 +1,5 @@
 D:\ControleCustos\Back\src\ControleCustos.Domain\bin\Debug\net5.0\ControleCustos.Domain.deps.json
 D:\ControleCustos\Back\src\ControleCustos.Domain\bin\Debug\net5.0\ControleCustos.Domain.dll
-D:\ControleCustos\Back\src\ControleCustos.Domain\bin\Debug\net5.0\ref\ControleCustos.Domain.dll
 D:\ControleCustos\Back\src\ControleCustos.Domain\bin\Debug\net5.0\ControleCustos.Domain.pdb
 D:\ControleCustos\Back\src\ControleCustos.Domain\obj\Debug\net5.0\ControleCustos.Domain.csproj.AssemblyReference.cache
 D:\ControleCustos\Back\src\ControleCustos.Domain\obj\Debug\net5.0\ControleCustos.Domain.GeneratedMSBuildEditorConfig.editorconfig
@@ -10,3 +9,4 @@ D:\ControleCustos\Back\src\ControleCustos.Domain\obj\Debug\net5.0\ControleCustos
 D:\ControleCustos\Back\src\ControleCustos.Domain\obj\Debug\net5.0\ControleCustos.Domain.dll
 D:\ControleCustos\Back\src\ControleCustos.Domain\obj\Debug\net5.0\ref\ControleCustos.Domain.dll
 D:\ControleCustos\Back\src\ControleCustos.Domain\obj\Debug\net5.0\ControleCustos.Domain.pdb
+D:\ControleCustos\Back\src\ControleCustos.Domain\obj\Debug\net5.0\refint\ControleCustos.Domain.dll

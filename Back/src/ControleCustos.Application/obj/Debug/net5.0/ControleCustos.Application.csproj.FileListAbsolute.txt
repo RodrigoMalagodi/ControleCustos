@@ -1,6 +1,5 @@
 D:\ControleCustos\Back\src\ControleCustos.Application\bin\Debug\net5.0\ControleCustos.Application.deps.json
 D:\ControleCustos\Back\src\ControleCustos.Application\bin\Debug\net5.0\ControleCustos.Application.dll
-D:\ControleCustos\Back\src\ControleCustos.Application\bin\Debug\net5.0\ref\ControleCustos.Application.dll
 D:\ControleCustos\Back\src\ControleCustos.Application\bin\Debug\net5.0\ControleCustos.Application.pdb
 D:\ControleCustos\Back\src\ControleCustos.Application\bin\Debug\net5.0\ControleCustos.Domain.dll
 D:\ControleCustos\Back\src\ControleCustos.Application\bin\Debug\net5.0\ControleCustos.Persistence.dll
@@ -15,3 +14,4 @@ D:\ControleCustos\Back\src\ControleCustos.Application\obj\Debug\net5.0\ControleC
 D:\ControleCustos\Back\src\ControleCustos.Application\obj\Debug\net5.0\ControleCustos.Application.dll
 D:\ControleCustos\Back\src\ControleCustos.Application\obj\Debug\net5.0\ref\ControleCustos.Application.dll
 D:\ControleCustos\Back\src\ControleCustos.Application\obj\Debug\net5.0\ControleCustos.Application.pdb
+D:\ControleCustos\Back\src\ControleCustos.Application\obj\Debug\net5.0\refint\ControleCustos.Application.dll
