@@ -111,5 +111,4 @@ D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\ControleCustos.AP
 D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\ref\ControleCustos.API.dll
 D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\ControleCustos.API.pdb
 D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\ControleCustos.API.genruntimeconfig.cache
-D:\ControleCustos\Back\src\ControleCustos.API\bin\Debug\net5.0\ControleCustos.API.StaticWebAssets.xml
 D:\ControleCustos\Back\src\ControleCustos.API\obj\Debug\net5.0\refint\ControleCustos.API.dll
